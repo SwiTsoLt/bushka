@@ -14,7 +14,7 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join('/', 'booshka-client', 'dist', 'booshka'),
+      rootPath: join(__dirname, '../', '../', 'booshka-client', 'dist', 'booshka'),
       exclude: ['/api*']
     }),
     MongooseModule.forRoot(config.get('MongoUri')),
