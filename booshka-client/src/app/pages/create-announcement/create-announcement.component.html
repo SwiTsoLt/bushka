@@ -1,0 +1,33 @@
+<div class="create-announcement">
+    <div class="title box">
+        <h1 class="center">Подать объявление</h1>
+    </div>
+    <div class="content box">
+        <div class="create-announcement-form">
+            <div class="announcement-title">
+                <input #title (input)="setValue('title', title.value)" id="input_text" type="text"
+                        placeholder="Название товара" data-length="50">
+                    <label for="input_text"></label>
+            </div>
+            <div class="announcement-description">
+                <textarea #description (input)="setValue('description', description.value)" id="textarea2"
+                        class="materialize-textarea" maxlength="600" data-length="500"
+                        placeholder="Описание товара"></textarea>
+                    <label for="textarea2"></label>
+            </div>
+            <div class="announcement-price">
+                <div>
+                    <input #price (input)="setValue('price', price.value)" type="number" placeholder="Цена">
+                    <p>руб.</p>
+                </div>
+            </div>
+            <div class="announcement-category">
+                <app-select-options [callback]="setValue.bind(this)" [optionList]="optionList"></app-select-options>
+            </div>
+            <div class="send">
+                <app-my-button type="create-announcement" text="Подать объявление" [isDisabled]="false"
+                    [callback]="create.bind(this)"></app-my-button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,230 @@
+@import '../../../variables/variables.scss';
+
+.form-container {
+    width: 100%;
+    height: fit-content;
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        grid-gap: $padding-inline-l;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: fit-content;
+        padding: 0;
+        margin: 0;
+
+        div {
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .error-field {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: fit-content;
+            color: $text-clr-error;
+        }
+
+        .first-last-name-inputs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax($min-input-width, 1fr));
+
+            grid-gap: $padding-inline-l;
+            width: 100%;
+            height: fit-content;
+            margin: 0;
+
+            &::after {
+                display: none;
+            }
+
+        }
+    }
+}
+
+div.select-option-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($min-input-width, 1fr));
+    grid-gap: $padding-inline-l;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: fit-content;
+    min-height: 2.5rem;
+
+    &::after {
+        display: none;
+    }
+
+    .select-option-city,
+    .select-option-region {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+        min-height: 2.5rem;
+        position: relative;
+
+        .error-field {
+            margin-top: calc($padding-box * 2);
+        }
+    }
+}
+
+.select-city,
+.select-region {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    max-height: 40vh;
+
+    .option-list {
+        display: flex;
+        flex-direction: column;
+        flex: none;
+        flex-flow: column nowrap;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: min-content;
+        max-height: 40vh;
+        border: 1px solid #9e9e9e;
+        border-radius: $border-radius;
+        scroll-snap-type: y proximity;
+        background-color: $bg-clr-white;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .option-item-title {
+            width: 100%;
+            height: fit-content;
+            background-color: $bg-clr-white;
+
+            input:checked+label>.option-list-title {
+                background-color: #efefef;
+            }
+
+            label {
+                position: relative;
+                width: 100%;
+                height: fit-content;
+                background-color: $bg-clr-white;
+                cursor: pointer;
+
+                .option-list-title {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: calc($padding-inline-l * 2);
+                    border-radius: $border-radius;
+                    text-align: center;
+                    color: $text-clr-dark;
+                }
+
+                .select-arrow {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: 100%;
+                    padding: 0 $padding-inline-l;
+
+                    p {
+                        width: fit-content;
+                        height: fit-content;
+                        font-size: 1.2rem;
+                        transform: rotate(90deg);
+                        transition: all 0.2s ease;
+                        user-select: none;
+
+                        &.active {
+                            transform: rotate(-90deg);
+                        }
+                    }
+                }
+            }
+        }
+
+        .option-list-inner {
+            width: 100%;
+            height: fit-content;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: all 0.2s ease;
+
+            &.active {
+                transform: scaleY(1);
+
+                .option-item {
+                    height: calc($padding-inline-l * 2);
+                }
+            }
+
+            .option-item {
+                display: flex;
+                flex: none;
+                scroll-snap-align: center;
+                width: 100%;
+                height: 0;
+                background-color: $bg-clr-white;
+                transition: all 0.2s ease;
+
+                input {
+                    &:checked+label {
+                        background-color: #efefef;
+                    }
+                }
+
+                label {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: $border-radius;
+                    background-color: $bg-clr-white;
+                    cursor: pointer;
+                    user-select: none;
+
+                    &:hover {
+                        background-color: #efefef;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.select-city {
+
+    .option-list {
+        z-index: 2;
+    }
+}
+
+.select-region {
+
+    .option-list {
+        z-index: 1;
+    }
+}

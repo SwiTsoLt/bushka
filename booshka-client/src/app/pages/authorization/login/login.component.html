@@ -1,0 +1,29 @@
+<div class="login">
+    <div class="form col s12">
+        <div class="row">
+            <div class="input-field col s12">
+                <input (keydown.enter)="passwordInput.focus()" #gmailInput (input)="setValue('gmail', gmailInput.value)"
+                    (blur)="checkErrors('gmail')" [value]="(loginForm$ | async)?.gmail" placeholder="Gmail" type="email"
+                    class="validate">
+                <div class="error-field">
+                    <p>
+                        {{ loginFormErrors['gmail'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input (keydown.enter)="send()" #passwordInput (input)="setValue('password', passwordInput.value)"
+                    (blur)="checkErrors('password')" [value]="(loginForm$ | async)?.password" placeholder="Пароль" type="password"
+                    class="validate">
+                <div class="error-field">
+                    <p>
+                        {{ loginFormErrors['password'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-my-button type="login" text="Войти" [callback]="send.bind(this)" [isDisabled]="!loginForm.valid"></app-my-button>
+</div>

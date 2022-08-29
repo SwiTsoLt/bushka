@@ -1,0 +1,143 @@
+@import '../../variables/variables.scss';
+
+.article {
+    width: 100%;
+    height: 3rem;
+    background-color: $bg-clr-white;
+
+    .current-page-line-container {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background-color: $border-clr;
+
+        .current-page-line {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 20%;
+            height: 100%;
+            background-color: $logo-clr-1;
+            transition: all 0.2s ease;
+
+
+
+            &.ideas {
+                left: 20%;
+                background-color: $logo-clr-2;
+            }
+
+            &.create-announcement {
+                left: 40%;
+                background-color: $logo-clr-3;
+            }
+
+            &.chats {
+                left: 60%;
+                background-color: $logo-clr-4;
+            }
+
+            &.other {
+                left: 80%;
+                background-color: $bg-clr-black-wall;
+                // background: linear-gradient(0.25turn,
+                //         $logo-clr-1 0%,
+                //         $logo-clr-1 25%,
+                //         $logo-clr-2 25%,
+                //         $logo-clr-2 50%,
+                //         $logo-clr-3 50%,
+                //         $logo-clr-3 75%,
+                //         $logo-clr-4 75%,
+                //         $logo-clr-4 100%);
+            }
+        }
+    }
+
+    .link-list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        width: 100%;
+        height: 100%;
+
+        a {
+            width: 100%;
+            height: 100%;
+            padding: $padding-inline-s;
+            transition: all 0.2s ease;
+
+            .icon {
+                width: auto;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+                opacity: 0.75;
+                transition: all 0.2s ease;
+            }
+
+            &.announcements>.icon {
+                background-image: url('../../images/article/announcements.png');
+            }
+
+            &.ideas>.icon {
+                background-image: url('../../images/article/ideas.png');
+            }
+
+            &.create-announcement>.icon {
+                background-image: url('../../images/article/create.png');
+            }
+
+            &.chats>.icon {
+                background-image: url('../../images/article/messages.png');
+            }
+
+            &.other>.icon {
+                background-image: url('../../images/article/other.png');
+            }
+        }
+
+        &:not(.ideas, .create-announcement, .chats, .other)>a.announcements {
+            background-color: $article-bg-clr-hover-blue;
+
+            .icon {
+                opacity: 1;
+                background-image: url('../../images/article/active/announcements.png');
+            }
+        }
+
+        &.ideas>a.ideas {
+            background-color: $article-bg-clr-hover-yellow;
+
+            .icon {
+                opacity: 1;
+                background-image: url('../../images/article/active/ideas.png');
+            }
+        }
+
+        &.create-announcement>a.create-announcement {
+            background-color: $article-bg-clr-hover-green;
+
+            .icon {
+                opacity: 1;
+                background-image: url('../../images/article/active/create.png');
+            }
+        }
+
+        &.chats>a.chats {
+            background-color: $article-bg-clr-hover-purple;
+
+            .icon {
+                opacity: 1;
+                background-image: url('../../images/article/active/messages.png');
+            }
+        }
+
+        &.other>a.other {
+
+            .icon {
+                opacity: 1;
+                background-image: url('../../images/article/active/other.png');
+            }
+        }
+    }
+}

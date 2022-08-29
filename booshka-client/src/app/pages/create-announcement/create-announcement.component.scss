@@ -1,0 +1,34 @@
+@import '../../variables/variables.scss';
+
+.create-announcement {
+    display: flex;
+    flex-direction: column;
+    grid-gap: $padding-inline-l;
+    width: 100%;
+    height: 100%;
+
+    .content {
+        width: 100%;
+        height: 100%;
+        background-color: $bg-clr-white;
+        padding: $padding-inline-l;
+
+        .create-announcement-form {
+            display: grid;
+            grid-gap: $padding-inline-l;
+            flex-direction: column;
+            grid-row-gap: $padding-inline-l;
+            width: 100%;
+            height: fit-content;
+
+            .announcement-price {
+                
+                div {
+                    display: flex;
+                    align-items: center;
+                    grid-column-gap: $padding-inline-l;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,84 @@
+$body-bg-clr: #f0f4f8;
+$bg-clr-white: #ffffff;
+$bg-clr-black-wall: #00000050;
+
+$main-clr-1: #35b873;
+$main-clr-1-darken: #2da867;
+$main-clr-1-lighten: #67ca96;
+/* $main-clr-2: ;
+    $main-clr-2-darken: ;
+    $main-clr-2-lighten: ;
+    $main-clr-3: ;
+    $main-clr-3-darken: ;
+    $main-clr-3-lighten: ; */
+
+
+$footer-bg-clr: #303030;
+
+$text-clr-dark: #303030;
+$text-clr-light: #fdfdfd;
+$text-clr-error: #ff869a;
+$text-clr-disabled: #00000050;
+
+$text-size-s: 1rem;
+$text-size-m: 1.2rem;
+$text-size-l: 1.4rem;
+$text-size-xl: 1.6rem;
+
+$nav-height: 4rem;
+
+
+$nav-links-clr-green-link: #3ce482;
+$nav-link-border-bg-clr-hover-default: #9588ad20;
+$nav-link-border-bg-clr-hover-green: #58ff9d10;
+$nav-link-border-bg-clr-hover-yellow: #fcce0010;
+$nav-link-border-bg-clr-hover-blue: #6adbff50;
+$nav-link-border-clr-hover-default: #9588ad;
+$nav-link-border-clr-hover-green: #3ce482;
+$nav-link-border-clr-hover-yellow: #fcce00;
+$nav-link-border-clr-hover-blue: #6adbff;
+
+$box-shadow-clr: #bab0ccb0;
+$border-radius: 4px;
+
+/* logo */
+
+$logo-clr-1: #6adbff;
+$logo-clr-2: #ffe46b;
+$logo-clr-3: #58ff9d;
+$logo-clr-4: #c183cc;
+
+$logo-bg-clr-1: #6adbff50;
+$logo-bg-clr-2: #ffe46b50;
+$logo-bg-clr-3: #58ff9d50;
+$logo-bg-clr-4: #c183cc50;
+
+$border-clr: #dfdfdf;
+$border-clr-hover: #cccccc;
+
+/* --- */
+
+$min-input-width: 20rem;
+$padding-box: 1.5rem;
+$padding-inline-s: 0.5rem;
+$padding-inline-l: 1rem;
+
+/* Toast */
+
+$toast-success: #58ff9d;
+$toast-warning: #ffe46b;
+$toast-error: #ff869a;
+$toast-notify: #6adbff;
+
+$toast-duration: 5.5s;
+
+/* Article */
+
+$article-bg-clr-hover-purple: #9588ad11;
+$article-bg-clr-hover-green: #58ff9e0e;
+$article-bg-clr-hover-yellow: #dab20010;
+$article-bg-clr-hover-blue: #6adcff13;
+
+/* Announcement */
+
+$announcement-height: 200px;

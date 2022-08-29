@@ -1,0 +1,9 @@
+<div class="toast-list">
+    <div *ngFor="let toast of toastList | async" class="toast box" [class]="toast.type">
+        <div class="toast-icon-container">
+            <div class="toast-icon" [class]="toast.type"></div>
+        </div>
+        <div class="toast-text">{{ toast.text }}</div>
+        <div class="timer-line" [class]="toast.type"></div>
+    </div>
+</div>

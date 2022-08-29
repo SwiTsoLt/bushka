@@ -1,0 +1,1 @@
+web: npm run start:install & npm run start:client:build & npm run start:server:build & npm start

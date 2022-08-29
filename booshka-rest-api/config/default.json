@@ -1,0 +1,5 @@
+{
+    "PORT": "3000",
+    "MongoUri": "mongodb+srv://Stanislav:82363newlife@cluster0.pberr0g.mongodb.net/app?retryWrites=true&w=majority",
+    "jwtSecret": "newlife"
+}

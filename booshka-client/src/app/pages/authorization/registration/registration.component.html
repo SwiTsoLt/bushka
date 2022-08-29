@@ -1,0 +1,146 @@
+<div class="registration">
+    <div class="form-container row">
+        <div class="form col s12">
+            <div class="first-last-name-inputs-container row s12">
+                <div class="input-field col s6">
+                    <input #firstNameInput [value]="(registrationForm$ | async)?.firstName"
+                        (input)="setValue('firstName', firstNameInput.value)" placeholder="Имя" type="text"
+                        (blur)="checkErrors('firstName')" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['firstName']}}
+                        </p>
+                    </div>
+                </div>
+                <div class="input-field col s6">
+                    <input #lastNameInput [value]="(registrationForm$ | async)?.lastName"
+                        (blur)="checkErrors('lastName')" (input)="setValue('lastName', lastNameInput.value)"
+                        placeholder="Фамилия" type="text" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['lastName']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input #gmailInput [value]="(registrationForm$ | async)?.gmail"
+                        (input)="setValue('gmail', gmailInput.value)" (blur)="checkErrors('gmail')" placeholder="Gmail"
+                        type="email" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['gmail']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input #phoneInput [value]="(registrationForm$ | async)?.phone"
+                        (input)="setValue('phone', phoneInput.value)" (blur)="checkErrors('phone')"
+                        placeholder="Телефон" type="tel" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['phone']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row s12 select-option-container">
+                <div class="select-option-city">
+                    <div class="select-city">
+                        <ul class="option-list">
+                            <li class="option-item-title">
+                                <input id="selectCityInput" type="radio" name="cityTitle"
+                                    [checked]="cityOptionsOpen && !selectedCity.length" disabled>
+                                <label (click)="cityOptionsOpen ? selectCity('') : selectCity()" for="selectCityInput">
+                                    <div class="option-list-title">{{cityOptionsOpen ? "Город" : (((registrationForm$ |
+                                        async)?.city) ?
+                                        ((registrationForm$ | async)?.city) : "Город")}}</div>
+                                    <div class="select-arrow">
+                                        <p [ngClass]="{'active': cityOptionsOpen}">
+                                            > </p>
+                                    </div>
+                                </label>
+                            </li>
+                            <div [ngClass]="{'active': cityOptionsOpen}" class="option-list-inner">
+                                <li *ngFor="let option of optionCityKeysList" class="option-item">
+                                    <input type="radio" [id]="option" name="city" [checked]="option === selectedCity">
+                                    <label (click)="selectCity(option)" [for]="option">
+                                        <p>
+                                            {{option}}
+                                        </p>
+                                    </label>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['city']}}
+                        </p>
+                    </div>
+                </div>
+                <div class="select-option-region">
+                    <div class="select-region">
+                        <ul class="option-list">
+                            <li class="option-item-title">
+                                <input id="selectRegionInput" type="radio" name="regionTitle"
+                                    [checked]="regionOptionsOpen && !selectedRegion.length" disabled>
+                                <label (click)="regionOptionsOpen ? selectRegion('') : selectRegion()"
+                                    for="selectRegionInput">
+                                    <div class="option-list-title">{{regionOptionsOpen ? "Район" :
+                                        (((registrationForm$ | async)?.region) ?
+                                        ((registrationForm$ | async)?.region) : "Район")}}</div>
+                                    <div class="select-arrow">
+                                        <p [ngClass]="{'active': regionOptionsOpen}">
+                                            > </p>
+                                    </div>
+                                </label>
+                            </li>
+                            <div [ngClass]="{'active': regionOptionsOpen}" class="option-list-inner">
+                                <li *ngFor="let option of selectedOptionCityRegionsList" class="option-item">
+                                    <input type="radio" [id]="option" [checked]="option === selectedRegion"
+                                        name="region">
+                                    <label (click)="selectRegion(option)" [for]="option"><span>{{option}}</span></label>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['region']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input #passwordInput [value]="(registrationForm$ | async)?.password"
+                        (blur)="checkErrors('password')" (input)="setValue('password', passwordInput.value)"
+                        placeholder="Придумайте пароль" type="password" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['password']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input #confirmPasswordInput (input)="setConfirmPassword(confirmPasswordInput.value)"
+                        (blur)="checkErrors('confirmPassword')" [value]="getConfirmPassword()"
+                        placeholder="Подтвердите пароль" type="password" class="validate">
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['confirmPassword']}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-my-button text="Зарегистрироваться" type="registration" [callback]="send.bind(this)"
+            [isDisabled]="!registrationForm.valid">
+        </app-my-button>
+    </div>

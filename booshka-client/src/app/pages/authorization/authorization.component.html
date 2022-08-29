@@ -1,0 +1,27 @@
+<div class="auth">
+    <div class="title box">
+        <h1 class="center">
+            Авторизация
+        </h1>
+    </div>
+
+    <div class="content box">
+        <div class="links-container">
+            <div class="links">
+                <a (click)="toggleLinksOutline('left')" class="login-link" routerLink="/authorization-component/login-component">
+                    <h3>Вход</h3>
+                </a>
+                <a (click)="toggleLinksOutline('right')" class="registration-link"
+                    routerLink="/authorization-component/registration-component">
+                    <h3>
+                        Регистрация
+                    </h3>
+                </a>
+                <div class="links-outline">
+                    <div [ngClass]="{'outlineLeft': linksOutline === 'left', 'outlineRight': linksOutline === 'right'}" class="links-outline-inner"></div>
+                </div>
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>

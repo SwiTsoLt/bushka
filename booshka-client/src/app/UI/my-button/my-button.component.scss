@@ -1,0 +1,45 @@
+@import '../../variables/variables.scss';
+
+.login, .registration {
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    border: 2px solid $nav-links-clr-green-link;
+    border-radius: $border-radius;
+    color: $main-clr-1-lighten;
+    cursor: pointer;
+    padding: $padding-inline-s calc($padding-box * 2);
+    transition: all 0.2s ease;
+
+    &:disabled {
+        border-color: $nav-link-border-bg-clr-hover-default;
+        color: $text-clr-disabled;
+        cursor: default;
+    }
+
+    &:hover:not(:disabled) {
+        background-color: $nav-link-border-bg-clr-hover-green;
+    }
+}
+
+.create-announcement {
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    border: 2px solid $nav-links-clr-green-link;
+    border-radius: $border-radius;
+    color: $main-clr-1-lighten;
+    cursor: pointer;
+    padding: $padding-inline-s calc($padding-box * 2);
+    transition: all 0.2s ease;
+
+    &:disabled {
+        border-color: $nav-link-border-bg-clr-hover-default;
+        color: $text-clr-disabled;
+        cursor: default;
+    }
+
+    &:hover:not(:disabled) {
+        background-color: $nav-link-border-bg-clr-hover-green;
+    }
+}

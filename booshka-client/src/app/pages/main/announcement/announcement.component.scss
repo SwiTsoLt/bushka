@@ -1,0 +1,65 @@
+@import '../../../variables/variables.scss';
+
+
+.announcement {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: $padding-inline-l;
+    width: 100%;
+    height: $announcement-height;
+    background-color: $bg-clr-white;
+    padding: $padding-inline-l;
+
+    p {
+        width: fit-content;
+        height: fit-content;
+        margin: 0;
+    }
+
+    .announcement-info {
+        width: 100%;
+        height: 100%;
+
+        .announcement-title{
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+
+            p {
+                font-size: $text-size-l;
+            }
+        }
+
+        .announcement-description{
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+
+            p {
+                font-size: $text-size-s;
+            }
+        }
+    }
+
+    .announcement-image {
+        display: flex;
+        justify-content: center;
+        width: auto;
+        height: 100%;
+        border-radius: $border-radius;
+    }
+
+    .announcement-price{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .announcement-ownerId{}
+}

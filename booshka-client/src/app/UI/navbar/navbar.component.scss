@@ -1,0 +1,102 @@
+@import '../../variables/variables.scss';
+
+.nav {
+    width: 100%;
+    min-height: $nav-height;
+    background-color: $bg-clr-white;
+    box-shadow: 2px 2px 4px 0 $box-shadow-clr;
+
+    .container {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-column-gap: $padding-inline-l;
+        width: 100%;
+        height: 100%;
+        padding: 0 $padding-inline-l;
+    }
+
+    ul {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        li {
+            display: flex;
+            width: fit-content;
+            height: 100%;
+            background-color: transparent;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+
+            &.profile-img-container {
+                a {
+                    width: 4rem;
+                    min-width: 4rem;
+                    max-width: 4rem;
+                    height: 100%;
+                    aspect-ratio: 1/1;
+                    padding: $padding-inline-s;
+
+                    .profile-img {
+                        width: inherit;
+                        height: 100%;
+                        aspect-ratio: 1/1;
+                        padding: 0.5rem;
+
+                        background-image: url('../../images/navbar/avatar-default.png');
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        background-position: center;
+
+                        img {
+                            width: auto;
+                            height: 100%;
+                            aspect-ratio: 1/1;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: $nav-link-border-bg-clr-hover-yellow;
+                    border-color: $nav-link-border-clr-hover-yellow;
+                }
+            }
+
+            &.post-announcement:hover {
+                background-color: $nav-link-border-bg-clr-hover-default;
+                border-color: $nav-link-border-clr-hover-default;
+            }
+
+            &.auth-link {
+                font-weight: 400;
+                a {
+                    color: $main-clr-1-lighten;
+                }
+
+                &:hover {
+                    background-color: $nav-link-border-bg-clr-hover-green;
+                    border-color: $nav-link-border-clr-hover-green;
+                }
+            }
+
+            &:hover {
+                border-color: $nav-link-border-clr-hover-default;
+                background-color: $nav-link-border-bg-clr-hover-default;
+            }
+
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+
+                p {
+                    width: max-content;
+                    margin: 0;
+                    padding: 0 1rem;
+                }
+            }
+        }
+    }
+}

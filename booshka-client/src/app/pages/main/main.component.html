@@ -1,0 +1,14 @@
+<main class="main">
+    <div class="title box">
+        <h1 class="center">Главная страница</h1>
+    </div>
+    <div class="content">
+        <div *ngIf="isReady$ | async; else loader" class="announcementList">
+            <app-announcement *ngFor="let announcement of announcementList$ | async" [announcement]="announcement">
+            </app-announcement>
+        </div>
+        <ng-template #loader>
+            <app-loader></app-loader>
+        </ng-template>
+    </div>
+</main>

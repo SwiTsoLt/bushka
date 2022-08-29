@@ -1,0 +1,135 @@
+@import '../../variables/variables.scss';
+
+.toast-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-row-gap: $padding-inline-l;
+    position: fixed;
+    top: $padding-box;
+    right: $padding-box;
+    width: 400px;
+    height: fit-content;
+    pointer-events: none;
+    z-index: 999;
+
+    .toast {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-column-gap: $padding-box;
+        position: relative;
+        top: 0;
+        right: calc(-100% - $padding-box);
+        width: 100%;
+        height: fit-content;
+        font-size: 1rem;
+        line-height: normal;
+        background-color: $bg-clr-white;
+        animation: toast $toast-duration linear forwards;
+        margin: 0;
+        padding: $padding-inline-s;
+        pointer-events: none;
+        overflow: hidden;
+
+        .toast-icon-container {
+            display: flex;
+            align-items: center;
+            width: auto;
+            height: 100%;
+            padding: $padding-inline-s;
+
+            .toast-icon {
+                width: auto;
+                height: 100%;
+                max-height: 2rem;
+                aspect-ratio: 1/1;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+
+                &.success {
+                    background-image: url('../../images/toast/success.png');
+                }
+
+                &.warning {
+                    background-image: url('../../images/toast/warning.png');
+                }
+
+                &.error {
+                    background-image: url('../../images/toast/error.png');
+                }
+
+                &.notify {
+                    background-image: url('../../images/toast/notify.png');
+                }
+            }
+        }
+
+        .toast-text {
+            margin: 0;
+            color: $text-clr-dark;
+            padding: $padding-inline-l;
+        }
+
+        .timer-line {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: calc(100% + $border-radius);
+            height: 4px;
+            background-color: $logo-clr-3;
+            border-radius: $border-radius;
+            animation: time-line calc($toast-duration - 0.6s) 0.2s linear forwards;
+
+            &.success {
+                background-color: $toast-success;
+            }
+
+            &.warning {
+                background-color: $toast-warning;
+            }
+
+            &.error {
+                background-color: $toast-error;
+            }
+
+            &.notify {
+                background-color: $toast-notify;
+            }
+        }
+
+        @keyframes time-line {
+            from {
+                width: calc(100% + $border-radius);
+            }
+
+            to {
+                width: 0;
+            }
+        }
+    }
+
+    @keyframes toast {
+        0% {
+            pointer-events: all;
+            right: calc(-100% - $padding-box);
+        }
+
+        5% {
+            pointer-events: all;
+            right: 0;
+        }
+
+        95% {
+            pointer-events: all;
+            right: 0;
+        }
+
+        100% {
+            pointer-events: none;
+            right: calc(-100% - $padding-box);
+        }
+    }
+}
+
+// freelancestanislav@gmail.com

@@ -1,0 +1,18 @@
+<div class="profile">
+    <div class="title box">
+        <h1 class="center">
+            Профиль
+        </h1>
+    </div>
+    <div *ngIf="userIsReady$ | async; else loader" class="content box">
+        <p>Почта: {{(user$ | async)?.gmail}}</p>
+        <p>Имя: {{(user$ | async)?.firstName}}</p>
+        <p>Фамилия: {{(user$ | async)?.lastName}}</p>
+        <p>Телефон: {{(user$ | async)?.phone}}</p>
+        <p>Город: {{(user$ | async)?.city}}</p>
+        <p>Район: {{(user$ | async)?.region}}</p>
+    </div>
+    <ng-template #loader>
+        <app-loader></app-loader>
+    </ng-template>
+</div>

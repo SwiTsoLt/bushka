@@ -1,0 +1,23 @@
+<div class="article">
+    <div class="current-page-line-container">
+        <div class="current-page-line" [class]="currentPage"></div>
+    </div>
+    
+    <div class="link-list" [class]="currentPage">
+        <a (click)="changePage()" routerLink="/" class="announcements">
+            <div class="icon"></div>
+        </a>
+        <a (click)="changePage()" routerLink="/ideas-component" class="ideas">
+            <div class="icon"></div>
+        </a>
+        <a (click)="changePage()" routerLink="/create-announcement-component" class="create-announcement">
+            <div class="icon"></div>
+        </a>
+        <a (click)="changePage()" routerLink="/chats-component" class="chats">
+            <div class="icon"></div>
+        </a>
+        <a (click)="changePage()" routerLink="/other-component" class="other">
+            <div class="icon"></div>
+        </a>
+    </div>
+</div>
