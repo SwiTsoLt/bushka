@@ -31,9 +31,7 @@
               "src/favicon-16x16.png",
               "src/assets",
               "src/materialize.min.js",
-              "src/materialize.js",
-              "src/lightGallery.min.js",
-              "src/lightGallery.js"
+              "src/materialize.js"
             ],
             "styles": [
               "./node_modules/materialize-css/dist/css/materialize.css",
