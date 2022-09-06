@@ -97,7 +97,7 @@ export class AnnouncementsService {
             }
     
             const responseCreateFile = await this.drive.files.create({
-                resource: fileMetaData,
+                requestBody: fileMetaData,
                 media: media,
                 fields: 'id'
             })
