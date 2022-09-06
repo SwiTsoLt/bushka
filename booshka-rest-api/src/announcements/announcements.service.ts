@@ -64,7 +64,6 @@ export class AnnouncementsService {
     }
 
     async create(createAnnouncementDto: CreateAnnouncementDto, files): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
-
         const imageLinkList: string[] = []
         const cachePath = path.join(__dirname, '../', 'cache')
 
