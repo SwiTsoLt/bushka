@@ -1,6 +1,22 @@
-import { Observable } from "rxjs"
+
+export interface IAnnouncement {
+    title: string,
+    description: string,
+    category: number,
+    price: number,
+    imageLinkList: string[],
+    ownerId: string
+}
 
 export interface ICreateAnnouncementForm {
+    title: string,
+    description: string,
+    category: number,
+    price: number,
+    imageList: FileList | null
+}
+
+export interface ICreateAnnouncementStoreForm {
     title: string,
     description: string,
     category: number,
@@ -10,6 +26,7 @@ export interface ICreateAnnouncementForm {
 export interface ICreateAnnouncementServiceForm {
     title: string,
     price: number,
+    imageLinkList: string[],
     ownerId: string
 }
 

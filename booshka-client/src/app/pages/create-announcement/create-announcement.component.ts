@@ -14,7 +14,8 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
     private createAnnouncementStore: CreateAnnouncementStore
   ) { }
 
-  public createAnnouncementForm$: Observable<createAnnouncementModel.ICreateAnnouncementForm> = this.createAnnouncementStore.form$
+  public createAnnouncementForm$: Observable<createAnnouncementModel.ICreateAnnouncementStoreForm> = this.createAnnouncementStore.form$
+  public imageList: FileList | null = null
 
   public optionList = [
     {
@@ -54,8 +55,15 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public setImages(el: HTMLInputElement) {
+    this.imageList = el.files
+  }
+
   public create() {
-    this.createAnnouncementForm$.pipe(take(1)).subscribe(form => this.createAnnouncementStore.create(form))
+    this.createAnnouncementForm$.pipe(take(1)).subscribe(form => {
+      console.log({ ...form, imageList: this.imageList });
+      return this.createAnnouncementStore.create({ ...form, imageList: this.imageList })
+    })
   }
 
 }

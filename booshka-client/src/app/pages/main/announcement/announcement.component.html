@@ -1,6 +1,5 @@
 <div class="announcement box">
     <div class="announcement-info">
-        <div class="announcement-info-user"></div>
         <div class="announcement-title">
             <h2>
                 {{announcement.title}}
@@ -12,7 +11,13 @@
             </p>
         </div>
     </div>
-    <div class="announcement-image"></div>
+    <div class="announcement-image-list">
+        <div class="announcement-image-list-inner gallery">
+            <a href="{{link}}" *ngFor="let link of announcement.imageLinkList" class="announcement-image" target="_blank">
+                <img src="{{link}}" alt="">
+            </a>
+        </div>
+    </div>
     <div class="announcement-price">
         <p>
             Цена: <span class="announcement-price-inner">

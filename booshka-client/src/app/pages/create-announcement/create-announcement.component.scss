@@ -3,7 +3,7 @@
 .create-announcement {
     display: flex;
     flex-direction: column;
-    grid-gap: $padding-inline-l;
+    grid-gap: $padding-inline-s;
     width: 100%;
     height: 100%;
 
@@ -15,9 +15,8 @@
 
         .create-announcement-form {
             display: grid;
-            grid-gap: $padding-inline-l;
+            grid-gap: $padding-inline-s;
             flex-direction: column;
-            grid-row-gap: $padding-inline-l;
             width: 100%;
             height: fit-content;
 
@@ -26,7 +25,33 @@
                 div {
                     display: flex;
                     align-items: center;
-                    grid-column-gap: $padding-inline-l;
+                    grid-column-gap: $padding-inline-s;
+                }
+            }
+
+            .announcement-images {
+                input {
+                    display: none;
+                }
+
+                .file-upload {
+                    display: flex;
+                    align-items: center;
+                    grid-gap: $padding-inline-l;
+
+                    button {
+                        border: none;
+                        background-color: $logo-clr-1;
+                        border-radius: 50%;
+                        color: #fff;
+                        padding: $padding-inline-s;
+                        transition: 0.2s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            border-radius: $border-radius;
+                        }
+                    }
                 }
             }
         }

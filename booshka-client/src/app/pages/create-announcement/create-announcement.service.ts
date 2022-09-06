@@ -1,6 +1,8 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
+import axios from "axios"
+import { AxiosPromise } from "axios"
 import * as createAnnouncementModel from "./models/create-announcement-model";
 
 @Injectable({
@@ -11,15 +13,18 @@ export class CreateAnnouncementService {
         private http: HttpClient
     ) { }
 
-    public create(form: createAnnouncementModel.ICreateAnnouncementForm): Observable<createAnnouncementModel.createAnnouncementServiceCreateResponse> {
-        try {
-            const url = createAnnouncementModel.createAnnouncementServiceUrlEnums.create
-            return this.http.post<createAnnouncementModel.createAnnouncementServiceCreateResponse>(url, form)
-        } catch (e) {
-            console.log(e);
-            return of({
-                message: createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong
-            })
+    public create(form: FormData): AxiosPromise<createAnnouncementModel.createAnnouncementServiceCreateResponse> {
+        const url = createAnnouncementModel.createAnnouncementServiceUrlEnums.create
+
+        const options = {
+            url,
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: form
         }
+
+        return axios(options)
     }
 }

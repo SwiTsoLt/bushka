@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res, Req } from '@nestjs/common';
 import * as announcementModel from './models/announcement.model';
 import { AnnouncementsService } from './announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/api/announcement')
 export class AnnouncementsController {
@@ -39,8 +40,11 @@ export class AnnouncementsController {
   }
 
   @Post()
-  async create(@Body() createAnnouncementDto: CreateAnnouncementDto, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementCreateResponse>> {
-    const announcementResponse = await this.announcementsService.create(createAnnouncementDto)
+  async create(@Body() createAnnouncementDto: CreateAnnouncementDto, @Req() req: Request, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementCreateResponse>> {
+    const announcementResponse = await this.announcementsService.create({
+      ...createAnnouncementDto 
+    }, req.files)
+   
     if (announcementResponse.announcement) {
       return res.status(announcementResponse.status).json({
         announcement: announcementResponse.announcement,

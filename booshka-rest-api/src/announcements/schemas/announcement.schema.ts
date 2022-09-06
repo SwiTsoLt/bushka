@@ -12,6 +12,9 @@ export class Announcement {
     description: string
 
     @Prop()
+    imageLinkList: string[]
+
+    @Prop()
     category: number
 
     @Prop()

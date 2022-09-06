@@ -25,6 +25,8 @@ import { CreateAnnouncementService } from "./create-announcement/create-announce
 import { BrowserModule } from "@angular/platform-browser";
 import { SelectOptionsComponent } from "../UI/select-options/select-options.component";
 import { CreateAnnouncementStore } from "./create-announcement/create-announcement.store";
+import {Axios} from "axios"
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
     declarations: [
@@ -46,6 +48,7 @@ import { CreateAnnouncementStore } from "./create-announcement/create-announceme
         HttpClientModule,
         AuthorizationModule,
         MatProgressSpinnerModule,
+        MatIconModule,
         EffectsModule.forFeature([MainEffects]),
         StoreModule.forFeature(announcementNode, fromMainReferences.reducers[announcementNode]),
     ],

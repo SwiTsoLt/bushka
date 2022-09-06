@@ -6,14 +6,24 @@
         <div class="create-announcement-form">
             <div class="announcement-title">
                 <input #title (input)="setValue('title', title.value)" id="input_text" type="text"
-                        placeholder="Название товара" data-length="50">
-                    <label for="input_text"></label>
+                    placeholder="Название товара" data-length="50">
+                <label for="input_text"></label>
+            </div>
+            <div class="announcement-images">
+                <input type="file" class="file-input" (change)="setImages(fileUpload)" #fileUpload multiple>
+
+                <div class="file-upload">
+                    <p>Выберите изображения</p>
+                    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                </div>
             </div>
             <div class="announcement-description">
                 <textarea #description (input)="setValue('description', description.value)" id="textarea2"
-                        class="materialize-textarea" maxlength="600" data-length="500"
-                        placeholder="Описание товара"></textarea>
-                    <label for="textarea2"></label>
+                    class="materialize-textarea" maxlength="600" data-length="500"
+                    placeholder="Описание товара"></textarea>
+                <label for="textarea2"></label>
             </div>
             <div class="announcement-price">
                 <div>

@@ -7,6 +7,7 @@
     grid-gap: $padding-inline-l;
     width: 100%;
     height: $announcement-height;
+    max-height: $announcement-height;
     background-color: $bg-clr-white;
     padding: $padding-inline-l;
 
@@ -17,10 +18,13 @@
     }
 
     .announcement-info {
+        display: flex;
+        flex-direction: column;
+        grid-gap: $padding-inline-l;
         width: 100%;
         height: 100%;
 
-        .announcement-title{
+        .announcement-title {
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
@@ -28,11 +32,11 @@
             height: 100%;
 
             p {
-                font-size: $text-size-l;
+                font-size: $text-size-m;
             }
         }
 
-        .announcement-description{
+        .announcement-description {
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
@@ -45,21 +49,52 @@
         }
     }
 
-    .announcement-image {
+    .announcement-image-list {
         display: flex;
         justify-content: center;
-        width: auto;
+        align-items: center;
+        position: relative;
+        width: 100%;
         height: 100%;
+        overflow: hidden;
         border-radius: $border-radius;
+
+        .announcement-image-list-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            grid-gap: $padding-inline-l;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: fit-content;
+            height: 100%;
+            border-radius: $border-radius;
+
+            .announcement-image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                border-radius: $border-radius;
+
+                img {
+                    width: auto;
+                    height: 100%;
+                    border-radius: $border-radius;
+                }
+            }
+        }
     }
 
-    .announcement-price{
+    .announcement-price {
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
         width: 100%;
         height: 100%;
     }
-    
-    .announcement-ownerId{}
+
+    .announcement-ownerId {}
 }

@@ -6,7 +6,7 @@ article {
 
     .content {
         position: sticky;
-        top: calc($nav-height + $padding-inline-l);
+        top: calc($nav-height + $padding-inline-s);
         width: 100%;
         height: fit-content;
         min-height: calc($padding-inline-l * 15);

@@ -2,6 +2,7 @@
 export interface IAnnouncement {
     title: string,
     description: string,
+    imageLinkList: string[],
     price: number,
     ownerId: string
 }

@@ -1,19 +1,45 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import {google} from 'googleapis';
+
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import * as announcementModel from './models/announcement.model';
 import { Announcement, AnnouncementDocument } from './schemas/announcement.schema';
 
+import * as uuid from 'uuid'
+import * as path from 'path'
+import * as fs from 'fs'
+
+const config = require('config');
+
 @Injectable()
 export class AnnouncementsService {
-    constructor(@InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>) { }
+    constructor(@InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>) {
+        this.oauth2Client.setCredentials({ refresh_token: this.REFRESH_TOKEN })
+    }
+
+    private CLIENT_ID = config.get('client_id')
+    private CLIENT_SECRET = config.get('client_secret')
+    private REDIRECT_URI = config.get('redirect_uris')[0]
+    private REFRESH_TOKEN = config.get('refresh_token')
+
+    private oauth2Client = new google.auth.OAuth2(
+        this.CLIENT_ID,
+        this.CLIENT_SECRET,
+        this.REDIRECT_URI
+    )
+
+    private drive = google.drive({
+        version: 'v3',
+        auth: this.oauth2Client
+    })
 
     async getAll(): Promise<announcementModel.IAnnouncementGetAllServiceResponse> {
         return await this.AnnouncementModel.find().exec()
             .then((data: Announcement[]) => ({
-                announcementList: data,
+                announcementList: data.reverse(),
                 status: HttpStatus.OK
             }))
             .catch((e: string) => {
@@ -37,8 +63,54 @@ export class AnnouncementsService {
             })
     }
 
-    async create(createAnnouncementDto: CreateAnnouncementDto): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
-        const newAnnouncement = new this.AnnouncementModel(createAnnouncementDto)
+    async create(createAnnouncementDto: CreateAnnouncementDto, files): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
+
+        const imageLinkList: string[] = []
+        const cachePath = path.join(__dirname, '../', 'cache')
+
+        if (!fs.existsSync(cachePath)) {
+            fs.mkdirSync(cachePath);
+        }
+
+        const filesInCache = fs.readdirSync(cachePath)
+
+        for (const file of filesInCache) {
+            const filePath = path.join(__dirname, "../", "cache", file)
+            fs.unlinkSync(filePath)
+        }
+
+        for (const file of files.imageList) {
+            console.log(file);
+            const newFileName = uuid.v4()
+            const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
+            file.mv(newFilePath)
+
+            const fileMetaData = {
+                'title': newFileName,
+                'name': newFileName,
+                'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
+            }
+    
+            const media = {
+                mimeType: 'image/png',
+                body: fs.createReadStream(newFilePath)
+            }
+    
+            const responseCreateFile = await this.drive.files.create({
+                resource: fileMetaData,
+                media: media,
+                fields: 'id'
+            })
+
+            const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
+            imageLinkList.push(imageLink)
+        }
+
+        const newAnnouncement = new this.AnnouncementModel({
+            ...createAnnouncementDto,
+            imageLinkList
+        })
+
         return await newAnnouncement.save()
             .then((data: Announcement) => ({
                 announcement: data,
@@ -72,5 +144,30 @@ export class AnnouncementsService {
 
     async update(id: string, updateAnnouncementDto: UpdateAnnouncementDto): Promise<Announcement> {
         return await this.AnnouncementModel.findByIdAndUpdate(id, updateAnnouncementDto, { new: true })
+    }
+
+    async generatePublicUrl(fileId: string): Promise<string | null> {
+        try {
+            await this.drive.permissions.create({
+                fileId,
+                requestBody: {
+                    role: 'reader',
+                    type: 'anyone'
+                }
+            })
+    
+            const result = await this.drive.files.get({
+                fileId: fileId,
+                fields: 'webViewLink, webContentLink'
+            })
+    
+            if (result.data.webViewLink) {
+                return result.data.webContentLink
+            }
+    
+            return null
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 }

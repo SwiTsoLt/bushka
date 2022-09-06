@@ -14,6 +14,7 @@ export class AnnouncementComponent implements OnInit {
     title: "",
     description: "",
     price: 0,
+    imageLinkList: [],
     ownerId: ""
   }
 

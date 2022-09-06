@@ -4,4 +4,5 @@ export class CreateAnnouncementDto {
     readonly description: string
     readonly category: number
     readonly price: number
+    readonly imageLinkList: string[]
 }
