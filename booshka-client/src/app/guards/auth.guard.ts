@@ -19,11 +19,16 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    const isReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
     const isAuth$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsAuth))
 
     let isAuth: boolean = false
 
-    isAuth$.pipe(take(1)).subscribe(data => isAuth = data)
+    isReady$.subscribe(data => {
+      if (data) {
+        isAuth$.pipe(take(1)).subscribe(data => isAuth = data)
+      }
+    })
 
     if (!isAuth) {
       this.store$.dispatch(toastActions.notify({ toasts: [{
