@@ -24,6 +24,7 @@ import { NavbarMobileComponent } from './UI-mobile/navbar-mobile/navbar-mobile.c
 import { ArticleMobileComponent } from './UI-mobile/article-mobile/article-mobile.component';
 import { LoaderComponent } from './UI/loader/loader.component';
 import { SelectOptionsComponent } from './UI/select-options/select-options.component';
+import { ToastEffects } from './UI/toasts/toast.effects';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { SelectOptionsComponent } from './UI/select-options/select-options.compo
     PagesModule,
     StoreModule.forRoot(fromToastReferences.reducers),
     StoreDevtoolsModule.instrument({ maxAge: 1000, logOnly: environment.production }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([ToastEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

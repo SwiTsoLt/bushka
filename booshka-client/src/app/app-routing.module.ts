@@ -11,6 +11,7 @@ import { RegistrationComponent } from './pages/authorization/registration/regist
 import { IdeasComponent } from './pages/ideas/ideas.component';
 import { CreateAnnouncementComponent } from './pages/create-announcement/create-announcement.component';
 import { OtherComponent } from './pages/other/other.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: "", redirectTo: "/main-component", pathMatch: "full" },
@@ -21,13 +22,21 @@ export const routes: Routes = [
     children: [
       { path: "login-component", component: LoginComponent },
       { path: "registration-component", component: RegistrationComponent },
-      { path: "", redirectTo: "/authorization-component/login-component", pathMatch: "full"}
+      { path: "", redirectTo: "/authorization-component/login-component", pathMatch: "full" }
     ]
   },
-  { path: "profile-component", component: ProfileComponent },
+  {
+    path: "profile-component",
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "chats-component", component: ChatsComponent },
   { path: "ideas-component", component: IdeasComponent },
-  { path: "create-announcement-component", component: CreateAnnouncementComponent },
+  {
+    path: "create-announcement-component",
+    component: CreateAnnouncementComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "chats-component", component: ChatsComponent },
   { path: "other-component", component: OtherComponent },
   { path: "settings-component", component: SettingsComponent },

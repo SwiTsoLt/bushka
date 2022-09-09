@@ -16,6 +16,14 @@ export const selectUser = createSelector(
     }): authorizationModel.IUser => state.user
 )
 
+export const selectUserIsAuth = createSelector(
+    selectAuthorizationFeature,
+    (state: {
+        user: authorizationModel.IUser,
+        isReady: boolean
+    }): boolean => !!state.user.gmail.trim().length
+)
+
 export const selectUserIsReady = createSelector(
     selectAuthorizationFeature,
     (state: {

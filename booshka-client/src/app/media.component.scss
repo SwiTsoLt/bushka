@@ -1,10 +1,21 @@
 @media screen and (max-width: 900px) {
 
-    .main {
-        grid-column: 1/17 !important;
+    ::-webkit-scrollbar {
+        display: none;
     }
 
-    .wrapper > .content {
+    .main {
+        grid-column: 1/17 !important;
+        margin-bottom: 3rem;
+
+        .content>.announcementList>app-announcement {
+            &:last-child {
+                // margin-bottom: $padding-inline-l;
+            }
+        }
+    }
+
+    .wrapper>.content {
         padding: 0 !important;
     }
 
@@ -24,13 +35,12 @@
 
     /* Article */
 
-    app-article  {
+    app-article {
         display: none !important;
     }
 
-    app-article-mobile  {
+    app-article-mobile {
         display: block !important;
     }
 
 }
-

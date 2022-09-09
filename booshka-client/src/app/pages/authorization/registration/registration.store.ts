@@ -63,30 +63,27 @@ export class RegistrationStore extends ComponentStore<registrationModel.IRegistr
                         if (response) {
                             this.loginStore.login({ gmail: form.gmail, password: form.password })
                             this.registrationSuccess()
-                            this.store$.dispatch(toastActions.notify({
+                            return this.store$.dispatch(toastActions.notify({
                                 toasts: [
                                     { text: response.message, type: toastsModel.toastTypeEnums.success }
                                 ]
                             }))
-                            return setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
                         }
 
                         this.registrationError()
-                        this.store$.dispatch(toastActions.notify({
+                        return this.store$.dispatch(toastActions.notify({
                             toasts: [
                                 { text: registrationModel.registrationFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error }
                             ]
                         }))
-                        return setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
                     },
                     error: (e) => {
                         console.log(e);
-                        this.store$.dispatch(toastActions.notify({
+                        return this.store$.dispatch(toastActions.notify({
                             toasts: [
                                 { text: registrationModel.registrationFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error }
                             ]
                         }))
-                        return setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
                     }
                 }),
                 catchError((e) => {
@@ -97,7 +94,6 @@ export class RegistrationStore extends ComponentStore<registrationModel.IRegistr
                     } else {
                         this.store$.dispatch(toastActions.notify({ toasts: [{ text: registrationModel.registrationFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error },] }))
                     }
-                    setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
                     return EMPTY
                 })
             )),
@@ -109,7 +105,6 @@ export class RegistrationStore extends ComponentStore<registrationModel.IRegistr
                 } else {
                     this.store$.dispatch(toastActions.notify({ toasts: [{ text: registrationModel.registrationFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error },] }))
                 }
-                setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
                 return EMPTY
             })
         )

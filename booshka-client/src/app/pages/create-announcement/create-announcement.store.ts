@@ -91,16 +91,12 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
                             text: response.data.message,
                             type: toastsModel.toastTypeEnums.success
                         }] }))
-                        setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
-
                         return this.createSuccess()
                     }
                     this.store$.dispatch(toastActions.notify({ toasts: [{
                         text: response.data.message || createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
                         type: toastsModel.toastTypeEnums.error
                     }] }))
-                    setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
-
                     return this.createError()
                 })
                 .catch(e => {
@@ -110,8 +106,6 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
                         text: createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
                         type: toastsModel.toastTypeEnums.error
                     }] }))
-                    setTimeout(() => this.store$.dispatch(toastActions.removeNotify()), toastDuration)
-
                     return this.createError()
                 })
             }),

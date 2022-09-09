@@ -65,19 +65,16 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                                     this.store$.dispatch(authorizationActions.getAndSetUserByJWTSuccess({ payload: { user: responseGetUser.user } }))
                                     if (response.message) {
                                         this.store$.dispatch(toastsActions.notify({ toasts: [{ text: response.message, type: toastsModel.toastTypeEnums.success }] }))
-                                        setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                                     }
                                     return this.router.navigate(['/'])
                                 }
 
                                 this.store$.dispatch(toastsActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error }] }))
-                                setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                                 return this.loginError()
                             },
                             error: (e) => {
                                 console.log(e);
                                 this.store$.dispatch(toastsActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastsModel.toastTypeEnums.error }] }))
-                                setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                                 return this.loginError()
                             }
                         }),
@@ -86,7 +83,6 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                             this.loginError()
                             if (e?.error?.message) {
                                 this.store$.dispatch(toastsActions.notify({ toasts: [{ text: e.error.message, type: toastsModel.toastTypeEnums.error }] }))
-                                setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                             }
                             return EMPTY
                         })
@@ -96,7 +92,6 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                     this.loginError()
                     if (e?.error?.message) {
                         this.store$.dispatch(toastsActions.notify({ toasts: [{ text: e.error.message, type: toastsModel.toastTypeEnums.error }] }))
-                        setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                     }
                     return of({ type: authorizationActions.getAndSetUserByJWTError })
                 })
@@ -105,7 +100,6 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                 this.loginError()
                 if (e?.error?.message) {
                     this.store$.dispatch(toastsActions.notify({ toasts: [{ text: e.error.message, type: toastsModel.toastTypeEnums.error }] }))
-                    setTimeout(() => this.store$.dispatch(toastsActions.removeNotify()), toastDuration)
                 }
                 return of({ type: authorizationActions.getAndSetUserByJWTError })
             })

@@ -5,6 +5,10 @@ export const authorizationHttpUrlEnums = {
     getUserByJWT: "/api/user"
 }
 
+export enum authorizationGuardEnums {
+    userNotAuthorized = "Пользователь не авторизован"
+}
+
 export interface IAuthorizationHttpResponseRegistration {
     message: string
 }
