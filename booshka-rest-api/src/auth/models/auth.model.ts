@@ -26,10 +26,12 @@ export enum successEnums {
     LoggedInSuccess = "Вы успешно вошли в аккаунт"
 }
 
-export enum errorEnums {
-    suchUserAlreadyExists = "Такой пользователь уже существует",
-    userNotFound = "Пользователь не найден",
-    wrongPassword = "Неверный пароль",
-    somethingWentWrong = "Что-то пошло не так"
+export const errorEnums = {
+    suchUserAlreadyExists: "Такой пользователь уже существует",
+    userNotFound: (id: string) => `Пользователь с id '${id}' не найден`,
+    userNotFoundByGmail: (gmail: string) => `Пользователь с gmail '${gmail}' не найден`,
+    wrongPassword: "Неверный пароль",
+    somethingWentWrong: "Что-то пошло не так",
+    jwtExpired: "Время сессии истекло. Пожалуйста, войдите в аккаунт"
 }
 

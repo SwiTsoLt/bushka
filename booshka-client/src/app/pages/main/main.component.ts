@@ -22,8 +22,7 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.store$
       .pipe(
-        select(announcementSelectors.selectAnnouncementList),
-        take(1)
+        select(announcementSelectors.selectAnnouncementList)
       )
       .subscribe(data => {
         if (!data.length) {

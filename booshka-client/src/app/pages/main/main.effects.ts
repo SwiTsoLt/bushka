@@ -16,8 +16,14 @@ export class MainEffects {
         ofType(announcementActionsEnum.setAnnouncementList),
         mergeMap(() => this.mainService.getAll()
             .pipe(
-                map(response => ({ type: announcementActionsEnum.setAnnouncementListSuccess, payload: response.announcementList })),
-                catchError(() => of({ type: announcementActionsEnum.setAnnouncementListError }))
+                map(response => {
+                    console.log("as: ", response);
+                    return ({ type: announcementActionsEnum.setAnnouncementListSuccess, payload: response.announcementList })
+                }),
+                catchError((e) => {
+                    console.log(e);
+                    return of({ type: announcementActionsEnum.setAnnouncementListError })
+                })
             )
         )
     ))

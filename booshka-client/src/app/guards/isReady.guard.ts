@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, take, of } from 'rxjs';
 import * as authorizationModel from '../pages/authorization/models/authorization.model';
@@ -10,10 +10,9 @@ import * as toastModel from '../UI/toasts/models/toasts.model';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class IsReadyGuard implements CanActivate {
   constructor(
-    private store$: Store,
-    private router: Router
+    private store$: Store
   ) { }
 
   canActivate(
@@ -21,24 +20,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     const isReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
-    const isAuth$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsAuth))
 
-    isReady$.subscribe(isReady => {
-      if (isReady) {
-        isAuth$.pipe(take(1)).subscribe(isAuth => {
-          if (!isAuth) {
-            this.store$.dispatch(toastActions.notify({
-              toasts: [{
-                text: authorizationModel.authorizationGuardEnums.userNotAuthorized,
-                type: toastModel.toastTypeEnums.warning
-              }]
-            }))
-          }
-        })
-      }
-    })
-
-    return isAuth$
+    return isReady$
   }
 
 }

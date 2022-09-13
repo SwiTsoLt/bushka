@@ -13,7 +13,7 @@ const config = require('config');
 
 const generateAccessToken = (id: string, roles: string[]): string => {
     const payload = {id, roles}
-    return jwt.sign(payload, config.get("jwtSecret", {expiresIn: "24h"}))
+    return jwt.sign(payload, config.get("jwtSecret"), {expiresIn: "24h"})
 }
 
 @Injectable()
@@ -62,7 +62,7 @@ export class AuthService {
                         }
                         return { message: authModel.errorEnums.wrongPassword, status: HttpStatus.UNPROCESSABLE_ENTITY }
                     }
-                    return { message: authModel.errorEnums.userNotFound, status: HttpStatus.NOT_FOUND }
+                    return { message: authModel.errorEnums.userNotFoundByGmail(loginUserDto.gmail), status: HttpStatus.NOT_FOUND }
                 })
                 .catch(e => ({ message: e, status: HttpStatus.INTERNAL_SERVER_ERROR }))
         } catch (e) {

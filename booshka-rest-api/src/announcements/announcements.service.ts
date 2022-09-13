@@ -53,7 +53,13 @@ export class AnnouncementsService {
 
     async getOne(id: string): Promise<announcementModel.IAnnouncementGetOneServiceResponse> {
         return await this.AnnouncementModel.findById(id)
-            .then((data: Announcement) => ({ announcement: data, status: HttpStatus.OK }))
+            .then((data: Announcement) => {
+                if (!data || !Object.keys(data).length) {
+                    return ({ message: announcementModel.announcementErrorEnum.notFount(id), status: HttpStatus.NOT_FOUND })
+                }
+
+                return ({ announcement: data, status: HttpStatus.OK })
+            })
             .catch((e: string) => {
                 console.log(e);
                 return {

@@ -3,6 +3,8 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { catchError, EMPTY, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 
+import * as toastActions from "../../UI/toasts/reducers/toasts.actions"
+import * as toastModel from "../../UI/toasts/models/toasts.model"
 import { AuthorizationService } from "./authorization.service";
 import * as authorizationModel from "./models/authorization.model";
 
@@ -26,7 +28,11 @@ export class AuthorizationEffects {
 
                 return ({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
             }),
-            catchError(() => of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError }))
+            catchError((e) => {
+                console.log(e);
+                this.store$.dispatch(toastActions.notify({toasts: [{ text: e.error.message, type: toastModel.toastTypeEnums.notify }]}))
+                return of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
+            })
         )
         )
     ))

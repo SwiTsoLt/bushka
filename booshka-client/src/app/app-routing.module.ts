@@ -12,9 +12,11 @@ import { IdeasComponent } from './pages/ideas/ideas.component';
 import { CreateAnnouncementComponent } from './pages/create-announcement/create-announcement.component';
 import { OtherComponent } from './pages/other/other.component';
 import { AuthGuard } from './guards/auth.guard';
+import { IsReadyGuard } from './guards/isReady.guard';
 
 export const routes: Routes = [
   { path: "", redirectTo: "/main-component", pathMatch: "full" },
+  { path: "", component: MainComponent },
   { path: "main-component", component: MainComponent },
   {
     path: "authorization-component",
@@ -28,7 +30,7 @@ export const routes: Routes = [
   {
     path: "profile-component",
     component: ProfileComponent,
-    canActivate: [AuthGuard]
+    canActivate: [IsReadyGuard, AuthGuard]
   },
   { path: "chats-component", component: ChatsComponent },
   { path: "ideas-component", component: IdeasComponent },
