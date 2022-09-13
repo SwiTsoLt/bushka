@@ -40,9 +40,9 @@ export class UserService {
         return jwt.verify(token, config.get("jwtSecret"), async (error, decoded) => {
             if (error) {
                 if (error.message === "jwt expired") {
-                    return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.INTERNAL_SERVER_ERROR })
+                    return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.UNAUTHORIZED })
                 }
-                return ({ message: error.message, status: HttpStatus.UNAUTHORIZED })
+                return ({ message: error.message, status: HttpStatus.INTERNAL_SERVER_ERROR })
             }
             return await this.userModel.findById(decoded.id)
                 .then(user => {
