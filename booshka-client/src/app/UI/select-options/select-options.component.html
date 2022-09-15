@@ -1,8 +1,8 @@
 <div #selectWrapper class="select-options input-field col s12">
     <select>
         <option value="" disabled selected>Выберете категорию</option>
-        <optgroup *ngFor="let group of optionList" [label]="group.groupTitle">
-            <option *ngFor="let option of group.groupOptions" [value]="option.optionValue+1">{{option.optionTitle}}</option>
+        <optgroup *ngFor="let category of resultCategoryList$ | async" [label]="category.title">
+            <option *ngFor="let children of category.children" [value]="children.id+1">{{children.title}}</option>
         </optgroup>
     </select>
 </div>

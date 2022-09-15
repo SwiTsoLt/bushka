@@ -15,9 +15,6 @@ export const initialState: {
 export const announcementReducer = createReducer(
     initialState,
     on(announcementActions.setAnnouncementList, (state) => state),
-    on(announcementActions.setAnnouncementListSuccess, (state, { payload }) => {
-        console.log(payload);
-        return ({ announcementList: payload, isReady: true })
-    }),
+    on(announcementActions.setAnnouncementListSuccess, (state, { payload }) => ({ announcementList: payload, isReady: true })),
     on(announcementActions.setAnnouncementList, (state) => ({ ...state, isReady: true }))
 )

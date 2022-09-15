@@ -17,7 +17,6 @@ export class MainEffects {
         mergeMap(() => this.mainService.getAll()
             .pipe(
                 map(response => {
-                    console.log("as: ", response);
                     return ({ type: announcementActionsEnum.setAnnouncementListSuccess, payload: response.announcementList })
                 }),
                 catchError((e) => {

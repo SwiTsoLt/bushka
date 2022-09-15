@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Res, Req } from '@nestjs/common';
 import * as announcementModel from './models/announcement.model';
 import { AnnouncementsService } from './announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { Response, Request } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { AnnouncementCategory } from './schemas/announcement-category.schema';
 
 @Controller('/api/announcement')
 export class AnnouncementsController {
@@ -11,7 +11,21 @@ export class AnnouncementsController {
     private readonly announcementsService: AnnouncementsService
   ) { }
 
-  @Get()
+  @Get('/category')
+  async getCategoryAll(@Res() res: Response): Promise<Response<AnnouncementCategory[]>> {
+    const categoryListResponse = await this.announcementsService.getCategoryAll()
+    if (categoryListResponse.categoryList.length) {
+      return res.status(categoryListResponse.status).json({
+        categoryList: categoryListResponse.categoryList
+      })
+    }
+
+    return res.status(categoryListResponse.status).json({
+      message: categoryListResponse.message
+    })
+  }
+
+  @Get('')
   async getAll(@Res() res: Response): Promise<Response<announcementModel.IAnnouncementGetAllResponse>> {
     const announcementResponse: announcementModel.IAnnouncementGetAllServiceResponse = await this.announcementsService.getAll()
     if (announcementResponse) {
@@ -42,9 +56,9 @@ export class AnnouncementsController {
   @Post()
   async create(@Body() createAnnouncementDto: CreateAnnouncementDto, @Req() req: Request, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementCreateResponse>> {
     const announcementResponse = await this.announcementsService.create({
-      ...createAnnouncementDto 
+      ...createAnnouncementDto
     }, req.files)
-   
+
     if (announcementResponse.announcement) {
       return res.status(announcementResponse.status).json({
         announcement: announcementResponse.announcement,

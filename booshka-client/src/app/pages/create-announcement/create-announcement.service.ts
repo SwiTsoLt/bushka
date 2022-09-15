@@ -13,6 +13,11 @@ export class CreateAnnouncementService {
         private http: HttpClient
     ) { }
 
+    public getCategoryList(): Observable<{categoryList: createAnnouncementModel.ICategory[]}> {
+        const url = createAnnouncementModel.createAnnouncementServiceUrlEnums.getCategoryList
+        return this.http.get<{categoryList: createAnnouncementModel.ICategory[]}>(url)
+    }
+
     public create(form: FormData): AxiosPromise<createAnnouncementModel.createAnnouncementServiceCreateResponse> {
         const url = createAnnouncementModel.createAnnouncementServiceUrlEnums.create
 

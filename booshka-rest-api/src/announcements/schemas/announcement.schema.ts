@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { AnnouncementCategoryChildren } from "./announcement-category-children.schema";
 
 export type AnnouncementDocument = Announcement & Document
 
@@ -15,7 +16,7 @@ export class Announcement {
     imageLinkList: string[]
 
     @Prop()
-    category: number
+    category: AnnouncementCategoryChildren
 
     @Prop()
     price: number

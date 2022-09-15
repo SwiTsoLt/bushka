@@ -2,7 +2,7 @@
 export class UpdateAnnouncementDto {
     readonly title: string
     readonly description: string
-    readonly category: number
+    readonly categoryId: number
     readonly price: number
     readonly imageLinkList: string[]
 }

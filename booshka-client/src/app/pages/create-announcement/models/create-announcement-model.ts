@@ -8,6 +8,17 @@ export interface IAnnouncement {
     ownerId: string
 }
 
+export interface ICategory {
+    id: number,
+    title: string,
+    children: ICategoryChildren[]
+}
+
+export interface ICategoryChildren {
+    id: number,
+    title: string
+}
+
 export interface ICreateAnnouncementForm {
     title: string,
     description: string,
@@ -31,7 +42,8 @@ export interface ICreateAnnouncementServiceForm {
 }
 
 export enum createAnnouncementServiceUrlEnums {
-    create = "/api/announcement"
+    getCategoryList = "/api/announcement/category",
+    create = "/api/announcement",
 }
 
 export interface createAnnouncementServiceCreateResponse {

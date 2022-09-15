@@ -1,22 +1,30 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {google} from 'googleapis';
+import { google } from 'googleapis';
 
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import * as announcementModel from './models/announcement.model';
 import { Announcement, AnnouncementDocument } from './schemas/announcement.schema';
+import { AnnouncementCategory, AnnouncementCategoryDocument } from './schemas/announcement-category.schema';
+
 
 import * as uuid from 'uuid'
 import * as path from 'path'
 import * as fs from 'fs'
+import { AnnouncementCategoryChildren, AnnouncementCategoryChildrenDocument } from './schemas/announcement-category-children.schema';
+import { channel } from 'diagnostics_channel';
 
 const config = require('config');
 
 @Injectable()
 export class AnnouncementsService {
-    constructor(@InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>) {
+    constructor(
+        @InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>,
+        @InjectModel(AnnouncementCategory.name) private AnnouncementCategoryModel: Model<AnnouncementCategoryDocument>,
+        @InjectModel(AnnouncementCategoryChildren.name) private AnnouncementCategoryChildrenModel: Model<AnnouncementCategoryChildrenDocument>,
+    ) {
         this.oauth2Client.setCredentials({ refresh_token: this.REFRESH_TOKEN })
     }
 
@@ -69,6 +77,53 @@ export class AnnouncementsService {
             })
     }
 
+    async getCategoryAll(): Promise<announcementModel.IAnnouncementCategoryGetAllServiceResponse> {
+        return await this.AnnouncementCategoryModel.find()
+            .then((categoryList) => {
+                if (categoryList.length) {
+                    return {
+                        categoryList,
+                        status: HttpStatus.OK
+                    }
+                }
+
+                return {
+                    categoryList: [],
+                    message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                    status: HttpStatus.INTERNAL_SERVER_ERROR
+                }
+            })
+            .catch(e => {
+                console.log(e);
+                return {
+                    categoryList: [],
+                    message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                    status: HttpStatus.INTERNAL_SERVER_ERROR
+                }
+            })
+    }
+
+    private async getCategoryById(id: number): Promise<AnnouncementCategoryChildren> {
+        return await this.AnnouncementCategoryModel.find()
+            .then((categoryList: AnnouncementCategory[]) => {
+                const resultCategoryList = categoryList.filter((category: AnnouncementCategory) => category.id === id)
+                if (resultCategoryList.length) {
+                    return resultCategoryList[0]
+                }
+                const resultCategoryChildrenList = categoryList.reduce((acc, cur) => acc = [...acc, ...cur.children.filter(children => children.id === id)], [])
+
+                if (!resultCategoryChildrenList.length) {
+                    return null
+                }
+
+                return resultCategoryChildrenList[0]
+            })
+            .catch(e => {
+                console.log(e);
+                return null
+            })
+    }
+
     async create(createAnnouncementDto: CreateAnnouncementDto, files): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
         const imageLinkList: string[] = []
         const cachePath = path.join(__dirname, '../', 'cache')
@@ -95,12 +150,12 @@ export class AnnouncementsService {
                 'name': newFileName,
                 'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
             }
-    
+
             const media = {
                 mimeType: 'image/png',
                 body: fs.createReadStream(newFilePath)
             }
-    
+
             const responseCreateFile = await this.drive.files.create({
                 requestBody: fileMetaData,
                 media: media,
@@ -111,8 +166,14 @@ export class AnnouncementsService {
             imageLinkList.push(imageLink)
         }
 
+        const category = await this.getCategoryById(createAnnouncementDto.categoryId)
+
         const newAnnouncement = new this.AnnouncementModel({
             ...createAnnouncementDto,
+            category: {
+                id: category.id,
+                title: category.title
+            },
             imageLinkList
         })
 
@@ -160,16 +221,16 @@ export class AnnouncementsService {
                     type: 'anyone'
                 }
             })
-    
+
             const result = await this.drive.files.get({
                 fileId: fileId,
                 fields: 'webViewLink, webContentLink'
             })
-    
+
             if (result.data.webViewLink) {
                 return result.data.webContentLink
             }
-    
+
             return null
         } catch (error) {
             console.error(error.message);

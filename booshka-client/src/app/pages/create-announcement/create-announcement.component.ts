@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as createAnnouncementModel from "./models/create-announcement-model"
 import { CreateAnnouncementStore } from './create-announcement.store';
-import { Observable, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
+import { CreateAnnouncementService } from './create-announcement.service';
 
 @Component({
   selector: 'app-create-announcement',
@@ -11,10 +12,12 @@ import { Observable, take } from 'rxjs';
 export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
 
   constructor(
-    private createAnnouncementStore: CreateAnnouncementStore
+    private createAnnouncementStore: CreateAnnouncementStore,
+    private createAnnouncementService: CreateAnnouncementService
   ) { }
 
   public createAnnouncementForm$: Observable<createAnnouncementModel.ICreateAnnouncementStoreForm> = this.createAnnouncementStore.form$
+  public categoryList$: Observable<createAnnouncementModel.ICategory[]> = this.getCategoryList()
   public imageList: FileList | null = null
 
   public optionList = [
@@ -35,6 +38,18 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
       ]
     }
   ]
+
+  getCategoryList(): Observable<createAnnouncementModel.ICategory[]> {
+    return new Observable((subscriber) => {
+      this.createAnnouncementService.getCategoryList().subscribe(data => {
+        if (data.categoryList) {
+          subscriber.next(data.categoryList)
+          subscriber.complete()
+        }
+        subscriber.next([])
+      })
+    })
+  }
 
   ngOnInit(): void {
   }

@@ -1,3 +1,5 @@
+import { AnnouncementCategoryChildren } from "../schemas/announcement-category-children.schema"
+import { AnnouncementCategory } from "../schemas/announcement-category.schema"
 import { Announcement } from "../schemas/announcement.schema"
 
 /* Get all */
@@ -23,6 +25,14 @@ export interface IAnnouncementGetOneResponse {
 
 export interface IAnnouncementGetOneServiceResponse {
     announcement?: Announcement,
+    message?: string,
+    status: number
+}
+
+/* Get category all */
+
+export interface IAnnouncementCategoryGetAllServiceResponse {
+    categoryList: AnnouncementCategory[],
     message?: string,
     status: number
 }
