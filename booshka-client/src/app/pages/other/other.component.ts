@@ -19,12 +19,22 @@ export class OtherComponent implements OnInit {
 
   public user$: Observable<AuthorizationModule.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
   public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
+  public userId$: Observable<string> = this.getUserId()
 
-  ngOnInit(): void {
+  public getUserId(): Observable<string> {
+    return new Observable(observer => {
+      this.user$.subscribe(user => {
+        observer.next(user._id)
+        observer.complete()
+      }).unsubscribe()
+    })
   }
 
   public onRegistration() {
     return this.router.navigate(['/authorization-component/login-component'])
+  }
+
+  ngOnInit(): void {
   }
 
 }
