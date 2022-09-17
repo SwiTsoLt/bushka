@@ -27,8 +27,8 @@ import { CreateAnnouncementService } from "./create-announcement/create-announce
 import { BrowserModule } from "@angular/platform-browser";
 import { SelectOptionsComponent } from "../UI/select-options/select-options.component";
 import { CreateAnnouncementStore } from "./create-announcement/create-announcement.store";
-import {Axios} from "axios"
 import { MatIconModule } from "@angular/material/icon";
+import { UserNotFoundComponent } from "./profile/user-not-found/user-not-found.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -42,7 +42,8 @@ registerLocaleData(localeRu, 'ru');
         OtherComponent,
         AnnouncementComponent,
         LoaderComponent,
-        SelectOptionsComponent
+        SelectOptionsComponent,
+        UserNotFoundComponent
     ],
     imports: [
         BrowserModule,

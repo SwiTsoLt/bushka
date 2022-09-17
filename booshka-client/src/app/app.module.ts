@@ -38,7 +38,7 @@ import { ToastEffects } from './UI/toasts/toast.effects';
     PagesComponent,
     ToastsComponent,
     NavbarMobileComponent,
-    ArticleMobileComponent
+    ArticleMobileComponent,
   ],
   imports: [
     BrowserModule,

@@ -32,6 +32,7 @@ export const errorEnums = {
     userNotFoundByGmail: (gmail: string) => `Пользователь с gmail '${gmail}' не найден`,
     wrongPassword: "Неверный пароль",
     somethingWentWrong: "Что-то пошло не так",
-    jwtExpired: "Время сессии истекло. Пожалуйста, войдите в аккаунт"
+    jwtExpired: "Время сессии истекло. Пожалуйста, войдите в аккаунт",
+    jwtMalformed: "Пользователь не авторизован"
 }
 

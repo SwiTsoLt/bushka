@@ -19,7 +19,7 @@
             display: flex;
             grid-gap: $padding-inline-l;
             width: 100%;
-            height: fit-content;
+            height: 100%;
 
             .avatar-container {
                 width: 100%;
@@ -37,8 +37,8 @@
             }
 
             .info-inner {
-                display: grid;
-                grid-template-rows: auto auto 1fr;
+                display: flex;
+                flex-direction: column;
                 grid-gap: $padding-inline-s;
                 width: fit-content;
                 height: 100%;
@@ -52,6 +52,7 @@
                 .contacts {
                     display: flex;
                     align-items: flex-end;
+                    width: fit-content;
                     height: 100%;
                 }
 

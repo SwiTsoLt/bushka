@@ -31,7 +31,7 @@ export class UserService {
                         region: user.region,
                         phone: user.phone,
                         registrationDate: user.registrationDate
-                        
+
                     }, status: HttpStatus.OK
                 })
             })
@@ -41,10 +41,17 @@ export class UserService {
     public async getUserByJWT(token: string) {
         return jwt.verify(token, config.get("jwtSecret"), async (error, decoded) => {
             if (error) {
-                if (error.message === "jwt expired") {
-                    return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.UNAUTHORIZED })
+                console.log(error.message);
+
+                switch (error.message) {
+                    case "jwt malformed":
+                        return ({ status: HttpStatus.OK })
+                    case "jwt expired":
+                        return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.UNAUTHORIZED })
+                    default:
+                        break;
                 }
-                return ({ message: error.message, status: HttpStatus.INTERNAL_SERVER_ERROR })
+                return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
             }
             return await this.userModel.findById(decoded.id)
                 .then(user => {
