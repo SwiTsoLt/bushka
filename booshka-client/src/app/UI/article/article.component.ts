@@ -16,7 +16,17 @@ export class ArticleComponent implements OnInit {
   ) { }
 
   public user$: Observable<authorizationModel.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
+  public userId$: Observable<string> = this.getUserId()
   public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
+
+  public getUserId(): Observable<string> {
+    return new Observable(observer => {
+      this.user$.subscribe(user => {
+        observer.next(user._id)
+        observer.complete()
+      }).unsubscribe()
+    })
+  }
 
   ngOnInit(): void {
   }
