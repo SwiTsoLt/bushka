@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import * as authorizationModel from 'src/app/pages/authorization/models/authorization.model';
 import * as authorizationSelectors from 'src/app/pages/authorization/reducers/authorization.selectors';
 
@@ -21,10 +21,14 @@ export class ArticleComponent implements OnInit {
 
   public getUserId(): Observable<string> {
     return new Observable(observer => {
-      this.user$.subscribe(user => {
-        observer.next(user._id)
-        observer.complete()
-      }).unsubscribe()
+      this.userIsReady$.subscribe(userIsReady => {
+        if (userIsReady) {
+          this.user$.pipe(take(1)).subscribe(user => {
+            observer.next(user._id)
+            observer.complete()
+          }).unsubscribe()
+        }
+      })
     })
   }
 

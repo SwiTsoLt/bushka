@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import * as AuthorizationModule from '../authorization/models/authorization.model';
+import { Observable, take } from 'rxjs';
+import * as authorizationModel from '../authorization/models/authorization.model';
 import * as authorizationSelectors from '../authorization/reducers/authorization.selectors';
 
 @Component({
@@ -17,16 +17,20 @@ export class OtherComponent implements OnInit {
     private store$: Store
   ) { }
 
-  public user$: Observable<AuthorizationModule.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
-  public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
+  public user$: Observable<authorizationModel.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
   public userId$: Observable<string> = this.getUserId()
+  public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
 
   public getUserId(): Observable<string> {
     return new Observable(observer => {
-      this.user$.subscribe(user => {
-        observer.next(user._id)
-        observer.complete()
-      }).unsubscribe()
+      this.userIsReady$.subscribe(userIsReady => {
+        if (userIsReady) {
+          this.user$.pipe(take(1)).subscribe(user => {
+            observer.next(user._id)
+            observer.complete()
+          }).unsubscribe()
+        }
+      })
     })
   }
 
