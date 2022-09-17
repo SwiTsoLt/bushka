@@ -8,7 +8,7 @@
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "refresh_token": "1//04nmvqonKxwxCCgYIARAAGAQSNwF-L9IrKiFeQ_qR8vVADh-XtdmS6xl-1dM_vQOeT6sZq-GtoHffZmGrUfdgnriHgsXO3UwJfm4",
+    "refresh_token": "1//04ywDyzkU9m4iCgYIARAAGAQSNwF-L9Ir8mksU4dTToHIxii5CgRuSub9H6TGr660wU4s5fTQ8nLX-C_514Q8pxUrXoQ5XR_28rs",
     "client_secret": "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",
     "redirect_uris": [
         "https://developers.google.com/oauthplayground"

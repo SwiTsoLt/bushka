@@ -103,14 +103,14 @@ export class AnnouncementsService {
             })
     }
 
-    private async getCategoryById(id: number): Promise<AnnouncementCategoryChildren> {
+    private async getCategoryById(id: string): Promise<AnnouncementCategoryChildren> {
         return await this.AnnouncementCategoryModel.find()
             .then((categoryList: AnnouncementCategory[]) => {
-                const resultCategoryList = categoryList.filter((category: AnnouncementCategory) => category.id === id)
+                const resultCategoryList = categoryList.filter((category: AnnouncementCategory) => category.id.toString() === id)
                 if (resultCategoryList.length) {
                     return resultCategoryList[0]
                 }
-                const resultCategoryChildrenList = categoryList.reduce((acc, cur) => acc = [...acc, ...cur.children.filter(children => children.id === id)], [])
+                const resultCategoryChildrenList = categoryList.reduce((acc, cur) => acc = [...acc, ...cur.children.filter(children => children.id.toString() === id)], [])
 
                 if (!resultCategoryChildrenList.length) {
                     return null
@@ -124,49 +124,75 @@ export class AnnouncementsService {
             })
     }
 
-    async create(createAnnouncementDto: CreateAnnouncementDto, files): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
+    async create(createAnnouncementDto: CreateAnnouncementDto, files: any): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
         const imageLinkList: string[] = []
-        const cachePath = path.join(__dirname, '../', 'cache')
 
-        if (!fs.existsSync(cachePath)) {
-            fs.mkdirSync(cachePath);
-        }
+        if (files?.imageList) {
+            const cachePath = path.join(__dirname, '../', 'cache')
 
-        const filesInCache = fs.readdirSync(cachePath)
-
-        for (const file of filesInCache) {
-            const filePath = path.join(__dirname, "../", "cache", file)
-            fs.unlinkSync(filePath)
-        }
-
-        for (const file of files.imageList) {
-            console.log(file);
-            const newFileName = uuid.v4()
-            const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
-            file.mv(newFilePath)
-
-            const fileMetaData = {
-                'title': newFileName,
-                'name': newFileName,
-                'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
+            if (!fs.existsSync(cachePath)) {
+                fs.mkdirSync(cachePath);
             }
 
-            const media = {
-                mimeType: 'image/png',
-                body: fs.createReadStream(newFilePath)
+            const filesInCache = fs.readdirSync(cachePath)
+            for (const file of filesInCache) {
+                const filePath = path.join(__dirname, "../", "cache", file)
+                fs.unlinkSync(filePath)
             }
 
-            const responseCreateFile = await this.drive.files.create({
-                requestBody: fileMetaData,
-                media: media,
-                fields: 'id'
-            })
+            if (files.imageList?.length > 1) {
+                for (const file of files.imageList) {
+                    const newFileName = uuid.v4()
+                    const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
+                    file.mv(newFilePath)
 
-            const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
-            imageLinkList.push(imageLink)
+                    const fileMetaData = {
+                        'title': newFileName,
+                        'name': newFileName,
+                        'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
+                    }
+
+                    const media = {
+                        mimeType: 'image/png',
+                        body: fs.createReadStream(newFilePath)
+                    }
+
+                    const responseCreateFile = await this.drive.files.create({
+                        requestBody: fileMetaData,
+                        media: media,
+                        fields: 'id'
+                    })
+
+                    const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
+                    imageLinkList.push(imageLink)
+                }
+            } else {
+                const newFileName = uuid.v4()
+                const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
+                files.imageList.mv(newFilePath)
+
+                const fileMetaData = {
+                    'title': newFileName,
+                    'name': newFileName,
+                    'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
+                }
+
+                const media = {
+                    mimeType: 'image/png',
+                    body: fs.createReadStream(newFilePath)
+                }
+
+                const responseCreateFile = await this.drive.files.create({
+                    requestBody: fileMetaData,
+                    media: media,
+                    fields: 'id'
+                })
+
+                const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
+                imageLinkList.push(imageLink)
+            }
         }
-
-        const category = await this.getCategoryById(createAnnouncementDto.categoryId)
+        const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
 
         const newAnnouncement = new this.AnnouncementModel({
             ...createAnnouncementDto,
@@ -174,7 +200,8 @@ export class AnnouncementsService {
                 id: category.id,
                 title: category.title
             },
-            imageLinkList
+            imageLinkList,
+            createDate: Date.now()
         })
 
         return await newAnnouncement.save()
@@ -194,16 +221,25 @@ export class AnnouncementsService {
 
     async remove(id: string): Promise<announcementModel.IAnnouncementDeleteServiceResponse> {
         return await this.AnnouncementModel.findByIdAndRemove(id)
-            .then((announcement: Announcement) => ({
-                announcement: announcement,
-                message: announcementModel.announcementSuccessEnum.delete,
-                status: HttpStatus.OK
-            }))
-            .catch(e => {
-                console.log(e)
+            .then((announcement: Announcement) => {
+                if (announcement) {
+                    return {
+                        announcement: announcement,
+                        message: announcementModel.announcementSuccessEnum.delete,
+                        status: HttpStatus.OK
+                    }
+                }
+
                 return {
                     message: announcementModel.announcementErrorEnum.notFount(id),
                     status: HttpStatus.NOT_FOUND
+                }
+            })
+            .catch(e => {
+                console.log(e)
+                return {
+                    message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                    status: HttpStatus.INTERNAL_SERVER_ERROR
                 }
             })
     }

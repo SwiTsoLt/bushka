@@ -80,5 +80,8 @@ export class AnnouncementsController {
         message: deleteAnnouncementResponse.message
       })
     }
+    return res.status(deleteAnnouncementResponse.status).json({
+      message: deleteAnnouncementResponse.message
+    })
   }
 }

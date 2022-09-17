@@ -5,4 +5,5 @@ export class CreateAnnouncementDto {
     readonly categoryId: number
     readonly price: number
     readonly imageLinkList: string[]
+    readonly ownerId: string
 }

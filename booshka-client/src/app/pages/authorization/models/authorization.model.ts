@@ -1,3 +1,4 @@
+
 export const authorizationHttpUrlEnums = {
     registration: "/api/auth/registration",
     login: "/api/auth/login",
@@ -44,6 +45,7 @@ export enum authorizationActionEnums {
 }
 
 export interface IUser {
+    _id: string,
     gmail: string,
     firstName: string,
     lastName: string,

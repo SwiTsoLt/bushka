@@ -10,6 +10,7 @@ export const initialState: {
     isReady: boolean
 } = {
     user: {
+        _id: "",
         gmail: "",
         firstName: "",
         lastName: "",

@@ -23,6 +23,9 @@ export class Announcement {
 
     @Prop()
     ownerId: string
+
+    @Prop()
+    createDate: Date
 }
 
 export const AnnouncementSchema = SchemaFactory.createForClass(Announcement)

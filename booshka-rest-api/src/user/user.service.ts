@@ -29,7 +29,9 @@ export class UserService {
                         lastName: user.lastName,
                         city: user.city,
                         region: user.region,
-                        phone: user.phone
+                        phone: user.phone,
+                        registrationDate: user.registrationDate
+                        
                     }, status: HttpStatus.OK
                 })
             })
@@ -58,7 +60,8 @@ export class UserService {
                             lastName: user.lastName,
                             city: user.city,
                             region: user.region,
-                            phone: user.phone
+                            phone: user.phone,
+                            registrationDate: user.registrationDate
                         }, status: HttpStatus.OK
                     })
                 })

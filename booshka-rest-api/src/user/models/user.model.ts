@@ -12,6 +12,12 @@ export interface IUserFoundErrorResponse {
     message: string
 }
 
+// RESPONSE ENUMS
+
+export enum userResponseErrorEnums {
+    notAuthorized = "Пользователь не авторизован"
+}
+
 // SERVICE
 
 export interface IUserServiceResponse {
@@ -28,4 +34,5 @@ export interface IUserServiceResponseUser {
     city: string,
     region: string,
     phone: string,
+    registrationDate: Date
 }

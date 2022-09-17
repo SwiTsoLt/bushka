@@ -31,6 +31,9 @@ export class User {
 
     @Prop()
     favorites: string[]
+
+    @Prop()
+    registrationDate: Date
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

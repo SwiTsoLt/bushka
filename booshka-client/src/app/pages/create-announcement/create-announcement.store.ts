@@ -2,11 +2,13 @@ import { HttpErrorResponse } from "@angular/common/http"
 import { Injectable } from "@angular/core"
 import { Router } from "@angular/router"
 import { ComponentStore, tapResponse } from "@ngrx/component-store"
-import { Store } from "@ngrx/store"
+import { select, Store } from "@ngrx/store"
 import { catchError, EMPTY, map, Observable, switchMap, tap } from "rxjs"
 import * as toastsModel from "src/app/UI/toasts/models/toasts.model"
 import * as toastActions from "src/app/UI/toasts/reducers/toasts.actions"
 import { toastDuration } from "src/app/UI/toasts/reducers/toasts.reducer"
+import * as userModel from "../authorization/models/authorization.model"
+import * as userSelectors from "../authorization/reducers/authorization.selectors"
 import { CreateAnnouncementService } from "./create-announcement.service"
 import * as createAnnouncementModel from "./models/create-announcement-model"
 
@@ -68,50 +70,56 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
         }
     )
 
+    readonly user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
     readonly form$: Observable<createAnnouncementModel.ICreateAnnouncementStoreForm> = this.select(state => state)
         
     readonly create = this.effect((form$: Observable<createAnnouncementModel.ICreateAnnouncementForm>) => {
-        return form$.pipe(
-            switchMap((form: createAnnouncementModel.ICreateAnnouncementForm): any => {
-                const formData = new FormData()
-
-                for(const image of form?.imageList || []) {
-                    formData.append('imageList', image)
-                }
-
-                formData.append('title', form.title)
-                formData.append('description', form.description)
-                formData.append('price', form.price.toString())
-                formData.append('category', form.category.toString())
-
-                return this.createAnnouncementService.create(formData)
-                .then(response => {
-                    if (response.data.announcement) {
-                        this.store$.dispatch(toastActions.notify({ toasts: [{
-                            text: response.data.message,
-                            type: toastsModel.toastTypeEnums.success
-                        }] }))
-                        return this.createSuccess()
-                    }
-                    this.store$.dispatch(toastActions.notify({ toasts: [{
-                        text: response.data.message || createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
-                        type: toastsModel.toastTypeEnums.error
-                    }] }))
-                    return this.createError()
-                })
-                .catch(e => {
-                    console.log(e);
-
-                    this.store$.dispatch(toastActions.notify({ toasts: [{
-                        text: createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
-                        type: toastsModel.toastTypeEnums.error
-                    }] }))
-                    return this.createError()
-                })
-            }),
-            catchError((e) => {
-                console.log(e);
-                return EMPTY
+        return this.user$.pipe(
+            switchMap(user => {
+                return form$.pipe(
+                    switchMap((form: createAnnouncementModel.ICreateAnnouncementForm): any => {
+                        const formData = new FormData()
+        
+                        for(const image of form?.imageList || []) {
+                            formData.append('imageList', image)
+                        }
+        
+                        formData.append('title', form.title)
+                        formData.append('description', form.description)
+                        formData.append('price', form.price.toString())
+                        formData.append('categoryId', form.category.toString())
+                        formData.append('ownerId', user._id)
+        
+                        return this.createAnnouncementService.create(formData)
+                        .then(response => {
+                            if (response.data.announcement) {
+                                this.store$.dispatch(toastActions.notify({ toasts: [{
+                                    text: response.data.message,
+                                    type: toastsModel.toastTypeEnums.success
+                                }] }))
+                                return this.createSuccess()
+                            }
+                            this.store$.dispatch(toastActions.notify({ toasts: [{
+                                text: response.data.message || createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
+                                type: toastsModel.toastTypeEnums.error
+                            }] }))
+                            return this.createError()
+                        })
+                        .catch(e => {
+                            console.log(e);
+        
+                            this.store$.dispatch(toastActions.notify({ toasts: [{
+                                text: createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
+                                type: toastsModel.toastTypeEnums.error
+                            }] }))
+                            return this.createError()
+                        })
+                    }),
+                    catchError((e) => {
+                        console.log(e);
+                        return EMPTY
+                    })
+                )
             })
         )
     })

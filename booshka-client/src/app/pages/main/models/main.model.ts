@@ -1,10 +1,19 @@
 
 export interface IAnnouncement {
+    _id: string,
     title: string,
     description: string,
+    category: ICategory,
     imageLinkList: string[],
     price: number,
-    ownerId: string
+    ownerId: string,
+    createDate: Date
+}
+
+export interface ICategory {
+    _id: string,
+    id: number,
+    title: string
 }
 
 export enum announcementActionsEnum {

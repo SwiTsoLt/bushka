@@ -1,9 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { NgModule, LOCALE_ID } from "@angular/core";
 import { FormBuilder, FormsModule } from "@angular/forms";
 import { StoreModule } from "@ngrx/store";
 import { AppRoutingModule } from "../app-routing.module";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner"
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
 import { AuthorizationModule } from "./authorization/authorization.module";
 import * as fromMainReferences from "./main/reducers/index";
@@ -27,6 +29,8 @@ import { SelectOptionsComponent } from "../UI/select-options/select-options.comp
 import { CreateAnnouncementStore } from "./create-announcement/create-announcement.store";
 import {Axios} from "axios"
 import { MatIconModule } from "@angular/material/icon";
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
     declarations: [
@@ -57,7 +61,10 @@ import { MatIconModule } from "@angular/material/icon";
         CreateAnnouncementService,
         PagesComponent,
         FormBuilder,
-        CreateAnnouncementStore
+        CreateAnnouncementStore,
+        {
+            provide: LOCALE_ID, useValue: "ru"
+        }
     ],
     exports: [
         LoaderComponent,

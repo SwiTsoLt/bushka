@@ -26,7 +26,6 @@ export class AuthGuard implements CanActivate {
     this.isReady$.subscribe(isReady => {
       if (isReady) {
         this.isAuth$.pipe(take(1)).subscribe(isAuth => {
-          console.log();
           if (!isAuth) {
             this.store$.dispatch(toastActions.notify({
               toasts: [{

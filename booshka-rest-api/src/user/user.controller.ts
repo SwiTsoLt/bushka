@@ -12,7 +12,10 @@ export class UserController {
 
     @Get()
     public async getUserByJWT(@Req() req: Request, @Res() res: Response): Promise<Response<userModel.IUserResponse>> {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers?.authorization?.split(' ')[1]
+        if (!token) {
+            return res.status(HttpStatus.UNAUTHORIZED).json({  message: userModel.userResponseErrorEnums.notAuthorized })
+        }
         const userServiceResponse: userModel.IUserServiceResponse = await this.userService.getUserByJWT(token)
 
         if (userServiceResponse.user) {

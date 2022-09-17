@@ -1,5 +1,23 @@
 <div class="announcement box">
     <div class="announcement-info">
+        <div class="info-top">
+            <div class="owner-container">
+                <a routerLink="/profile-component/{{announcement.ownerId}}">
+                    <div class="owner-avatar"></div>
+                    <div class="owner-name">
+                        <div class="owner-first-name">
+                            <h4><strong>{{ (owner$ | async)?.firstName }}</strong></h4>
+                        </div>
+                        <div class="owner-last-name">
+                            <h4><strong>{{ (owner$ | async)?.lastName }}</strong></h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="create-date">
+                <p>{{announcement.createDate | date:'dd MMMM YYYY, HH:mm' }}</p>
+            </div>
+        </div>
         <div class="announcement-title">
             <h2>
                 {{announcement.title}}
@@ -13,16 +31,24 @@
     </div>
     <div class="announcement-image-list">
         <div class="announcement-image-list-inner gallery">
-            <a href="{{link}}" *ngFor="let link of announcement.imageLinkList" class="announcement-image" target="_blank">
+            <a href="{{link}}" *ngFor="let link of announcement.imageLinkList" class="announcement-image"
+                target="_blank">
                 <img src="{{link}}" alt="">
             </a>
         </div>
     </div>
-    <div class="announcement-price">
-        <p>
-            Цена: <span class="announcement-price-inner">
-                {{ announcement.price }}
-            </span> руб.
-        </p>
+    <div class="info-bottom">
+        <div class="announcement-price">
+            <p>
+                Цена: <span class="announcement-price-inner">
+                    {{ announcement.price }}
+                </span> руб.
+            </p>
+        </div>
+        <div class="announcement-category">
+            <p>
+                Категория: <span>{{announcement.category.title}}</span>
+            </p>
+        </div>
     </div>
 </div>

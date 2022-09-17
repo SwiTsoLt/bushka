@@ -8,9 +8,94 @@
     height: 100%;
 
     .content {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         height: 100%;
         background-color: $bg-clr-white;
         padding: $padding-inline-l;
+
+        .info {
+            display: flex;
+            grid-gap: $padding-inline-l;
+            width: 100%;
+            height: fit-content;
+
+            .avatar-container {
+                width: 100%;
+                max-width: 200px;
+                min-width: 100px;
+                height: fit-content;
+
+                .avatar {
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 1/1;
+                    border-radius: $border-radius;
+                    background-color: #dedede;
+                }
+            }
+
+            .info-inner {
+                display: grid;
+                grid-template-rows: auto auto 1fr;
+                grid-gap: $padding-inline-s;
+                width: fit-content;
+                height: 100%;
+
+                .name {
+                    p {
+                        font-size: $text-size-xl;
+                    }
+                }
+
+                .contacts {
+                    display: flex;
+                    align-items: flex-end;
+                    height: 100%;
+                }
+
+
+
+                >div {
+                    display: flex;
+                    grid-gap: $padding-inline-s;
+                    width: 100%;
+                    height: fit-content;
+
+                    >div {
+                        display: flex;
+                        align-items: center;
+                        width: fit-content;
+                        height: fit-content;
+                        min-height: calc($padding-inline-l * 2);
+
+                        p,
+                        h2 {
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        a {
+                            display: flex;
+                            align-items: center;
+                            grid-gap: $padding-inline-s;
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .info {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

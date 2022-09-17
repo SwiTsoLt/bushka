@@ -31,7 +31,8 @@ export class AuthService {
                     const newUser = new this.userModel({
                         ...registrationUserDto,
                         password: hashedPassword,
-                        roles: ["USER"]
+                        roles: ["USER"],
+                        registrationDate: Date.now()
                     })
                     return await newUser.save()
                         .then(() => ({ message: authModel.successEnums.userWasCreatedSuccessful, status: HttpStatus.OK }))

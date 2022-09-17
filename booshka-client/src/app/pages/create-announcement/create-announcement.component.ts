@@ -76,7 +76,6 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
 
   public create() {
     this.createAnnouncementForm$.pipe(take(1)).subscribe(form => {
-      console.log({ ...form, imageList: this.imageList });
       return this.createAnnouncementStore.create({ ...form, imageList: this.imageList })
     })
   }

@@ -20,15 +20,11 @@ export class MainComponent implements OnInit {
   public isReady$: Observable<boolean> = this.store$.pipe(select(announcementSelectors.selectAnnouncementIsReady))
 
   ngOnInit() {
-    this.store$
-      .pipe(
-        select(announcementSelectors.selectAnnouncementList)
-      )
-      .subscribe(data => {
-        if (!data.length) {
-          this.store$.dispatch(announcementActions.setAnnouncementList())
-        }
-      })
+    this.announcementList$.pipe(take(1)).subscribe(data => {
+      if (!data.length) {
+        this.store$.dispatch(announcementActions.setAnnouncementList())
+      }
+    })
   }
 
 }
