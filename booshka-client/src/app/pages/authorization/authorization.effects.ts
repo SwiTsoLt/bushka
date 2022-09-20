@@ -7,6 +7,7 @@ import * as toastActions from "../../UI/toasts/reducers/toasts.actions"
 import * as toastModel from "../../UI/toasts/models/toasts.model"
 import { AuthorizationService } from "./authorization.service";
 import * as authorizationModel from "./models/authorization.model";
+import { loginFormErrorEnums } from "./login/models/login.model";
 
 
 @Injectable()
@@ -25,16 +26,23 @@ export class AuthorizationEffects {
                 if (response.user) {
                     return ({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTSuccess, payload: { user: response.user } })
                 }
-
+                if (response.message) {
+                    this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.notify }] }))
+                }
                 return ({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
             }),
             catchError((e) => {
                 console.log(e);
-                this.store$.dispatch(toastActions.notify({toasts: [{ text: e.error.message, type: toastModel.toastTypeEnums.notify }]}))
+                this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.notify }] }))
                 return of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
             })
         )
-        )
+        ),
+        catchError((e) => {
+            console.log(e);
+            this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.notify }] }))
+            return of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
+        })
     ))
 
 }

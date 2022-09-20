@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 import * as announcementModel from './models/main.model';
-import * as announcementActions from "./reducers/main.actions"
-import * as announcementSelectors from './reducers/main.selectors';
+import * as cacheActions from "../../cache-reducers/reducers/cache.actions"
+import * as cacheSelectors from '../../cache-reducers/reducers/cache.selectors';
 
 @Component({
   selector: 'app-main',
@@ -16,13 +16,12 @@ export class MainComponent implements OnInit {
     private store$: Store,
   ) { }
 
-  public announcementList$: Observable<announcementModel.IAnnouncement[]> = this.store$.pipe(select(announcementSelectors.selectAnnouncementList))
-  public isReady$: Observable<boolean> = this.store$.pipe(select(announcementSelectors.selectAnnouncementIsReady))
+  public announcementList$: Observable<announcementModel.IAnnouncement[]> = this.store$.pipe(select(cacheSelectors.selectCacheAnnouncementList))
 
   ngOnInit() {
     this.announcementList$.pipe(take(1)).subscribe(data => {
       if (!data.length) {
-        this.store$.dispatch(announcementActions.setAnnouncementList())
+        this.store$.dispatch(cacheActions.setAnnouncementPage({ page: 1 }))
       }
     })
   }

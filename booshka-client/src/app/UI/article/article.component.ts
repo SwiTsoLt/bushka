@@ -16,7 +16,6 @@ export class ArticleComponent implements OnInit {
   ) { }
 
   public user$: Observable<authorizationModel.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
-  public userId$: Observable<string> = this.getUserId()
   public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
 
   public getUserId(): Observable<string> {

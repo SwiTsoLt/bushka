@@ -4,7 +4,7 @@
             Профиль
         </h1>
     </div>
-    <div *ngIf="userIsReady$ | async; else loader" class="content box">
+    <div *ngIf="user$ | async; else loader" class="content box">
         <div *ngIf="user$ | async; else notFound" class="content_inner">
             <div class="info">
                 <div class="avatar-container">

@@ -31,6 +31,11 @@ export const routes: Routes = [
     component: ProfileComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: "profile-component",
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "chats-component", component: ChatsComponent },
   { path: "ideas-component", component: IdeasComponent },
   {

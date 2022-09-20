@@ -22,11 +22,11 @@ export enum announcementActionsEnum {
     setAnnouncementListError = "[Main Component] Set Announcement List Error"
 }
 
-export enum announcementUrlsEnum {
-    getAll = "/api/announcement"
+export const announcementUrls = {
+    getPage: (page: number) => `/api/announcement?page=${page}`
 }
 
-export interface announcementGetAllResponse {
+export interface announcementGetPageResponse {
     announcementList: IAnnouncement[],
     message?: string
 }

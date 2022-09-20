@@ -12,8 +12,8 @@ export class MainService {
         private http: HttpClient
     ) {}
 
-    public getAll(): Observable<announcementModel.announcementGetAllResponse> {
-        const url = announcementModel.announcementUrlsEnum.getAll
-        return this.http.get<announcementModel.announcementGetAllResponse>(url)
+    public getPage(page: number): Observable<announcementModel.announcementGetPageResponse> {
+        const url = announcementModel.announcementUrls.getPage(page)
+        return this.http.get<announcementModel.announcementGetPageResponse>(url)
     }
 }

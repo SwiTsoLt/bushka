@@ -42,6 +42,10 @@ export enum authorizationActionEnums {
     getAndSetUserByJWT = "[Authorization Component] Get And Set User By JWT",
     getAndSetUserByJWTSuccess = "[Authorization Component] Get And Set User By JWT Success",
     getAndSetUserByJWTError = "[Authorization Component] Get And Set User By JWT Error",
+
+    getAndSetUserById = "[Authorization Component] Get And Set User By Id",
+    getAndSetUserByIdSuccess = "[Authorization Component] Get And Set User By Id Success",
+    getAndSetUserByIdError = "[Authorization Component] Get And Set User By Id Error",
 }
 
 export interface IUser {

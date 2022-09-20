@@ -1,4 +1,4 @@
-<div class="announcement box">
+<div *ngIf="announcement._id" class="announcement box">
     <div class="announcement-info">
         <div class="info-top">
             <div class="owner-container">
@@ -52,3 +52,6 @@
         </div>
     </div>
 </div>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

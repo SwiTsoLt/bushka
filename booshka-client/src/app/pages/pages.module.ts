@@ -8,7 +8,6 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 
 import { AuthorizationModule } from "./authorization/authorization.module";
-import * as fromMainReferences from "./main/reducers/index";
 import { CreateAnnouncementComponent } from "./create-announcement/create-announcement.component";
 import { IdeasComponent } from "./ideas/ideas.component";
 import { MainComponent } from "./main/main.component";
@@ -17,18 +16,19 @@ import { OtherComponent } from "./other/other.component";
 import { PagesComponent } from "./pages.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { SettingsComponent } from "./settings/settings.component";
-import { announcementNode } from "./main/reducers/main.reducer";
 import { HttpClientModule } from "@angular/common/http";
 import { AnnouncementComponent } from "./main/announcement/announcement.component";
 import { LoaderComponent } from "../UI/loader/loader.component";
-import { EffectsModule } from "@ngrx/effects";
-import { MainEffects } from "./main/main.effects";
 import { CreateAnnouncementService } from "./create-announcement/create-announcement.service";
 import { BrowserModule } from "@angular/platform-browser";
 import { SelectOptionsComponent } from "../UI/select-options/select-options.component";
 import { CreateAnnouncementStore } from "./create-announcement/create-announcement.store";
 import { MatIconModule } from "@angular/material/icon";
 import { UserNotFoundComponent } from "./profile/user-not-found/user-not-found.component";
+import * as fromCacheReferences from '../cache-reducers/reducers/index';
+import { cacheNode } from "../cache-reducers/reducers/cache.reducer";
+import { CacheEffects } from "../cache-reducers/cache.effects";
+import { EffectsModule } from "@ngrx/effects";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -54,8 +54,8 @@ registerLocaleData(localeRu, 'ru');
         AuthorizationModule,
         MatProgressSpinnerModule,
         MatIconModule,
-        EffectsModule.forFeature([MainEffects]),
-        StoreModule.forFeature(announcementNode, fromMainReferences.reducers[announcementNode]),
+        StoreModule.forFeature(cacheNode, fromCacheReferences.reducers.cache),
+        EffectsModule.forFeature([CacheEffects]),
     ],
     providers: [
         MainService,
