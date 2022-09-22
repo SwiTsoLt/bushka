@@ -94,7 +94,7 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
         const candidate = toastList.filter(el => el.type === toastModel.toastTypeEnums.loading)
         if (candidate.length && Object.keys(candidate[0])?.includes('ready')) {
           observer.next(candidate[0].ready)
-          candidate[0].ready && window.history.back()
+          candidate[0].ready && this.router.navigate(['/'])
           candidate[0].ready && observer.complete()
         }
       })
