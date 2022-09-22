@@ -31,6 +31,14 @@
         pointer-events: none;
         overflow: hidden;
 
+        &.noReady {
+            right: 0 !important;
+        }
+
+        &.ready {
+            animation: back 0.2s ease forwards;
+        }
+
         .toast-icon-container {
             display: flex;
             align-items: center;
@@ -48,19 +56,24 @@
                 background-position: center;
 
                 &.success {
-                    background-image: url('../../images/toast/success.png');
+                    background-image: url('../../images/toast/success.svg');
                 }
 
                 &.warning {
-                    background-image: url('../../images/toast/warning.png');
+                    background-image: url('../../images/toast/warning.svg');
                 }
 
                 &.error {
-                    background-image: url('../../images/toast/error.png');
+                    background-image: url('../../images/toast/error.svg');
                 }
 
                 &.notify {
-                    background-image: url('../../images/toast/notify.png');
+                    background-image: url('../../images/toast/notify.svg');
+                }
+
+                &.loading {
+                    background-image: url('../../images/toast/loading.svg');
+                    animation: loading 0.6s linear infinite;
                 }
             }
         }
@@ -96,6 +109,10 @@
             &.notify {
                 background-color: $toast-notify;
             }
+
+            &.loading {
+                background-color: $toast-loading;
+            }
         }
 
         @keyframes time-line {
@@ -106,6 +123,26 @@
             to {
                 width: 0;
             }
+        }
+
+        @keyframes loading {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    }
+
+    @keyframes back {
+        from {
+            right: 0;
+        }
+
+        to {
+            right: calc(-100% - $padding-box);
         }
     }
 

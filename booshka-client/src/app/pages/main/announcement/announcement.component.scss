@@ -10,6 +10,7 @@
     max-height: $announcement-height;
     background-color: $bg-clr-white;
     padding: $padding-inline-l;
+    overflow: hidden;
 
     p {
         width: fit-content;
@@ -97,8 +98,12 @@
         position: relative;
         width: 100%;
         height: 100%;
-        overflow: hidden;
+        overflow-x: auto;
         border-radius: $border-radius;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         .announcement-image-list-inner {
             display: flex;

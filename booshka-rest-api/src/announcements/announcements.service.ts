@@ -204,6 +204,24 @@ export class AnnouncementsService {
             createDate: Date.now()
         })
 
+        // return new Promise((res, rej) => {
+        //    setTimeout(() => {
+        //     res({
+        //         message: "Объявление успешно опубликованно 2",
+        //         status: 201,
+        //         announcement: {
+        //             ...createAnnouncementDto,
+        //             category: {
+        //                 id: 0,
+        //                 title: "test"
+        //             },
+        //             createDate: new Date(Date.now())
+        //         }
+        //     })
+        //    }, 6000);
+        // })
+
+
         return await newAnnouncement.save()
             .then((data: Announcement) => ({
                 announcement: data,

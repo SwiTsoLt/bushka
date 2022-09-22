@@ -12,10 +12,10 @@ export const initialState: cacheModel.ICache = {
 export const cacheReducer = createReducer(
     initialState,
     on(cacheActions.setUserById, (state, { id }) => state),
-    on(cacheActions.setUserByIdSuccess, (state, { payload }) => ({ ...state,  [payload.key]: [...state.userList, payload.value]})),
+    on(cacheActions.setUserByIdSuccess, (state, { payload }) => ({ ...state,  [payload?.key]: [...state.userList, payload?.value]})),
     on(cacheActions.setUserByIdError, (state) => state),
 
     on(cacheActions.setAnnouncementPage, (state, { page }) => state),
-    on(cacheActions.setAnnouncementPageSuccess, (state, { payload }) => ({ ...state, [payload.key]: [...state.announcementList, ...payload.value] })),
+    on(cacheActions.setAnnouncementPageSuccess, (state, { payload }) => ({ ...state, [payload?.key]: [...state.announcementList, ...payload?.value] })),
     on(cacheActions.setAnnouncementPageError, (state) => state)
 )

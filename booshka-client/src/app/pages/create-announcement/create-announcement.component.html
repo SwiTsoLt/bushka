@@ -35,7 +35,7 @@
                 <app-select-options [callback]="setValue.bind(this)" [categoryList$]="categoryList$"></app-select-options>
             </div>
             <div class="send">
-                <app-my-button type="create-announcement" text="Подать объявление" [isDisabled]="false"
+                <app-my-button type="create-announcement" text="Подать объявление" [isDisabled]="!(createIsReady | async) || false"
                     [callback]="create.bind(this)"></app-my-button>
             </div>
         </div>

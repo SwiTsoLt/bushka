@@ -33,14 +33,14 @@ export class AuthorizationEffects {
             }),
             catchError((e) => {
                 console.log(e);
-                this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.notify }] }))
+                this.store$.dispatch(toastActions.notify({ toasts: [{ text: e.error.message, type: toastModel.toastTypeEnums.notify }] }))
                 return of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
             })
         )
         ),
         catchError((e) => {
             console.log(e);
-            this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.notify }] }))
+            this.store$.dispatch(toastActions.notify({ toasts: [{ text: e.error.message, type: toastModel.toastTypeEnums.notify }] }))
             return of({ type: authorizationModel.authorizationActionEnums.getAndSetUserByJWTError })
         })
     ))

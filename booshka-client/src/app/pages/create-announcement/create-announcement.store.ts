@@ -78,6 +78,12 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
             switchMap(user => {
                 return form$.pipe(
                     switchMap((form: createAnnouncementModel.ICreateAnnouncementForm): any => {
+                        this.store$.dispatch(toastActions.notify({ toasts: [{
+                            text: toastsModel.toastMessageEnums.loading,
+                            type: toastsModel.toastTypeEnums.loading,
+                            ready: false
+                        }] }))
+                        
                         const formData = new FormData()
         
                         for(const image of form?.imageList || []) {
@@ -92,6 +98,8 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
         
                         return this.createAnnouncementService.create(formData)
                         .then(response => {
+                            console.log(response);
+                            this.store$.dispatch(toastActions.updateNotify({ ready: true }))
                             if (response.data.announcement) {
                                 this.store$.dispatch(toastActions.notify({ toasts: [{
                                     text: response.data.message,

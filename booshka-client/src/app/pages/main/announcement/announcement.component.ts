@@ -41,7 +41,6 @@ export class AnnouncementComponent implements OnInit {
     return new Observable(observer => {
       this.cacheUserList$.subscribe((userList) => {
         const candidate = userList.filter(user => user._id === this.announcement.ownerId)
-        console.log('can:', candidate);
         observer.next(candidate[0])
         candidate.length && observer.complete()
       })

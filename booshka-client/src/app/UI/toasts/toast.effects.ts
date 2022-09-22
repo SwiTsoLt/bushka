@@ -17,11 +17,28 @@ export class ToastEffects {
 
     removeNotify$ = createEffect(() => this.actions$.pipe(
         ofType(toastModel.toastActionEnums.notify),
+        map(({ toasts }: { toasts: toastModel.IToast[] }) => {
+            if (toasts[0].type !== toastModel.toastTypeEnums.loading) {
+                setTimeout(() => {
+                    this.store$.dispatch(removeNotify())
+                    return ({ type: toastModel.toastActionEnums.removeNotify })
+                }, toastDuration)
+            }
+            return ({ type: "null_action" })
+        }),
+        catchError(e => {
+            console.log(e);
+            return EMPTY
+        })
+    ))
+
+    removeLoadingNotify$ = createEffect(() => this.actions$.pipe(
+        ofType(toastModel.toastActionEnums.updateNotify),
         map(() => {
             setTimeout(() => {
                 this.store$.dispatch(removeNotify())
                 return ({ type: toastModel.toastActionEnums.removeNotify })
-            }, toastDuration)
+            }, 200 + 500)
             return ({ type: "null_action" })
         }),
         catchError(e => {
