@@ -81,7 +81,9 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
   public addImage(el: HTMLInputElement | null) {
     this.imageList.pipe(take(1)).subscribe(currentImageList => {
      
-      if (el?.files && el.files[0]) {
+      console.log(currentImageList, currentImageList.length);
+
+      if (el?.files && el.files[0] && currentImageList.length < 10) {
         
         this.imageList = of([...currentImageList, el.files[0]])
         

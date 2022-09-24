@@ -4,11 +4,11 @@
     </div>
     <div class="content box">
         <div class="create-announcement-form">
-            <div class="amount"><span>0 / 10</span></div>
+            <div class="amount"><span>{{(imageList | async)?.length || 0}} / 10</span></div>
             <div class="announcement-images">
                 <div class="image-list">
-                    <div class="add-image-input">
-                        <input #imageInput (change)="addImage(imageInput)" id="imageInput" accept="image/png, image/jpg" type="file">
+                    <div *ngIf="((imageList | async)?.length || 0) < 10" class="add-image-input">
+                        <input #imageInput (input)="addImage(imageInput)" id="imageInput" accept="image/png, image/jpg" type="file">
                         <label for="imageInput">
                             <div class="image-input-icon">
                                 <mat-icon>add_photo_alternate</mat-icon>
