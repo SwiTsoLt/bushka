@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as createAnnouncementModel from "./models/create-announcement-model"
 import { CreateAnnouncementStore } from './create-announcement.store';
-import { Observable, of, take } from 'rxjs';
+import { observable, Observable, of, take } from 'rxjs';
 import { CreateAnnouncementService } from './create-announcement.service';
 import { select, Store } from '@ngrx/store';
 import { selectToastList } from 'src/app/UI/toasts/reducers/toasts.selectors';
@@ -25,7 +25,8 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
   public createIsReady: Observable<boolean> = this.getCreateIsReady()
   public createAnnouncementForm$: Observable<createAnnouncementModel.ICreateAnnouncementStoreForm> = this.createAnnouncementStore.form$
   public categoryList$: Observable<createAnnouncementModel.ICategory[]> = this.getCategoryList()
-  public imageList: FileList | null = null
+  public imageList: Observable<File[]> = of([])
+  public imageDisplayList: Observable<{ title: string, data: ArrayBuffer | null | string }[]> = of([])
 
   public optionList = [
     {
@@ -77,13 +78,44 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public setImages(el: HTMLInputElement) {
-    this.imageList = el.files
+  public addImage(el: HTMLInputElement | null) {
+    this.imageList.pipe(take(1)).subscribe(currentImageList => {
+     
+      if (el?.files && el.files[0]) {
+        
+        this.imageList = of([...currentImageList, el.files[0]])
+        
+        this.imageDisplayList.pipe(take(1)).subscribe(currentImageDisplayList => {
+          const reader = new FileReader()
+          reader.addEventListener("load", () => {
+            if (el?.files && el.files[0]) {
+              this.imageDisplayList = of([...currentImageDisplayList, { title: el.files[0].name, data: reader.result }])
+            }
+          })
+          el?.files && el.files[0] && reader.readAsDataURL(el.files[0])
+        })
+
+      } else {
+        console.log('sthww');
+      }
+    })
+  }
+
+  public removeImage(index: number) {
+    this.imageList.pipe(take(1)).subscribe(currentImageList => {
+      this.imageList = of([...currentImageList.filter((_, i) => i !== index)])
+
+      this.imageDisplayList.pipe(take(1)).subscribe(currentDisplayImageList => {
+        this.imageDisplayList = of([...currentDisplayImageList.filter((_, i) => i !== index)])
+      })
+    })
   }
 
   public create() {
     this.createAnnouncementForm$.pipe(take(1)).subscribe(form => {
-      return this.createAnnouncementStore.create({ ...form, imageList: this.imageList })
+      this.imageList.pipe(take(1)).subscribe(currentImageList => {
+        return this.createAnnouncementStore.create({ ...form, imageList: currentImageList })
+      })
     })
   }
 

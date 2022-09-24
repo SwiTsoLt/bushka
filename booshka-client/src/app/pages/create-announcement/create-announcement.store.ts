@@ -115,7 +115,7 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
                         })
                         .catch(e => {
                             console.log(e);
-        
+                            this.store$.dispatch(toastActions.updateNotify({ ready: true }))
                             this.store$.dispatch(toastActions.notify({ toasts: [{
                                 text: createAnnouncementModel.createAnnouncementServiceCreateResponseEnums.somethingWentWrong,
                                 type: toastsModel.toastTypeEnums.error

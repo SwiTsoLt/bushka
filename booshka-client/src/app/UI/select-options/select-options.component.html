@@ -1,8 +1,18 @@
-<div #selectWrapper class="select-options input-field col s12">
-    <select>
+<div *ngIf="(resultCategoryList$ | async) !== null; else someThingWentWrong"  #selectWrapper class="select-options input-field col s12">
+    <select *ngIf="!!(resultCategoryList$ | async); else loader">
         <option value="" disabled selected>Выберете категорию</option>
         <optgroup *ngFor="let category of resultCategoryList$ | async" [label]="category.title">
             <option *ngFor="let children of category.children" [value]="children.id+1">{{children.title}}</option>
         </optgroup>
     </select>
+
+    <ng-template  #loader>
+        <app-loader></app-loader>
+    </ng-template>
 </div>
+
+<ng-template #someThingWentWrong>
+    <br>
+    <p>Что-то пошло не так при загрузке списка категорий</p>
+    <br>
+</ng-template>

@@ -24,7 +24,7 @@ export interface ICreateAnnouncementForm {
     description: string,
     category: number,
     price: number,
-    imageList: FileList | null
+    imageList: File[] | null
 }
 
 export interface ICreateAnnouncementStoreForm {

@@ -4,20 +4,31 @@
     </div>
     <div class="content box">
         <div class="create-announcement-form">
+            <div class="amount"><span>0 / 10</span></div>
+            <div class="announcement-images">
+                <div class="image-list">
+                    <div class="add-image-input">
+                        <input #imageInput (change)="addImage(imageInput)" id="imageInput" accept="image/png, image/jpg" type="file">
+                        <label for="imageInput">
+                            <div class="image-input-icon">
+                                <mat-icon>add_photo_alternate</mat-icon>
+                                <p>png&nbsp;&nbsp;jpg</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div *ngFor="let image of imageDisplayList | async; index as i" class="display-image">
+                        <div class="display-image-inner" style="background-image: url('{{image.data}}');"></div>
+                        <div class="image-display-title">{{image.title}}</div>
+                        <button class="remove-display-image" (click)="removeImage(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="announcement-title">
                 <input #title (input)="setValue('title', title.value)" id="input_text" type="text"
                     placeholder="Название товара" data-length="50">
                 <label for="input_text"></label>
-            </div>
-            <div class="announcement-images">
-                <input type="file" class="file-input" (change)="setImages(fileUpload)" #fileUpload multiple>
-
-                <div class="file-upload">
-                    <p>Выберите изображения</p>
-                    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-                        <mat-icon>attach_file</mat-icon>
-                    </button>
-                </div>
             </div>
             <div class="announcement-description">
                 <textarea #description (input)="setValue('description', description.value)" id="textarea2"
