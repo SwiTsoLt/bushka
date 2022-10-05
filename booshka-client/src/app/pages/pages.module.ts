@@ -32,6 +32,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { UserEffects } from "../store/user/user.effects";
 import { userNode } from "../store/user/reducers/user.reducer";
 import * as fromUserReferences from "../store/user/reducers";
+import { ArticleComponent } from "../UI/article/article.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -43,6 +44,7 @@ registerLocaleData(localeRu, 'ru');
         IdeasComponent,
         CreateAnnouncementComponent,
         OtherComponent,
+        ArticleComponent,
         AnnouncementComponent,
         UserNotFoundComponent
     ],
@@ -71,6 +73,7 @@ registerLocaleData(localeRu, 'ru');
     ],
     exports: [
         LoaderComponent,
+        ArticleComponent,
         SelectOptionsComponent
     ]
 })

@@ -34,7 +34,6 @@ import { userNode } from './store/user/reducers/user.reducer';
   declarations: [
     AppComponent,
     NavbarComponent,
-    ArticleComponent,
     LogoComponent,
     LogoMobileComponent,
     MyInputComponent,
