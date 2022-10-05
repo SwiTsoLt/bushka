@@ -17,6 +17,7 @@ export const routes: Routes = [
   { path: "", redirectTo: "/main-component", pathMatch: "full" },
   { path: "", component: MainComponent },
   { path: "main-component", component: MainComponent },
+  { path: "main-component/:page", component: MainComponent },
   {
     path: "authorization-component",
     component: AuthorizationComponent,

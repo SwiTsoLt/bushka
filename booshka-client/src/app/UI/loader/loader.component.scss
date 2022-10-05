@@ -4,7 +4,8 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    width: 100%;
+    width: auto;
     height: 100%;
+    aspect-ratio: 1/1;
     padding: $padding-box;
 }

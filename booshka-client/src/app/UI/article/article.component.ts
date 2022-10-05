@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
-import * as authorizationModel from 'src/app/pages/authorization/models/authorization.model';
-import * as authorizationSelectors from 'src/app/pages/authorization/reducers/authorization.selectors';
+import * as userActions from '../../store/user/reducers/user.actions';
+import * as userModel from '../../store/user/models/user.model';
+import * as userSelectors from '../../store/user/reducers/user.selectors';
 
 @Component({
   selector: 'app-article',
@@ -15,21 +16,12 @@ export class ArticleComponent implements OnInit {
     private store$: Store
   ) { }
 
-  public user$: Observable<authorizationModel.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
-  public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
+  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
+  public userReady$: Observable<boolean> = this.store$.pipe(select(userSelectors.selectUserReady))
 
-  public getUserId(): Observable<string> {
-    return new Observable(observer => {
-      this.userIsReady$.subscribe(userIsReady => {
-        if (userIsReady) {
-          this.user$.pipe(take(1)).subscribe(user => {
-            observer.next(user._id)
-            observer.complete()
-          }).unsubscribe()
-        }
-      })
-    })
-  }
+  public logout() {
+    this.store$.dispatch(userActions.logout())
+ }
 
   ngOnInit(): void {
   }

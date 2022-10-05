@@ -15,6 +15,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import { AnnouncementCategoryChildren, AnnouncementCategoryChildrenDocument } from './schemas/announcement-category-children.schema';
 import { channel } from 'diagnostics_channel';
+import { of } from 'rxjs';
 
 const config = require('config');
 
@@ -25,24 +26,17 @@ export class AnnouncementsService {
         @InjectModel(AnnouncementCategory.name) private AnnouncementCategoryModel: Model<AnnouncementCategoryDocument>,
         @InjectModel(AnnouncementCategoryChildren.name) private AnnouncementCategoryChildrenModel: Model<AnnouncementCategoryChildrenDocument>,
     ) {
-        this.oauth2Client.setCredentials({ refresh_token: this.REFRESH_TOKEN })
     }
 
-    private CLIENT_ID = config.get('client_id')
-    private CLIENT_SECRET = config.get('client_secret')
-    private REDIRECT_URI = config.get('redirect_uris')[0]
-    private REFRESH_TOKEN = config.get('refresh_token')
+    private KEY_FILE_PATH = path.join(__dirname, "models", "serviceAccountCred.json")
+    private parents_id = config.get("parents_id")
+    private scopes = config.get("scopes")
 
-    private oauth2Client = new google.auth.OAuth2(
-        this.CLIENT_ID,
-        this.CLIENT_SECRET,
-        this.REDIRECT_URI
-    )
-
-    private drive = google.drive({
-        version: 'v3',
-        auth: this.oauth2Client
+    private auth = new google.auth.GoogleAuth({
+        keyFile: this.KEY_FILE_PATH,
+        scopes: this.scopes
     })
+    private driveService = google.drive({ version: "v3", auth: this.auth })
 
     async getAll(): Promise<announcementModel.IAnnouncementGetAllServiceResponse> {
         return await this.AnnouncementModel.find().exec()
@@ -125,115 +119,84 @@ export class AnnouncementsService {
     }
 
     async create(createAnnouncementDto: CreateAnnouncementDto, files: any): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
-        const imageLinkList: string[] = []
+        const imageList = files?.imageList?.length ? files?.imageList : [files?.imageList]
+        return await imageList.reduce(async (acc, file) => {
+            const newFileId: string = uuid.v4()
+            const newFileName: string = `${newFileId}.png`
 
-        if (files?.imageList) {
-            const cachePath = path.join(__dirname, '../', 'cache')
-
+            const cachePath = path.join(__dirname, "../", "cache")
             if (!fs.existsSync(cachePath)) {
-                fs.mkdirSync(cachePath);
+                fs.mkdirSync(cachePath)
             }
 
-            const filesInCache = fs.readdirSync(cachePath)
-            for (const file of filesInCache) {
-                const filePath = path.join(__dirname, "../", "cache", file)
-                fs.unlinkSync(filePath)
+            const newFilePath = path.join(cachePath, newFileName)
+            file.mv(newFilePath)
+
+            const fileMetaData = {
+                "name": newFileName,
+                "parents": [this.parents_id]
             }
 
-            if (files.imageList?.length > 1) {
-                for (const file of files.imageList) {
-                    const newFileName = uuid.v4()
-                    const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
-                    file.mv(newFilePath)
+            const media = {
+                mimeType: "image/png",
+                body: fs.createReadStream(newFilePath)
+            }
 
-                    const fileMetaData = {
-                        'title': newFileName,
-                        'name': newFileName,
-                        'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
-                    }
+            const responseFileId = await this.driveService.files.create({
+                requestBody: fileMetaData,
+                media,
+                fields: "id"
+            })
 
-                    const media = {
-                        mimeType: 'image/png',
-                        body: fs.createReadStream(newFilePath)
-                    }
+            const newFileLink = await this.generatePublicUrl(responseFileId.data.id)
 
-                    const responseCreateFile = await this.drive.files.create({
-                        requestBody: fileMetaData,
-                        media: media,
-                        fields: 'id'
-                    })
+            fs.unlinkSync(newFilePath)
+            return [...(await acc), newFileLink]
+        }, [])
+            .then(async imageLinkList => {
+                const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
+                console.log(imageLinkList);
 
-                    const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
-                    imageLinkList.push(imageLink)
-                }
-            } else {
-                const newFileName = uuid.v4()
-                const newFilePath = path.join(__dirname, '../', 'cache', newFileName + ".jpg")
-                files.imageList.mv(newFilePath)
-
-                const fileMetaData = {
-                    'title': newFileName,
-                    'name': newFileName,
-                    'parents': ['1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh']
-                }
-
-                const media = {
-                    mimeType: 'image/png',
-                    body: fs.createReadStream(newFilePath)
-                }
-
-                const responseCreateFile = await this.drive.files.create({
-                    requestBody: fileMetaData,
-                    media: media,
-                    fields: 'id'
+                const newAnnouncement = new this.AnnouncementModel({
+                    ...createAnnouncementDto,
+                    category: {
+                        id: category.id,
+                        title: category.title
+                    },
+                    imageLinkList,
+                    createDate: Date.now()
                 })
 
-                const imageLink = await this.generatePublicUrl(responseCreateFile?.data?.id)
-                imageLinkList.push(imageLink)
-            }
-        }
-        const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
+                // return new Promise((res, rej) => {
+                //    setTimeout(() => {
+                //     res({
+                //         message: "Объявление успешно опубликованно 2",
+                //         status: 201,
+                //         announcement: {
+                //             ...createAnnouncementDto,
+                //             category: {
+                //                 id: 0,
+                //                 title: "test"
+                //             },
+                //             createDate: new Date(Date.now())
+                //         }
+                //     })
+                //    }, 6000);
+                // })
 
-        const newAnnouncement = new this.AnnouncementModel({
-            ...createAnnouncementDto,
-            category: {
-                id: category.id,
-                title: category.title
-            },
-            imageLinkList,
-            createDate: Date.now()
-        })
-
-        // return new Promise((res, rej) => {
-        //    setTimeout(() => {
-        //     res({
-        //         message: "Объявление успешно опубликованно 2",
-        //         status: 201,
-        //         announcement: {
-        //             ...createAnnouncementDto,
-        //             category: {
-        //                 id: 0,
-        //                 title: "test"
-        //             },
-        //             createDate: new Date(Date.now())
-        //         }
-        //     })
-        //    }, 6000);
-        // })
-
-
-        return await newAnnouncement.save()
-            .then((data: Announcement) => ({
-                announcement: data,
-                message: announcementModel.announcementSuccessEnum.created,
-                status: HttpStatus.CREATED
-            }))
-            .catch((e: string) => {
-                console.log(e);
-                return {
-                    message: announcementModel.announcementErrorEnum.somethingWentWrong,
-                    status: HttpStatus.INTERNAL_SERVER_ERROR
-                }
+                return await newAnnouncement.save()
+                    .then((data: Announcement) => ({
+                        announcement: data,
+                        message: announcementModel.announcementSuccessEnum.created,
+                        status: HttpStatus.CREATED
+                    }))
+                    .catch((e: string) => {
+                        console.log(e);
+                        return {
+                            message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                            status: HttpStatus.INTERNAL_SERVER_ERROR
+                        }
+                    })
             })
     }
 
@@ -268,15 +231,7 @@ export class AnnouncementsService {
 
     async generatePublicUrl(fileId: string): Promise<string | null> {
         try {
-            await this.drive.permissions.create({
-                fileId,
-                requestBody: {
-                    role: 'reader',
-                    type: 'anyone'
-                }
-            })
-
-            const result = await this.drive.files.get({
+            const result = await this.driveService.files.get({
                 fileId: fileId,
                 fields: 'webViewLink, webContentLink'
             })

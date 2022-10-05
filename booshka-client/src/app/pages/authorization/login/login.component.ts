@@ -5,7 +5,6 @@ import { select, Store } from '@ngrx/store';
 import { Observable, take, takeLast } from 'rxjs';
 import * as loginModel from './models/login.model';
 import { LoginStore } from './login.store';
-import { selectUser } from '../reducers/authorization.selectors';
 
 @Component({
   selector: 'app-login',

@@ -1,18 +1,18 @@
 import { ActionReducerMap, MetaReducer } from "@ngrx/store";
 import { environment } from "src/environments/environment";
-import * as authorizationModel from "../models/authorization.model";
-import { authorizationNode, authorizationReducer } from "./authorization.reducer";
+import * as userModel from "../models/user.model";
+import { userNode, userReducer } from "./user.reducer";
 
 
 export interface IState {
-    [authorizationNode]: {
-        user: authorizationModel.IUser,
-        isReady: boolean
+    [userNode]: {
+        user: userModel.IUser,
+        ready: boolean
     }
 }
 
 export const reducers: ActionReducerMap<IState> = {
-    [authorizationNode]: authorizationReducer
+    [userNode]: userReducer
 }
 
 export const metaReducers: MetaReducer<IState>[] = !environment.production ? [] : []

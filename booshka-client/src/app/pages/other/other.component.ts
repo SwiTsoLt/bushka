@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
-import * as authorizationModel from '../authorization/models/authorization.model';
-import * as authorizationSelectors from '../authorization/reducers/authorization.selectors';
+import * as userModel from 'src/app/store/user/models/user.model';
+import * as userSelectors from 'src/app/store/user/reducers/user.selectors';
 
 @Component({
   selector: 'app-other',
@@ -17,9 +17,9 @@ export class OtherComponent implements OnInit {
     private store$: Store
   ) { }
 
-  public user$: Observable<authorizationModel.IUser> = this.store$.pipe(select(authorizationSelectors.selectUser))
+  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
   public userId$: Observable<string> = this.getUserId()
-  public userIsReady$: Observable<boolean> = this.store$.pipe(select(authorizationSelectors.selectUserIsReady))
+  public userIsReady$: Observable<boolean> = this.store$.pipe(select(userSelectors.selectUserReady))
 
   public getUserId(): Observable<string> {
     return new Observable(observer => {

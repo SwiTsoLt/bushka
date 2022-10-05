@@ -35,6 +35,24 @@ article {
                     &:hover {
                         filter: brightness(0.96);
                     }
+
+                    &.auth{
+                        color: $nav-link-border-clr-hover-green;
+                        
+                        &:hover {
+                            filter: none;
+                            background-color: $nav-link-border-bg-clr-hover-green;
+                        }
+                    }
+
+                    &.logout{
+                        color: $text-clr-error;
+                        
+                        &:hover {
+                            filter: none;
+                            background-color: $text-clr-hover-error;
+                        }
+                    }
                 }
             }
         }

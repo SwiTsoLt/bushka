@@ -41,11 +41,9 @@ export class UserService {
     public async getUserByJWT(token: string) {
         return jwt.verify(token, config.get("jwtSecret"), async (error, decoded) => {
             if (error) {
-                console.log(error.message);
-
                 switch (error.message) {
                     case "jwt malformed":
-                        return ({ status: HttpStatus.OK })
+                        return ({ message: "112", status: HttpStatus.OK })
                     case "jwt expired":
                         return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.UNAUTHORIZED })
                     default:

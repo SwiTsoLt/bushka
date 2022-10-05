@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
+import { CreateAnnouncementService } from '../../create-announcement/create-announcement.service';
+import * as createAnnouncementModel from '../../create-announcement/models/create-announcement-model';
 import { checkConfirmPasswordValidator } from './directives/checkConfirmPassword.directive';
 import * as registrationModel from './models/registration.model';
 import { RegistrationStore } from './registration.store';
@@ -16,11 +18,13 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private store$: Store<registrationModel.IRegistrationForm>,
     private registrationStore: RegistrationStore,
+    private createAnnouncementService: CreateAnnouncementService,
     private fb: FormBuilder
   ) {
 
   }
 
+  public categoryList$: Observable<createAnnouncementModel.ICategory[]> = this.getCategoryList()
   public registrationForm$: Observable<registrationModel.IRegistrationForm> = this.registrationStore.form$
 
   public optionCityList: registrationModel.ICityList = {
@@ -369,6 +373,18 @@ export class RegistrationComponent implements OnInit {
         }
       }
     }
+  }
+
+  getCategoryList(): Observable<createAnnouncementModel.ICategory[]> {
+    return new Observable((subscriber) => {
+      this.createAnnouncementService.getCategoryList().subscribe(data => {
+        if (data.categoryList) {
+          subscriber.next(data.categoryList)
+          subscriber.complete()
+        }
+        subscriber.next([])
+      })
+    })
   }
 
   public optionCityKeysList: string[] = Object.keys(this.optionCityList)

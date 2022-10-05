@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ComponentStore } from "@ngrx/component-store";
 import { catchError, EMPTY, Observable, of, switchMap, tap } from "rxjs";
 import { AuthorizationService } from "../authorization.service";
-import * as authorizationActions from "../reducers/authorization.actions";
+import * as userActions from "../../../store/user/reducers/user.actions";
 
 import * as loginModel from "./models/login.model";
 import { Store } from "@ngrx/store";
@@ -62,7 +62,7 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                             next: (responseGetUser) => {
                                 if (responseGetUser.user) {
                                     this.loginSuccess()
-                                    this.store$.dispatch(authorizationActions.getAndSetUserByJWTSuccess({ payload: { user: responseGetUser.user } }))
+                                    this.store$.dispatch(userActions.setUserByJWTSuccess({ user: responseGetUser.user }))
                                     if (response.message) {
                                         this.store$.dispatch(toastsActions.notify({ toasts: [{ text: response.message, type: toastsModel.toastTypeEnums.success }] }))
                                     }
@@ -93,7 +93,7 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                     if (e?.error?.message) {
                         this.store$.dispatch(toastsActions.notify({ toasts: [{ text: e.error.message, type: toastsModel.toastTypeEnums.error }] }))
                     }
-                    return of({ type: authorizationActions.getAndSetUserByJWTError })
+                    return of({ type: userActions.setUserByJWTError })
                 })
             )),
             catchError((e) => {
@@ -101,7 +101,7 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                 if (e?.error?.message) {
                     this.store$.dispatch(toastsActions.notify({ toasts: [{ text: e.error.message, type: toastsModel.toastTypeEnums.error }] }))
                 }
-                return of({ type: authorizationActions.getAndSetUserByJWTError })
+                return of({ type: userActions.setUserByJWTError })
             })
         )
     })

@@ -32,8 +32,10 @@
             height: fit-content;
 
             .owner-container {
+                display: flex;
                 width: fit-content;
                 height: fit-content;
+                max-height: 2rem;
 
                 a {
                     display: flex;

@@ -25,10 +25,13 @@ import { SelectOptionsComponent } from "../UI/select-options/select-options.comp
 import { CreateAnnouncementStore } from "./create-announcement/create-announcement.store";
 import { MatIconModule } from "@angular/material/icon";
 import { UserNotFoundComponent } from "./profile/user-not-found/user-not-found.component";
-import * as fromCacheReferences from '../cache-reducers/reducers/index';
-import { cacheNode } from "../cache-reducers/reducers/cache.reducer";
-import { CacheEffects } from "../cache-reducers/cache.effects";
+import * as fromCacheReferences from '../store/cache/reducers/index';
+import { cacheNode } from "../store/cache/reducers/cache.reducer";
+import { CacheEffects } from "../store/cache/cache.effects";
 import { EffectsModule } from "@ngrx/effects";
+import { UserEffects } from "../store/user/user.effects";
+import { userNode } from "../store/user/reducers/user.reducer";
+import * as fromUserReferences from "../store/user/reducers";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -41,8 +44,6 @@ registerLocaleData(localeRu, 'ru');
         CreateAnnouncementComponent,
         OtherComponent,
         AnnouncementComponent,
-        LoaderComponent,
-        SelectOptionsComponent,
         UserNotFoundComponent
     ],
     imports: [
@@ -54,8 +55,9 @@ registerLocaleData(localeRu, 'ru');
         AuthorizationModule,
         MatProgressSpinnerModule,
         MatIconModule,
+        StoreModule.forFeature(userNode, fromUserReferences.reducers.user),
         StoreModule.forFeature(cacheNode, fromCacheReferences.reducers.cache),
-        EffectsModule.forFeature([CacheEffects]),
+        EffectsModule.forFeature([CacheEffects, UserEffects]),
     ],
     providers: [
         MainService,
@@ -69,7 +71,7 @@ registerLocaleData(localeRu, 'ru');
     ],
     exports: [
         LoaderComponent,
-        SelectOptionsComponent,
+        SelectOptionsComponent
     ]
 })
 

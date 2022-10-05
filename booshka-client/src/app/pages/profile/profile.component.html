@@ -4,8 +4,8 @@
             Профиль
         </h1>
     </div>
-    <div *ngIf="user$ | async; else loader" class="content box">
-        <div *ngIf="user$ | async; else notFound" class="content_inner">
+    <div *ngIf="(currentUser$ | async)?._id; else loader" class="content box">
+        <div *ngIf="(currentUser$ | async)?._id; else notFound" class="content_inner">
             <div class="info">
                 <div class="avatar-container">
                     <div class="avatar"></div>
@@ -13,28 +13,28 @@
                 <div class="info-inner">
                     <div class="name">
                         <div class="first-name">
-                            <h2>{{(user$ | async)?.firstName}}</h2>
+                            <h2>{{(currentUser$ | async)?.firstName}}</h2>
                         </div>
                         <div class="last-name">
-                            <h2>{{(user$ | async)?.lastName}}</h2>
+                            <h2>{{(currentUser$ | async)?.lastName}}</h2>
                         </div>
                     </div>
                     <div class="location">
                         <div class="city">
-                            <p>г. {{(user$ | async)?.city}},</p>
+                            <p>г. {{(currentUser$ | async)?.city}},</p>
                         </div>
                         <div class="region">
-                            <p>{{(user$ | async)?.region}} район</p>
+                            <p>{{(currentUser$ | async)?.region}} район</p>
                         </div>
                     </div>
                     <div class="contacts">
                         <div class="phone">
-                            <p><a href="tel:{{(user$ | async)?.phone}}">
-                                    <mat-icon>phone</mat-icon> {{(user$ | async)?.phone}}
+                            <p><a href="tel:{{(currentUser$ | async)?.phone}}">
+                                    <mat-icon>phone</mat-icon> {{(currentUser$ | async)?.phone}}
                                 </a></p>
                         </div>
                         <!-- <div class="gmail">
-                        <p>Почта: {{(user$ | async)?.gmail}}</p>
+                        <p>Почта: {{(currentUser$ | async)?.gmail}}</p>
                     </div> -->
                     </div>
                 </div>

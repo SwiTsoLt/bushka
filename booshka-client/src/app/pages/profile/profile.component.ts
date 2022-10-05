@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable, takeLast, tap, catchError, EMPTY } from 'rxjs';
-import * as cacheSelectors from 'src/app/cache-reducers/reducers/cache.selectors';
-import * as cacheActions from 'src/app/cache-reducers/reducers/cache.actions';
+import { Observable, takeLast, tap, catchError, EMPTY, of, take } from 'rxjs';
+import * as cacheSelectors from 'src/app/store/cache/reducers/cache.selectors';
+import * as cacheActions from 'src/app/store/cache/reducers/cache.actions';
 import { AuthorizationService } from '../authorization/authorization.service';
-import * as authorizationModel from '../authorization/models/authorization.model';
-import * as authorizationSelectors from '../authorization/reducers/authorization.selectors';
+import * as cacheModel from '../../store/cache/models/cache.model';
+import * as userModel from 'src/app/store/user/models/user.model';
+import * as userSelectors from 'src/app/store/user/reducers/user.selectors';
+import * as userActions from 'src/app/store/user/reducers/user.actions';
 
 @Component({
   selector: 'app-profile',
@@ -20,33 +22,32 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
-  public cacheUserList$: Observable<authorizationModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
-  public user$: Observable<authorizationModel.IUser | null> = this.getUserById()
+  public cacheUserList$: Observable<userModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
+  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
+  public currentUser$: Observable<userModel.IUser> = this.getCurrentUser()
 
-  public getUserById(): Observable<authorizationModel.IUser> {
+  public getCurrentUser(): Observable<userModel.IUser> {
     return new Observable(observer => {
-      this.route.paramMap.subscribe((paramMap: any) => {
-        if (paramMap.params.id) {
-          this.cacheUserList$.subscribe((userList) => {
-            const candidate = userList.filter(user => user._id === paramMap.params.id)
-            if (candidate) {
-              observer.next(candidate[0])
-              return observer.complete()
-            }
-  
-            return this.store$.dispatch(cacheActions.setUserById({ id: paramMap.params.id }))
-          })
-        } else {
-          this.store$.pipe(select(authorizationSelectors.selectUser)).subscribe(user => {
-            if (user._id) {
-              observer.next(user)
-              observer.complete()
-            }
-            
-            observer.complete()
-          })
-        }
+      this.route.params.subscribe(params => {
+        this.user$.pipe(take(1)).subscribe(user => {
+          const id = params['id'] || ""
 
+          if (!id.trim() || user._id === id) {
+            observer.next(user)
+            observer.complete()
+          } else {
+            this.cacheUserList$.subscribe(cacheUserList => {
+              const candidate = cacheUserList.filter(cacheUser => cacheUser._id === id)
+
+              if (candidate.length) {
+                observer.next(candidate[0])
+                observer.complete()
+              } else {
+                this.store$.dispatch(cacheActions.putUserByIdCache({ id }))
+              }
+            })
+          }
+        })
       })
     })
   }

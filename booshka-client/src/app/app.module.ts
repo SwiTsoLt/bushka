@@ -25,6 +25,9 @@ import { ArticleMobileComponent } from './UI-mobile/article-mobile/article-mobil
 import { LoaderComponent } from './UI/loader/loader.component';
 import { SelectOptionsComponent } from './UI/select-options/select-options.component';
 import { ToastEffects } from './UI/toasts/toast.effects';
+import { CacheEffects } from './store/cache/cache.effects';
+import * as fromUserReferences from './store/user/reducers/index';
+import { userNode } from './store/user/reducers/user.reducer';
 
 
 @NgModule({
@@ -50,7 +53,7 @@ import { ToastEffects } from './UI/toasts/toast.effects';
     PagesModule,
     StoreModule.forRoot(fromToastReferences.reducers),
     StoreDevtoolsModule.instrument({ maxAge: 1000, logOnly: environment.production }),
-    EffectsModule.forRoot([ToastEffects]),
+    EffectsModule.forRoot([ToastEffects, CacheEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -60,4 +63,4 @@ import { ToastEffects } from './UI/toasts/toast.effects';
     ArticleComponent
   ]
 })
-export class AppModule { }
+export class AppModule {}

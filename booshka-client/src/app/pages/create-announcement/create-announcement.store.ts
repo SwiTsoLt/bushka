@@ -7,8 +7,8 @@ import { catchError, EMPTY, map, Observable, switchMap, tap } from "rxjs"
 import * as toastsModel from "src/app/UI/toasts/models/toasts.model"
 import * as toastActions from "src/app/UI/toasts/reducers/toasts.actions"
 import { toastDuration } from "src/app/UI/toasts/reducers/toasts.reducer"
-import * as userModel from "../authorization/models/authorization.model"
-import * as userSelectors from "../authorization/reducers/authorization.selectors"
+import * as userModel from "../../store/user/models/user.model"
+import * as userSelectors from "../../store/user/reducers/user.selectors"
 import { CreateAnnouncementService } from "./create-announcement.service"
 import * as createAnnouncementModel from "./models/create-announcement-model"
 
@@ -105,6 +105,7 @@ export class CreateAnnouncementStore extends ComponentStore<createAnnouncementMo
                                     text: response.data.message,
                                     type: toastsModel.toastTypeEnums.success
                                 }] }))
+                                this.router.navigate(['/'])
                                 return this.createSuccess()
                             }
                             this.store$.dispatch(toastActions.notify({ toasts: [{

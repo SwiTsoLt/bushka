@@ -1,8 +1,8 @@
 <article>
     <div class="content box">
-        <ul class="link-list" *ngIf="userIsReady$ | async; else loader">
+        <ul class="link-list" *ngIf="(userReady$ | async); else loader">
             <li *ngIf="!(user$ | async)?.gmail">
-                <a routerLink="/authorization-component/login-component">
+                <a class="auth" routerLink="/authorization-component/login-component">
                     <p>Войти</p>
                 </a>
             </li>
@@ -37,6 +37,11 @@
                     <p>
                         Настройки
                     </p>
+                </a>
+            </li>
+            <li *ngIf="(user$ | async)?.gmail">
+                <a class="logout" (click)="logout()">
+                    <p>Выйти</p>
                 </a>
             </li>
         </ul>

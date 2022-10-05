@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { localStorageNameNode } from './pages/authorization/login/login.store';
-import * as authorizationActions from './pages/authorization/reducers/authorization.actions';
+import * as userActions from './store/user/reducers/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ import * as authorizationActions from './pages/authorization/reducers/authorizat
     './app.component.scss'
   ]
 })
+
 export class AppComponent implements OnInit {
 
   constructor(
@@ -17,7 +18,6 @@ export class AppComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    const token = JSON.parse(localStorage.getItem(localStorageNameNode) || "{}")?.token
-    this.store$.dispatch(authorizationActions.getAndSetUserByJWT({ token }))
+    this.store$.dispatch(userActions.setUserByJWT())
   }
 }

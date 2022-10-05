@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthorizationService } from '../../authorization/authorization.service';
 import { Observable, take, takeLast } from 'rxjs';
+import * as userModel from '../../../store/user/models/user.model';
 import * as announcementModel from '../models/main.model';
-import * as authorizationModel from '../../authorization/models/authorization.model';
 import { select, Store } from '@ngrx/store';
-import * as cacheSelectors from 'src/app/cache-reducers/reducers/cache.selectors';
-import * as cacheActions from 'src/app/cache-reducers/reducers/cache.actions';
+import * as cacheSelectors from '../../../store/cache/reducers/cache.selectors';
+import * as userSelectors from '../../../store/user/reducers/user.selectors';
+import * as userActions from '../../../store/user/reducers/user.actions';
+import * as cacheActions from 'src/app/store/cache/reducers/cache.actions';
 
 @Component({
   selector: 'app-announcement',
@@ -34,25 +36,39 @@ export class AnnouncementComponent implements OnInit {
     createDate: new Date()
   }
 
-  public cacheUserList$: Observable<authorizationModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
-  public owner$: Observable<authorizationModel.IUser> = this.getOwner()
+  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
+  public userReady$: Observable<boolean> = this.store$.pipe(select(userSelectors.selectUserReady))
+  public cacheUserList$: Observable<userModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
+  public cacheUserListReady$: Observable<boolean> = this.store$.pipe(select(cacheSelectors.selectCacheUserListReady))
+  public owner$: Observable<userModel.IUser> = this.getOwner().pipe(takeLast(1))
 
-  public getOwner(): Observable<authorizationModel.IUser> {
+  public getOwner(): Observable<userModel.IUser> {
     return new Observable(observer => {
-      this.cacheUserList$.subscribe((userList) => {
-        const candidate = userList.filter(user => user._id === this.announcement.ownerId)
-        observer.next(candidate[0])
-        candidate.length && observer.complete()
+      this.userReady$.subscribe(userReady => {
+        if (userReady) {
+          this.user$.pipe(take(1)).subscribe(user => {
+            if (user._id === this.announcement.ownerId) {
+              observer.next(user)
+              observer.complete()
+            } else {
+              this.cacheUserList$.subscribe(cacheList => {
+                const candidateIdList: string[] = cacheList.reduce((acc: string[], cur: userModel.IUser) => {
+                  return [...acc, cur._id]
+                }, [])
+                if (candidateIdList.includes(this.announcement.ownerId)) {
+                  const candidate = cacheList.filter((userCache) => userCache._id === this.announcement.ownerId)
+                  observer.next(candidate[0])
+                  observer.complete()
+                }
+              })
+            }
+          })
+        }
       })
     })
   }
 
   ngOnInit(): void {
-    this.owner$.pipe(take(1)).subscribe(user => {
-      if (!user?._id) {
-        this.store$.dispatch(cacheActions.setUserById({ id: this.announcement.ownerId }))
-      }
-    })
   }
 
 }

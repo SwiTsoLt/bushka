@@ -83,36 +83,7 @@
                     </div>
                 </div>
                 <div class="select-option-region">
-                    <div class="select-region">
-                        <ul class="option-list">
-                            <li class="option-item-title">
-                                <input id="selectRegionInput" type="radio" name="regionTitle"
-                                    [checked]="regionOptionsOpen && !selectedRegion.length" disabled>
-                                <label (click)="regionOptionsOpen ? selectRegion('') : selectRegion()"
-                                    for="selectRegionInput">
-                                    <div class="option-list-title">{{regionOptionsOpen ? "Район" :
-                                        (((registrationForm$ | async)?.region) ?
-                                        ((registrationForm$ | async)?.region) : "Район")}}</div>
-                                    <div class="select-arrow">
-                                        <p [ngClass]="{'active': regionOptionsOpen}">
-                                            > </p>
-                                    </div>
-                                </label>
-                            </li>
-                            <div [ngClass]="{'active': regionOptionsOpen}" class="option-list-inner">
-                                <li *ngFor="let option of selectedOptionCityRegionsList" class="option-item">
-                                    <input type="radio" [id]="option" [checked]="option === selectedRegion"
-                                        name="region">
-                                    <label (click)="selectRegion(option)" [for]="option"><span>{{option}}</span></label>
-                                </li>
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="error-field">
-                        <p>
-                            {{registrationFormErrors['region']}}
-                        </p>
-                    </div>
+                    <app-select-options [callback]="setValue.bind(this)" [categoryList$]="categoryList$"></app-select-options>
                 </div>
             </div>
             <div class="row">

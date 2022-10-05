@@ -1,12 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as createAnnouncementModel from "./models/create-announcement-model"
 import { CreateAnnouncementStore } from './create-announcement.store';
-import { observable, Observable, of, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { CreateAnnouncementService } from './create-announcement.service';
 import { select, Store } from '@ngrx/store';
 import { selectToastList } from 'src/app/UI/toasts/reducers/toasts.selectors';
 import * as toastModel from 'src/app/UI/toasts/models/toasts.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-announcement',
@@ -17,7 +16,6 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
 
   constructor(
     private store$: Store,
-    private router: Router,
     private createAnnouncementStore: CreateAnnouncementStore,
     private createAnnouncementService: CreateAnnouncementService
   ) { }
@@ -27,25 +25,6 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
   public categoryList$: Observable<createAnnouncementModel.ICategory[]> = this.getCategoryList()
   public imageList: Observable<File[]> = of([])
   public imageDisplayList: Observable<{ title: string, data: ArrayBuffer | null | string }[]> = of([])
-
-  public optionList = [
-    {
-      groupTitle: "Всё для детей и мам",
-      groupOptions: [
-        { optionValue: 0, optionTitle: "Одежда до 1 года" },
-        { optionValue: 1, optionTitle: "Одежда для девочек" },
-        { optionValue: 2, optionTitle: "Одежда для мальчиков" }
-      ]
-    },
-    {
-      groupTitle: "Хобби, спорт и туризм",
-      groupOptions: [
-        { optionValue: 3, optionTitle: "Настольные игры и пазлы" },
-        { optionValue: 4, optionTitle: "Спорттовары" },
-        { optionValue: 5, optionTitle: "Туристические товары" }
-      ]
-    }
-  ]
 
   getCategoryList(): Observable<createAnnouncementModel.ICategory[]> {
     return new Observable((subscriber) => {
@@ -81,8 +60,6 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
   public addImage(el: HTMLInputElement | null) {
     this.imageList.pipe(take(1)).subscribe(currentImageList => {
      
-      console.log(currentImageList, currentImageList.length);
-
       if (el?.files && el.files[0] && currentImageList.length < 10) {
         
         this.imageList = of([...currentImageList, el.files[0]])
@@ -128,7 +105,6 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
         const candidate = toastList.filter(el => el.type === toastModel.toastTypeEnums.loading)
         if (candidate.length && Object.keys(candidate[0])?.includes('ready')) {
           observer.next(candidate[0].ready)
-          candidate[0].ready && this.router.navigate(['/'])
           candidate[0].ready && observer.complete()
         }
       })

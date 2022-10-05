@@ -1,3 +1,4 @@
+import * as userModel  from "src/app/store/user/models/user.model"
 
 export const authorizationHttpUrlEnums = {
     registration: "/api/auth/registration",
@@ -15,7 +16,7 @@ export interface IAuthorizationHttpResponseRegistration {
 }
 
 export interface IAuthorizationHttpResponseLogin {
-    user: IUser,
+    user: userModel.IUser,
     token: string,
     message: string,
     status: number
@@ -31,29 +32,6 @@ export type AuthorizationResponseRegistration =
     IAuthorizationHttpResponseErrors
 
 export interface IAuthorizationHttpResponseGetUser {
-    user?: IUser,
+    user?: userModel.IUser,
     message?: string
-}
-
-
-/* USER */
-
-export enum authorizationActionEnums {
-    getAndSetUserByJWT = "[Authorization Component] Get And Set User By JWT",
-    getAndSetUserByJWTSuccess = "[Authorization Component] Get And Set User By JWT Success",
-    getAndSetUserByJWTError = "[Authorization Component] Get And Set User By JWT Error",
-
-    getAndSetUserById = "[Authorization Component] Get And Set User By Id",
-    getAndSetUserByIdSuccess = "[Authorization Component] Get And Set User By Id Success",
-    getAndSetUserByIdError = "[Authorization Component] Get And Set User By Id Error",
-}
-
-export interface IUser {
-    _id: string,
-    gmail: string,
-    firstName: string,
-    lastName: string,
-    phone: string,
-    city: string,
-    region: string
 }
