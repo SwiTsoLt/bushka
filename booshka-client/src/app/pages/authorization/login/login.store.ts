@@ -57,7 +57,7 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
                     const data = JSON.parse(localStorage.getItem(localStorageNameNode) || "{}")
                     localStorage.setItem(localStorageNameNode, JSON.stringify({ ...data, token: response?.token }))
 
-                    return this.authorizationService.getUserByJWT(response?.token).pipe(
+                    return this.authorizationService.getUserByJWT().pipe(
                         tap({
                             next: (responseGetUser) => {
                                 if (responseGetUser.user) {

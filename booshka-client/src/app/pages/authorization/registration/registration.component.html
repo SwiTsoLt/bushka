@@ -83,7 +83,38 @@
                     </div>
                 </div>
                 <div class="select-option-region">
-                    <app-select-options [callback]="setValue.bind(this)" [categoryList$]="categoryList$"></app-select-options>
+                    <div class="select-region">
+                        <ul class="option-list">
+                            <li class="option-item-title">
+                                <input id="selectCityInput" type="radio" name="cityTitle"
+                                    [checked]="cityOptionsOpen && !selectedCity.length" disabled>
+                                <label (click)="cityOptionsOpen ? selectCity('') : selectCity()" for="selectCityInput">
+                                    <div class="option-list-title">{{cityOptionsOpen ? "Город" : (((registrationForm$ |
+                                        async)?.city) ?
+                                        ((registrationForm$ | async)?.city) : "Город")}}</div>
+                                    <div class="select-arrow">
+                                        <p [ngClass]="{'active': cityOptionsOpen}">
+                                            > </p>
+                                    </div>
+                                </label>
+                            </li>
+                            <div [ngClass]="{'active': cityOptionsOpen}" class="option-list-inner">
+                                <li *ngFor="let option of optionCityKeysList" class="option-item">
+                                    <input type="radio" [id]="option" name="city" [checked]="option === selectedCity">
+                                    <label (click)="selectCity(option)" [for]="option">
+                                        <p>
+                                            {{option}}
+                                        </p>
+                                    </label>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="error-field">
+                    <p>
+                        {{registrationFormErrors['region']}}
+                    </p>
                 </div>
             </div>
             <div class="row">

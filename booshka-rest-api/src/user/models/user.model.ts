@@ -22,6 +22,8 @@ export enum userResponseErrorEnums {
 
 export interface IUserServiceResponse {
     user?: IUserServiceResponseUser,
+    favorites?: string[],
+    announcementIdList?: string[],
     message?: string,
     status: number
 }
@@ -34,5 +36,14 @@ export interface IUserServiceResponseUser {
     city: string,
     region: string,
     phone: string,
+    announcementIdList: string[],
+    favorites: string[],
     registrationDate: Date
+}
+
+
+export interface IUserAnnouncementIdListServiceResponse {
+    announcementIdList?: string[],
+    message?: string,
+    status: number
 }

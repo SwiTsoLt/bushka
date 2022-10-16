@@ -21,56 +21,16 @@ export class UserService {
                 if (!user) {
                     return ({ message: authModel.errorEnums.userNotFound(id), status: HttpStatus.NOT_FOUND })
                 }
-                return ({
-                    user: {
-                        _id: user._id,
-                        gmail: user.gmail,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        city: user.city,
-                        region: user.region,
-                        phone: user.phone,
-                        registrationDate: user.registrationDate
-
-                    }, status: HttpStatus.OK
-                })
+                const userCopy = user
+                delete userCopy.password
+                return ({user: userCopy, status: HttpStatus.OK})
             })
             .catch(e => ({ message: e, status: HttpStatus.INTERNAL_SERVER_ERROR }))
     }
 
-    public async getUserByJWT(token: string) {
-        return jwt.verify(token, config.get("jwtSecret"), async (error, decoded) => {
-            if (error) {
-                switch (error.message) {
-                    case "jwt malformed":
-                        return ({ message: "112", status: HttpStatus.OK })
-                    case "jwt expired":
-                        return ({ message: authModel.errorEnums.jwtExpired, status: HttpStatus.UNAUTHORIZED })
-                    default:
-                        break;
-                }
-                return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
-            }
-            return await this.userModel.findById(decoded.id)
-                .then(user => {
-                    if (!user) {
-                        return ({ message: authModel.errorEnums.userNotFound(decoded.id), status: HttpStatus.NOT_FOUND })
-                    }
-
-                    return ({
-                        user: {
-                            _id: user._id,
-                            gmail: user.gmail,
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            city: user.city,
-                            region: user.region,
-                            phone: user.phone,
-                            registrationDate: user.registrationDate
-                        }, status: HttpStatus.OK
-                    })
-                })
-                .catch(e => ({ message: e, status: HttpStatus.INTERNAL_SERVER_ERROR }))
-        })
+    public async getUserByJWT(req: any) {
+        const userCopy = req.user
+        delete userCopy.password
+        return ({user: userCopy, status: HttpStatus.OK})
     }
 }

@@ -33,6 +33,9 @@ export class User {
     favorites: string[]
 
     @Prop()
+    announcementIdList: string[]
+
+    @Prop()
     registrationDate: Date
 }
 

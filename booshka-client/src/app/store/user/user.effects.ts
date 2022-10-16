@@ -29,33 +29,28 @@ export class UserEffects {
     setUserByJWT$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(userModel.userActionEnums.setUserByJWT),
-            mergeMap(() => {
-                const localStorageData = localStorage.getItem(booshkaNode)
-                const parsedData = localStorageData ? JSON.parse(localStorageData) : null
-                const token = parsedData?.token || ""
-                return this.authorizationService.getUserByJWT(token)
-                    .pipe(
-                        map(response => {
-                            if (response?.user) {
-                                return ({ type: userModel.userActionEnums.setUserByJWTSuccess, user: response.user })
-                            }
+            mergeMap(() => this.authorizationService.getUserByJWT()
+                .pipe(
+                    map(response => {
+                        if (response?.user) {
+                            return ({ type: userModel.userActionEnums.setUserByJWTSuccess, user: response.user })
+                        }
 
-                            if (response?.message) {
-                                this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
-                                return ({ type: userModel.userActionEnums.setUserByJWTError })
-                            }
-                            this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                        if (response?.message) {
+                            this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
                             return ({ type: userModel.userActionEnums.setUserByJWTError })
-                        }),
-                        catchError((e) => {
-                            console.log(e);
-                            e?.error?.message
-                                ? this.store$.dispatch(toastActions.notify({ toasts: [{ text: e.error.message, type: e?.status === 401 ? toastModel.toastTypeEnums.notify : toastModel.toastTypeEnums.error }] }))
-                                : this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
-                            return of(({ type: userModel.userActionEnums.setUserByJWTError }))
-                        })
-                    )
-            })
+                        }
+                        this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                        return ({ type: userModel.userActionEnums.setUserByJWTError })
+                    }),
+                    catchError((e) => {
+                        console.log(e);
+                        e?.error?.message
+                            ? this.store$.dispatch(toastActions.notify({ toasts: [{ text: e.error.message, type: e?.status === 401 ? toastModel.toastTypeEnums.notify : toastModel.toastTypeEnums.error }] }))
+                            : this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                        return of(({ type: userModel.userActionEnums.setUserByJWTError }))
+                    })
+                ))
         )
     })
 
@@ -73,7 +68,7 @@ export class UserEffects {
                     })
                     localStorage.setItem(booshkaNode, newData)
                     return ({ type: userModel.userActionEnums.logoutSuccess })
-                } 
+                }
                 return ({ type: userModel.userActionEnums.logoutError })
             }),
             catchError(e => {

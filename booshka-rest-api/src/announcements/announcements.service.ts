@@ -14,8 +14,6 @@ import * as uuid from 'uuid'
 import * as path from 'path'
 import * as fs from 'fs'
 import { AnnouncementCategoryChildren, AnnouncementCategoryChildrenDocument } from './schemas/announcement-category-children.schema';
-import { channel } from 'diagnostics_channel';
-import { of } from 'rxjs';
 
 const config = require('config');
 
@@ -24,7 +22,6 @@ export class AnnouncementsService {
     constructor(
         @InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>,
         @InjectModel(AnnouncementCategory.name) private AnnouncementCategoryModel: Model<AnnouncementCategoryDocument>,
-        @InjectModel(AnnouncementCategoryChildren.name) private AnnouncementCategoryChildrenModel: Model<AnnouncementCategoryChildrenDocument>,
     ) {
     }
 

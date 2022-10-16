@@ -4,6 +4,7 @@ import { Observable, of } from "rxjs";
 import axios from "axios"
 import { AxiosPromise } from "axios"
 import * as createAnnouncementModel from "./models/create-announcement-model";
+import { booshkaNode } from "src/app/models/app.models";
 
 @Injectable({
     providedIn: "root"
@@ -20,12 +21,14 @@ export class CreateAnnouncementService {
 
     public create(form: FormData): AxiosPromise<createAnnouncementModel.createAnnouncementServiceCreateResponse> {
         const url = createAnnouncementModel.createAnnouncementServiceUrlEnums.create
+        const token = JSON.parse(localStorage.getItem(booshkaNode) || "")?.token || ""
 
         const options = {
             url,
             method: "POST",
             headers: {
-                "Content-Type": "multipart/form-data"
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
             },
             data: form
         }

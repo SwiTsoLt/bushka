@@ -24,11 +24,21 @@ export class AuthorizationService {
     }
 
     public getUserById(id: string) {
+        const data = JSON.parse(localStorage.getItem("booshka") || "")
+        const token = data?.token || ""
+
         const url = authorizationModel.authorizationHttpUrlEnums.getUserById(id)
-        return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url)
+        return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
     }
 
-    public getUserByJWT(token: string) {
+    public getUserByJWT() {
+        const data = JSON.parse(localStorage.getItem("booshka") || "")
+        const token = data?.token || ""
+
         const url = authorizationModel.authorizationHttpUrlEnums.getUserByJWT
         return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url, {
             headers: {
