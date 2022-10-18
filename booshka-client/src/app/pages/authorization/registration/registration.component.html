@@ -86,35 +86,33 @@
                     <div class="select-region">
                         <ul class="option-list">
                             <li class="option-item-title">
-                                <input id="selectCityInput" type="radio" name="cityTitle"
-                                    [checked]="cityOptionsOpen && !selectedCity.length" disabled>
-                                <label (click)="cityOptionsOpen ? selectCity('') : selectCity()" for="selectCityInput">
-                                    <div class="option-list-title">{{cityOptionsOpen ? "Город" : (((registrationForm$ |
-                                        async)?.city) ?
-                                        ((registrationForm$ | async)?.city) : "Город")}}</div>
+                                <input id="selectRegionInput" type="radio" name="regionTitle"
+                                    [checked]="regionOptionsOpen && !selectedRegion.length" disabled>
+                                <label (click)="regionOptionsOpen ? selectRegion('') : selectRegion()"
+                                    for="selectRegionInput">
+                                    <div class="option-list-title">{{regionOptionsOpen ? "Район" :
+                                        (((registrationForm$ | async)?.region) ?
+                                        ((registrationForm$ | async)?.region) : "Район")}}</div>
                                     <div class="select-arrow">
-                                        <p [ngClass]="{'active': cityOptionsOpen}">
+                                        <p [ngClass]="{'active': regionOptionsOpen}">
                                             > </p>
                                     </div>
                                 </label>
                             </li>
-                            <div [ngClass]="{'active': cityOptionsOpen}" class="option-list-inner">
-                                <li *ngFor="let option of optionCityKeysList" class="option-item">
-                                    <input type="radio" [id]="option" name="city" [checked]="option === selectedCity">
-                                    <label (click)="selectCity(option)" [for]="option">
-                                        <p>
-                                            {{option}}
-                                        </p>
-                                    </label>
+                            <div [ngClass]="{'active': regionOptionsOpen}" class="option-list-inner">
+                                <li *ngFor="let option of selectedOptionCityRegionsList" class="option-item">
+                                    <input type="radio" [id]="option" [checked]="option === selectedRegion"
+                                        name="region">
+                                    <label (click)="selectRegion(option)" [for]="option"><span>{{option}}</span></label>
                                 </li>
                             </div>
                         </ul>
                     </div>
-                </div>
-                <div class="error-field">
-                    <p>
-                        {{registrationFormErrors['region']}}
-                    </p>
+                    <div class="error-field">
+                        <p>
+                            {{registrationFormErrors['region']}}
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="row">
