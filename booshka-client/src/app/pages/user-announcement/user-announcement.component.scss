@@ -6,4 +6,12 @@
     grid-row-gap: $padding-inline-s;
     width: 100%;
     height: fit-content;
+
+    .user-announcement-list {
+        display: flex;
+        flex-direction: column;
+        grid-row-gap: $padding-inline-s;
+        width: 100%;
+        height: fit-content;
+    }
 }

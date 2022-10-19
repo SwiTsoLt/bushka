@@ -31,14 +31,12 @@ export class ProfileComponent implements OnInit {
 
           if (!id.trim() || user._id === id) {
             observer.next(user)
-            observer.complete()
           } else {
             this.cacheUserList$.subscribe(cacheUserList => {
               const candidate = cacheUserList.filter(cacheUser => cacheUser._id === id)
 
               if (candidate.length) {
                 observer.next(candidate[0])
-                observer.complete()
               } else {
                 this.store$.dispatch(cacheActions.putUserByIdCache({ id }))
               }
