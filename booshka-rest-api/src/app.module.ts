@@ -33,7 +33,9 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(RegistrationValidateMiddleware).forRoutes({ path: "api/auth/registration", method: RequestMethod.POST });
     consumer.apply(AuthMiddleware).forRoutes({ path: "api/announcement", method: RequestMethod.POST });
+    consumer.apply(AuthMiddleware).forRoutes({ path: "api/announcement/:id", method: RequestMethod.DELETE });
     consumer.apply(CrateAnnouncementValidateMiddleware).forRoutes({ path: "api/announcement", method: RequestMethod.POST });
     consumer.apply(AuthMiddleware).forRoutes({ path: "api/user", method: RequestMethod.GET });
+    consumer.apply(AuthMiddleware).forRoutes({ path: "api/user/favorites", method: RequestMethod.GET });
   }
 }

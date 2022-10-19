@@ -33,6 +33,7 @@ import { UserEffects } from "../store/user/user.effects";
 import { userNode } from "../store/user/reducers/user.reducer";
 import * as fromUserReferences from "../store/user/reducers";
 import { ArticleComponent } from "../UI/article/article.component";
+import { UserAnnouncementComponent } from "./user-announcement/user-announcement.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -46,7 +47,8 @@ registerLocaleData(localeRu, 'ru');
         OtherComponent,
         ArticleComponent,
         AnnouncementComponent,
-        UserNotFoundComponent
+        UserNotFoundComponent,
+        UserAnnouncementComponent
     ],
     imports: [
         BrowserModule,
@@ -74,7 +76,8 @@ registerLocaleData(localeRu, 'ru');
     exports: [
         LoaderComponent,
         ArticleComponent,
-        SelectOptionsComponent
+        SelectOptionsComponent,
+        UserAnnouncementComponent
     ]
 })
 

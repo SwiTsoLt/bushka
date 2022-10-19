@@ -5,84 +5,86 @@
     flex-direction: column;
     grid-gap: $padding-inline-s;
     width: 100%;
-    height: 100%;
+    height: fit-content;
 
     .content {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        height: fit-content;
         background-color: $bg-clr-white;
         padding: $padding-inline-l;
 
-        .info {
-            display: flex;
-            grid-gap: $padding-inline-l;
-            width: 100%;
-            height: 100%;
-
-            .avatar-container {
-                width: 100%;
-                max-width: 200px;
-                min-width: 100px;
-                height: fit-content;
-
-                .avatar {
-                    width: 100%;
-                    height: auto;
-                    aspect-ratio: 1/1;
-                    border-radius: $border-radius;
-                    background-color: #dedede;
-                }
-            }
-
-            .info-inner {
+        .content_inner {
+            .info {
                 display: flex;
-                flex-direction: column;
-                grid-gap: $padding-inline-s;
-                width: fit-content;
+                grid-gap: $padding-inline-l;
+                width: 100%;
                 height: 100%;
-
-                .name {
-                    p {
-                        font-size: $text-size-xl;
+    
+                .avatar-container {
+                    width: 100%;
+                    max-width: 200px;
+                    min-width: 100px;
+                    height: fit-content;
+    
+                    .avatar {
+                        width: 100%;
+                        height: auto;
+                        aspect-ratio: 1/1;
+                        border-radius: $border-radius;
+                        background-color: #dedede;
                     }
                 }
-
-                .contacts {
+    
+                .info-inner {
                     display: flex;
-                    align-items: flex-end;
+                    flex-direction: column;
+                    grid-gap: $padding-inline-s;
                     width: fit-content;
                     height: 100%;
-                }
-
-
-
-                >div {
-                    display: flex;
-                    grid-gap: $padding-inline-s;
-                    width: 100%;
-                    height: fit-content;
-
+    
+                    .name {
+                        p {
+                            font-size: $text-size-xl;
+                        }
+                    }
+    
+                    .contacts {
+                        display: flex;
+                        align-items: flex-end;
+                        width: fit-content;
+                        height: 100%;
+                    }
+    
+    
+    
                     >div {
                         display: flex;
-                        align-items: center;
-                        width: fit-content;
+                        grid-gap: $padding-inline-s;
+                        width: 100%;
                         height: fit-content;
-                        min-height: calc($padding-inline-l * 2);
-
-                        p,
-                        h2 {
-                            width: 100%;
-                            height: 100%;
-                        }
-
-                        a {
+    
+                        >div {
                             display: flex;
                             align-items: center;
-                            grid-gap: $padding-inline-s;
-                            width: 100%;
-                            height: 100%;
+                            width: fit-content;
+                            height: fit-content;
+                            min-height: calc($padding-inline-l * 2);
+    
+                            p,
+                            h2 {
+                                width: 100%;
+                                height: 100%;
+                            }
+    
+                            a {
+                                display: flex;
+                                align-items: center;
+                                grid-gap: $padding-inline-s;
+                                width: 100%;
+                                height: 100%;
+                            }
                         }
                     }
                 }
@@ -90,6 +92,19 @@
         }
 
 
+    }
+
+    .announcement {
+        display: flex;
+        flex-direction: column;
+        grid-row-gap: $padding-inline-s;
+        width: 100%;
+        height: fit-content;
+
+        .announcement-list {
+            width: 100%;
+            height: fit-content;
+        }
     }
 }
 

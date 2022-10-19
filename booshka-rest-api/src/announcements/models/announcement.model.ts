@@ -1,6 +1,7 @@
 import { AnnouncementCategoryChildren } from "../schemas/announcement-category-children.schema"
 import { AnnouncementCategory } from "../schemas/announcement-category.schema"
 import { Announcement } from "../schemas/announcement.schema"
+import { IUserServiceResponseUser } from "../../user/models/user.model"
 
 /* Get all */
 
@@ -45,6 +46,7 @@ export interface IAnnouncementCreateResponse {
 }
 
 export interface IAnnouncementCreateServiceResponse {
+    user?: IUserServiceResponseUser,
     announcement?: Announcement,
     message: string,
     status: number
@@ -58,6 +60,7 @@ export interface IAnnouncementDeleteResponse {
 }
 
 export interface IAnnouncementDeleteServiceResponse {
+    user?: IUserServiceResponseUser,
     announcement?: Announcement,
     message: string,
     status: number

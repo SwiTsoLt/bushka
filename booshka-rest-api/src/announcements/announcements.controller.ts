@@ -14,7 +14,7 @@ export class AnnouncementsController {
   @Get('/category')
   async getCategoryAll(@Res() res: Response): Promise<Response<AnnouncementCategory[]>> {
     const categoryListResponse = await this.announcementsService.getCategoryAll()
-    if (categoryListResponse.categoryList.length) {
+    if (categoryListResponse?.categoryList?.length) {
       return res.status(categoryListResponse.status).json({
         categoryList: categoryListResponse.categoryList
       })
@@ -42,7 +42,7 @@ export class AnnouncementsController {
   @Get(':id')
   async getOne(@Param('id') id: string, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementGetOneResponse>> {
     const announcementResponse = await this.announcementsService.getOne(id)
-    if (announcementResponse.announcement) {
+    if (announcementResponse?.announcement) {
       return res.status(announcementResponse.status).json({
         announcement: announcementResponse.announcement
       })
@@ -54,12 +54,12 @@ export class AnnouncementsController {
   }
 
   @Post()
-  async create(@Body() createAnnouncementDto: CreateAnnouncementDto, @Req() req: Request, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementCreateResponse>> {
+  async create(@Body() createAnnouncementDto: CreateAnnouncementDto, @Req() req: any, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementCreateResponse>> {
     const announcementResponse = await this.announcementsService.create({
       ...createAnnouncementDto
-    }, req.files)
+    }, req)
 
-    if (announcementResponse.announcement) {
+    if (announcementResponse?.announcement) {
       return res.status(announcementResponse.status).json({
         announcement: announcementResponse.announcement,
         message: announcementResponse.message
@@ -72,9 +72,9 @@ export class AnnouncementsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string, @Res() res: Response): Promise<Response<announcementModel.IAnnouncementDeleteResponse>> {
-    const deleteAnnouncementResponse = await this.announcementsService.remove(id)
-    if (deleteAnnouncementResponse.announcement) {
+  async delete(@Param('id') id: string, @Res() res: Response, @Req() req: any): Promise<Response<announcementModel.IAnnouncementDeleteResponse>> {
+    const deleteAnnouncementResponse = await this.announcementsService.remove(id, req)
+    if (deleteAnnouncementResponse?.announcement) {
       return res.status(deleteAnnouncementResponse.status).json({
         announcement: deleteAnnouncementResponse.announcement,
         message: deleteAnnouncementResponse.message

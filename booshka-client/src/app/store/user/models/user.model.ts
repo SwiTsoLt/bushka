@@ -5,6 +5,8 @@ export interface IUser {
     lastName: string,
     phone: string,
     city: string,
+    announcementIdList: string[],
+    favorites: string[],
     region: string
 }
 

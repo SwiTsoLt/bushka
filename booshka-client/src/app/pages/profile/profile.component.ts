@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable, takeLast, tap, catchError, EMPTY, of, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import * as cacheSelectors from 'src/app/store/cache/reducers/cache.selectors';
 import * as cacheActions from 'src/app/store/cache/reducers/cache.actions';
-import { AuthorizationService } from '../authorization/authorization.service';
-import * as cacheModel from '../../store/cache/models/cache.model';
 import * as userModel from 'src/app/store/user/models/user.model';
 import * as userSelectors from 'src/app/store/user/reducers/user.selectors';
-import * as userActions from 'src/app/store/user/reducers/user.actions';
 
 @Component({
   selector: 'app-profile',

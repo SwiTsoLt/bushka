@@ -29,8 +29,37 @@ export class UserService {
     }
 
     public async getUserByJWT(req: any) {
-        const userCopy = req.user
+        const userCopy = req?.user
+
+        if (!userCopy) {
+            return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+        }
+
         delete userCopy.password
         return ({user: userCopy, status: HttpStatus.OK})
+    }
+
+    public async getUserAnnouncementIdList(id: string) {
+        return await this.userModel.findById(id)
+            .then(user => {
+                if (!user) {
+                    return ({ message: authModel.errorEnums.userNotFound(id), status: HttpStatus.NOT_FOUND })
+                }
+
+                return ({ announcementIdList: user.announcementIdList, status: HttpStatus.OK })
+            })
+            .catch(e => {
+                console.log(e);
+                return ({ message: e, status: HttpStatus.INTERNAL_SERVER_ERROR })
+            })
+    }
+
+    public async getUserFavorites(req: any) {
+        const user = req?.user
+        if (!user) {
+            return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+        }
+
+        return ({ favorites: user.favorites, status: HttpStatus.OK })
     }
 }

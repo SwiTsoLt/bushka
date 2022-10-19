@@ -13,6 +13,8 @@ export const initialState: {
         gmail: "",
         firstName: "",
         lastName: "",
+        announcementIdList: [],
+        favorites: [],
         phone: "",
         city: "",
         region: ""
@@ -46,6 +48,8 @@ export const userReducer = createReducer(
             firstName: "",
             lastName: "",
             phone: "",
+            announcementIdList: [],
+            favorites: [],
             city: "",
             region: ""
         },

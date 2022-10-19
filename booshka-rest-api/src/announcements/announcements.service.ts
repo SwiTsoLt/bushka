@@ -14,6 +14,7 @@ import * as uuid from 'uuid'
 import * as path from 'path'
 import * as fs from 'fs'
 import { AnnouncementCategoryChildren, AnnouncementCategoryChildrenDocument } from './schemas/announcement-category-children.schema';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 const config = require('config');
 
@@ -22,6 +23,7 @@ export class AnnouncementsService {
     constructor(
         @InjectModel(Announcement.name) private AnnouncementModel: Model<AnnouncementDocument>,
         @InjectModel(AnnouncementCategory.name) private AnnouncementCategoryModel: Model<AnnouncementCategoryDocument>,
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
     ) {
     }
 
@@ -115,97 +117,199 @@ export class AnnouncementsService {
             })
     }
 
-    async create(createAnnouncementDto: CreateAnnouncementDto, files: any): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
-        const imageList = files?.imageList?.length ? files?.imageList : [files?.imageList]
-        return await imageList.reduce(async (acc, file) => {
-            const newFileId: string = uuid.v4()
-            const newFileName: string = `${newFileId}.png`
+    async create(createAnnouncementDto: CreateAnnouncementDto, req: any): Promise<announcementModel.IAnnouncementCreateServiceResponse> {
+        const user = req?.user
 
-            const cachePath = path.join(__dirname, "../", "cache")
-            if (!fs.existsSync(cachePath)) {
-                fs.mkdirSync(cachePath)
-            }
+        if (!user) {
+            return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+        }
 
-            const newFilePath = path.join(cachePath, newFileName)
-            file.mv(newFilePath)
+        const imageList = req?.files?.length ? (req?.files?.imageList?.length ? req?.files?.imageList : [req?.files?.imageList]) : []
 
-            const fileMetaData = {
-                "name": newFileName,
-                "parents": [this.parents_id]
-            }
+        if (imageList?.length) {
+            return await imageList.reduce(async (acc, file) => {
+                const newFileId: string = uuid.v4()
+                const newFileName: string = `${newFileId}.png`
 
-            const media = {
-                mimeType: "image/png",
-                body: fs.createReadStream(newFilePath)
-            }
+                const cachePath = path.join(__dirname, "../", "cache")
+                if (!fs.existsSync(cachePath)) {
+                    fs.mkdirSync(cachePath)
+                }
 
-            const responseFileId = await this.driveService.files.create({
-                requestBody: fileMetaData,
-                media,
-                fields: "id"
-            })
+                const newFilePath = path.join(cachePath, newFileName)
+                file.mv(newFilePath)
 
-            const newFileLink = await this.generatePublicUrl(responseFileId.data.id)
+                const fileMetaData = {
+                    "name": newFileName,
+                    "parents": [this.parents_id]
+                }
 
-            fs.unlinkSync(newFilePath)
-            return [...(await acc), newFileLink]
-        }, [])
-            .then(async imageLinkList => {
-                const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
-                console.log(imageLinkList);
+                const media = {
+                    mimeType: "image/png",
+                    body: fs.createReadStream(newFilePath)
+                }
 
-                const newAnnouncement = new this.AnnouncementModel({
-                    ...createAnnouncementDto,
-                    category: {
-                        id: category.id,
-                        title: category.title
-                    },
-                    imageLinkList,
-                    createDate: Date.now()
+                const responseFileId = await this.driveService.files.create({
+                    requestBody: fileMetaData,
+                    media,
+                    fields: "id"
                 })
 
-                // return new Promise((res, rej) => {
-                //    setTimeout(() => {
-                //     res({
-                //         message: "Объявление успешно опубликованно 2",
-                //         status: 201,
-                //         announcement: {
-                //             ...createAnnouncementDto,
-                //             category: {
-                //                 id: 0,
-                //                 title: "test"
-                //             },
-                //             createDate: new Date(Date.now())
-                //         }
-                //     })
-                //    }, 6000);
-                // })
+                const newFileLink = await this.generatePublicUrl(responseFileId.data.id)
 
-                return await newAnnouncement.save()
-                    .then((data: Announcement) => ({
-                        announcement: data,
-                        message: announcementModel.announcementSuccessEnum.created,
-                        status: HttpStatus.CREATED
-                    }))
-                    .catch((e: string) => {
+                fs.unlinkSync(newFilePath)
+                return [...(await acc), newFileLink]
+            }, [])
+                .then(async imageLinkList => {
+                    const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
+
+                    const newAnnouncement = new this.AnnouncementModel({
+                        ...createAnnouncementDto,
+                        category: {
+                            id: category.id,
+                            title: category.title
+                        },
+                        imageLinkList,
+                        createDate: Date.now()
+                    })
+
+                    // return new Promise((res, rej) => {
+                    //    setTimeout(() => {
+                    //     res({
+                    //         message: "Объявление успешно опубликованно 2",
+                    //         status: 201,
+                    //         announcement: {
+                    //             ...createAnnouncementDto,
+                    //             category: {
+                    //                 id: 0,
+                    //                 title: "test"
+                    //             },
+                    //             createDate: new Date(Date.now())
+                    //         }
+                    //     })
+                    //    }, 6000);
+                    // })
+
+                    return await newAnnouncement.save()
+                        .then((announcement) => {
+                            this.userModel.findByIdAndUpdate(user._id, {
+                                ...user,
+                                announcementIdList: [
+                                    ...user.announcementIdList,
+                                    announcement._id
+                                ]
+                            }, (err, result) => {
+                                if (err) {
+                                    console.log(err);
+                                    return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+                                }
+
+                                return ({ announcement, user: result, status: HttpStatus.CREATED })
+                            })
+                        })
+                        .catch((e: string) => {
+                            console.log(e);
+                            return {
+                                message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                                status: HttpStatus.INTERNAL_SERVER_ERROR
+                            }
+                        })
+                })
+        }
+
+        const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
+
+        const newAnnouncement = new this.AnnouncementModel({
+            ...createAnnouncementDto,
+            category: {
+                id: category.id,
+                title: category.title
+            },
+            imageLinkList: [],
+            createDate: Date.now()
+        })
+
+        // return new Promise((res, rej) => {
+        //    setTimeout(() => {
+        //     res({
+        //         message: "Объявление успешно опубликованно 2",
+        //         status: 201,
+        //         announcement: {
+        //             ...createAnnouncementDto,
+        //             category: {
+        //                 id: 0,
+        //                 title: "test"
+        //             },
+        //             createDate: new Date(Date.now())
+        //         }
+        //     })
+        //    }, 6000);
+        // })
+
+        return await newAnnouncement.save()
+            .then(async (announcement) => {
+                return await this.userModel.findByIdAndUpdate(user._id, {
+                    announcementIdList: [
+                        ...user.announcementIdList,
+                        announcement._id
+                    ]
+                })
+                    .then(newUser => {
+                        console.log("res: ", ({
+                            user: newUser,
+                            announcement,
+                            status: HttpStatus.CREATED,
+                            message: announcementModel.announcementSuccessEnum.created
+                        }));
+                        return ({
+                            user: newUser,
+                            announcement,
+                            status: HttpStatus.CREATED,
+                            message: announcementModel.announcementSuccessEnum.created
+                        })
+                    })
+                    .catch(e => {
                         console.log(e);
-                        return {
-                            message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                        return ({
+                            message: e,
                             status: HttpStatus.INTERNAL_SERVER_ERROR
-                        }
+                        })
                     })
             })
+            .catch((e: string) => {
+                console.log(e);
+                return {
+                    message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                    status: HttpStatus.INTERNAL_SERVER_ERROR
+                }
+            })
+
     }
 
-    async remove(id: string): Promise<announcementModel.IAnnouncementDeleteServiceResponse> {
+    async remove(id: string, req: any): Promise<announcementModel.IAnnouncementDeleteServiceResponse> {
+        const user = req?.user
+
+        console.log('use', user);
+
+        if (!user) {
+            return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+        }
+
         return await this.AnnouncementModel.findByIdAndRemove(id)
-            .then((announcement: Announcement) => {
-                if (announcement) {
-                    return {
-                        announcement: announcement,
-                        message: announcementModel.announcementSuccessEnum.delete,
-                        status: HttpStatus.OK
-                    }
+            .then(async (announcement) => {
+
+                console.log('del an:', announcement);
+
+                if (announcement?._id) {
+                    return await this.userModel.findByIdAndUpdate(user._id, {
+                        announcementIdList: [...user.announcementIdList.filter(el => el.toString() !== announcement._id.toString())]
+                    })
+                        .then(newUser => ({
+                            user: newUser,
+                            announcement,
+                            status: HttpStatus.ACCEPTED,
+                            message: announcementModel.announcementSuccessEnum.delete
+                        }))
                 }
 
                 return {

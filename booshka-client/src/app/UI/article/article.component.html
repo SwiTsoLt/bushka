@@ -7,8 +7,15 @@
                 </a>
             </li>
             <li>
-                <a routerLink="/profile-component">
+                <a routerLink="/profile-component/{{(user$ | async)?._id}}">
                     <p>Профиль</p>
+                </a>
+            </li>
+            <li>
+                <a routerLink="/profile-component/{{(user$ | async)?._id}}/announcement">
+                    <p>
+                        Мои объявление
+                    </p>
                 </a>
             </li>
             <li>

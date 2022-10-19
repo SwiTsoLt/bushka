@@ -12,6 +12,7 @@ import { IdeasComponent } from './pages/ideas/ideas.component';
 import { CreateAnnouncementComponent } from './pages/create-announcement/create-announcement.component';
 import { OtherComponent } from './pages/other/other.component';
 import { AuthGuard } from './guards/auth.guard';
+import { UserAnnouncementComponent } from './pages/user-announcement/user-announcement.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "/main-component", pathMatch: "full" },
@@ -28,14 +29,27 @@ export const routes: Routes = [
     ]
   },
   {
-    path: "profile-component/:id",
-    component: ProfileComponent,
-    canActivate: [AuthGuard]
+    path: "profile-component/:id/announcement",
+    component: UserAnnouncementComponent,
   },
   {
-    path: "profile-component",
+    path: "profile-component/:id",
     component: ProfileComponent,
-    canActivate: [AuthGuard]
+  },
+  // {
+  //   path: "profile-component",
+  //   component: ProfileComponent,
+  //   children: [
+  //     {
+  //       path: "announcement",
+  //       component: UserAnnouncementComponent
+  //     }
+  //   ],
+  //   canActivate: [AuthGuard]
+  // },
+  {
+    path: "user-announcement-component",
+    component: UserAnnouncementComponent
   },
   { path: "chats-component", component: ChatsComponent },
   { path: "ideas-component", component: IdeasComponent },

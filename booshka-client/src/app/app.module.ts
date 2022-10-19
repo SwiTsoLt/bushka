@@ -26,9 +26,7 @@ import { LoaderComponent } from './UI/loader/loader.component';
 import { SelectOptionsComponent } from './UI/select-options/select-options.component';
 import { ToastEffects } from './UI/toasts/toast.effects';
 import { CacheEffects } from './store/cache/cache.effects';
-import * as fromUserReferences from './store/user/reducers/index';
-import { userNode } from './store/user/reducers/user.reducer';
-
+import { UserAnnouncementComponent } from './pages/user-announcement/user-announcement.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +57,8 @@ import { userNode } from './store/user/reducers/user.reducer';
   exports: [
     LoaderComponent,
     SelectOptionsComponent,
-    ArticleComponent
+    ArticleComponent,
+    UserAnnouncementComponent
   ]
 })
 export class AppModule {}
