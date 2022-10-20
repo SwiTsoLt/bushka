@@ -24,8 +24,9 @@ export class AuthorizationService {
     }
 
     public getUserById(id: string) {
-        const data = JSON.parse(localStorage.getItem("booshka") || "")
-        const token = data?.token || ""
+        const data = localStorage.getItem("booshka")
+        const dataParsed = data ? JSON.parse(data) : null
+        const token = dataParsed ? dataParsed?.token : null
 
         const url = authorizationModel.authorizationHttpUrlEnums.getUserById(id)
         return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url, {
@@ -36,8 +37,9 @@ export class AuthorizationService {
     }
 
     public getUserByJWT() {
-        const data = JSON.parse(localStorage.getItem("booshka") || "")
-        const token = data?.token || ""
+        const data = localStorage.getItem("booshka")
+        const dataParsed = data ? JSON.parse(data) : null
+        const token = dataParsed ? dataParsed?.token : null
 
         const url = authorizationModel.authorizationHttpUrlEnums.getUserByJWT
         return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url, {

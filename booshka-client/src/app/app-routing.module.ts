@@ -29,27 +29,23 @@ export const routes: Routes = [
     ]
   },
   {
+    path: "profile-component/:id",
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: "profile-component/:id/announcement",
     component: UserAnnouncementComponent,
   },
   {
-    path: "profile-component/:id",
+    path: "profile-component",
     component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
-  // {
-  //   path: "profile-component",
-  //   component: ProfileComponent,
-  //   children: [
-  //     {
-  //       path: "announcement",
-  //       component: UserAnnouncementComponent
-  //     }
-  //   ],
-  //   canActivate: [AuthGuard]
-  // },
   {
     path: "user-announcement-component",
-    component: UserAnnouncementComponent
+    component: UserAnnouncementComponent,
+    canActivate: [AuthGuard]
   },
   { path: "chats-component", component: ChatsComponent },
   { path: "ideas-component", component: IdeasComponent },

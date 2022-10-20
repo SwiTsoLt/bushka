@@ -24,16 +24,18 @@ export class AuthMiddleware implements NestMiddleware {
         await jwt.verify(token, config.get('jwtSecret'), async (error, decoded) => {
             if (error) {
                 console.log(error);
-                switch (error?.message) {
-                    case "jwt malformed":
-                        res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.jwtMalformed })
-                    case "jwt expired":
-                        res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.jwtExpired })
-                    default:
-                        res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.somethingWentWrong })
+
+                if (error?.message === "jwt malformed") {
+                    return res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.jwtMalformed })
 
                 }
-                return;
+
+                if (error?.message === "jwt expired") {
+                    return res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.jwtExpired })
+
+                }
+
+                return res.status(HttpStatus.UNAUTHORIZED).json({ message: authModel.errorEnums.somethingWentWrong })
             }
 
             await this.userModel.findById(decoded?.id)

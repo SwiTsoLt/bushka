@@ -54,8 +54,9 @@ export class LoginStore extends ComponentStore<loginModel.ILoginForm> {
             switchMap((form) => this.authorizationService.login(form).pipe(
                 switchMap((response) => {
 
-                    const data = JSON.parse(localStorage.getItem(localStorageNameNode) || "{}")
-                    localStorage.setItem(localStorageNameNode, JSON.stringify({ ...data, token: response?.token }))
+                    const data = localStorage.getItem("booshka")
+                    const dataParsed = data ? JSON.parse(data) : null
+                    localStorage.setItem(localStorageNameNode, JSON.stringify({ ...dataParsed, token: response?.token }))
 
                     return this.authorizationService.getUserByJWT().pipe(
                         tap({

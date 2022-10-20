@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 import * as cacheSelectors from 'src/app/store/cache/reducers/cache.selectors';
@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private store$: Store,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   public cacheUserList$: Observable<userModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
@@ -29,9 +30,12 @@ export class ProfileComponent implements OnInit {
         this.user$.pipe(take(1)).subscribe(user => {
           const id = params['id'] || ""
 
-          if (!id.trim() || user._id === id) {
-            observer.next(user)
-          } else {
+          if (id.trim()) {
+            if (id === user._id) {
+              observer.next(user)
+              return;
+            }
+
             this.cacheUserList$.subscribe(cacheUserList => {
               const candidate = cacheUserList.filter(cacheUser => cacheUser._id === id)
 
@@ -41,7 +45,12 @@ export class ProfileComponent implements OnInit {
                 this.store$.dispatch(cacheActions.putUserByIdCache({ id }))
               }
             })
+
+            return;
           }
+
+          this.router.navigate([`/profile-component/${user?._id}`])
+          return;
         })
       })
     })

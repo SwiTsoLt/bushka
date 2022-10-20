@@ -33,7 +33,7 @@ export const errorEnums = {
     wrongPassword: "Неверный пароль",
     somethingWentWrong: "Что-то пошло не так",
     jwtExpired: "Время сессии истекло. Пожалуйста, войдите в аккаунт",
-    jwtMalformed: "Пользователь не авторизован",
-    notAcceptable: "Доступ запрещен"
+    jwtMalformed: "Войдите в аккаунт чтобы пользоваться всеми доступными функциями",
+    notAcceptable: "Доступ запрещен",
 }
 
