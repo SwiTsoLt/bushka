@@ -1,6 +1,6 @@
 <div class="article">
     <div class="content box">
-        <ul class="link-list" *ngIf="(userReady$ | async); else loader">
+        <ul class="link-list">
             <li *ngIf="!(user$ | async)?.gmail">
                 <a class="auth" routerLink="/authorization-component/login-component">
                     <p>Войти</p>
@@ -52,8 +52,8 @@
                 </a>
             </li>
         </ul>
-        <ng-template #loader>
+        <!-- <ng-template #loader>
             <app-loader></app-loader>
-        </ng-template>
+        </ng-template> -->
     </div>
 </div>

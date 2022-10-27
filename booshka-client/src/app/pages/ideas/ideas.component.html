@@ -2,5 +2,10 @@
     <div class="title box">
         <h1 class="center">Идей покупок</h1>
     </div>
-    <div class="content box"></div>
+    <div class="content">
+        <div class="ideaList">
+            <app-announcement *ngFor="let announcement of ideas$ | async" [announcement]="announcement">
+            </app-announcement>
+        </div>
+    </div>
 </div>

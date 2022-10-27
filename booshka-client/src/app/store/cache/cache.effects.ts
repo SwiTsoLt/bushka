@@ -24,7 +24,8 @@ export class CacheEffects {
         private mainService: MainService,
         private store$: Store,
         private route: ActivatedRoute,
-        private authorizationService: AuthorizationService
+        private authorizationService: AuthorizationService,
+        private announcementService: MainService,
     ) { }
 
     getAnnouncementList$ = createEffect(() => {
@@ -34,39 +35,43 @@ export class CacheEffects {
                 mergeMap(() => this.store$.pipe(select(cacheSelectors.selectCacheAnnouncementList))
                     .pipe(
                         take(1),
-                        mergeMap(announcementCacheList => {
-                            if (!announcementCacheList.length) {
-                                return this.route.queryParams.pipe(
-                                    mergeMap(params => {
-                                        const page = params['page']
-                                        return this.mainService.getPage((page && typeof page === 'number') ? page : 1)
-                                            .pipe(
-                                                map(response => {
-                                                    if (response.announcementList) {
-                                                        return ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListSuccess, announcementList: response.announcementList })
-                                                    }
+                        mergeMap(announcementCacheList => this.route.queryParams.pipe(
+                            mergeMap(params => {
+                                const page = (params['page'] && typeof params['page'] === 'number') ? params['page'] : 1
+                                if (announcementCacheList.length <= page * 5 || !announcementCacheList.length) {
+                                    return this.mainService.getPage(page)
+                                        .pipe(
+                                            map(response => {
+                                                if (response.announcementList) {
 
-                                                    if (response.message) {
-                                                        this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
-                                                        return ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListError })
-                                                    }
+                                                    const announcementIdCacheList = announcementCacheList ? announcementCacheList.reduce((acc: string[], cur) => [...acc, cur._id], []) : []
+                                                    const candidateList = announcementIdCacheList ? response.announcementList.filter(candidate => !announcementIdCacheList.includes(candidate._id)) : []
 
+                                                    candidateList.forEach((_, index) => {
+                                                        this.store$.dispatch(cacheActions.putAnnouncementCache({ announcement: candidateList[candidateList.length-(index+1)] }))
+                                                    })
+
+                                                    return ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListSuccess })
+                                                }
+
+                                                if (response.message) {
+                                                    this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
                                                     return ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListError })
+                                                }
 
-                                                }),
-                                                catchError(e => {
-                                                    console.log(e);
-                                                    return of({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListError })
-                                                })
-                                            )
-                                    })
-                                )
-                            }
+                                                return ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListError })
 
-                            return this.route.queryParams.pipe(
-                                map(() => ({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListAbolition }))
-                            )
-                        })
+                                            }),
+                                            catchError(e => {
+                                                console.log(e);
+                                                return of({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListError })
+                                            })
+                                        )
+                                }
+
+                                return of({ type: cacheModel.cacheActionEnums.getAnnouncementCacheListAbolition })
+                            })
+                        ))
                     )
                 )
             )
@@ -115,6 +120,31 @@ export class CacheEffects {
                 catchError(e => {
                     console.log(e);
                     return of({ type: cacheModel.cacheActionEnums.putUserByIdCacheError })
+                })
+            ))
+        )
+    })
+
+    putAnnouncementByIdCache$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(cacheModel.cacheActionEnums.putAnnouncementByIdCache),
+            mergeMap(({ id }) => this.announcementService.getAnnouncementById(id).pipe(
+                map(response => {
+                    if (response?.announcement) {
+                        return ({ type: cacheModel.cacheActionEnums.putAnnouncementByIdCacheSuccess, announcement: response.announcement })
+                    }
+
+                    if (response?.message) {
+                        this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
+                        return ({ type: cacheModel.cacheActionEnums.putAnnouncementByIdCacheError })
+                    }
+
+                    this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                    return ({ type: cacheModel.cacheActionEnums.putAnnouncementByIdCacheError })
+                }),
+                catchError(e => {
+                    console.log(e);
+                    return of({ type: cacheModel.cacheActionEnums.putAnnouncementByIdCacheError })
                 })
             ))
         )

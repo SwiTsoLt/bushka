@@ -75,7 +75,7 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
         })
 
       } else {
-        console.log('sthww');
+        console.log('limit');
       }
     })
   }

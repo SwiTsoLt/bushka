@@ -12,11 +12,16 @@
         height: 100%;
 
         .announcementList {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(calc($announcement-min-width), 1fr));
             grid-gap: $padding-inline-s;
             width: 100%;
-            height: 100%;
+            height: fit-content;
+
+            app-announcement {
+                width: 100%;
+                height: fit-content;
+            }
         }
     }
 }

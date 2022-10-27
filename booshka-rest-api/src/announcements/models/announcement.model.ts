@@ -77,3 +77,11 @@ export const announcementErrorEnum = {
     notFount: (id: string) => `Объявление с id '${id}' не найдено`,
     somethingWentWrong: "Что-то пошло не так"
 }
+
+/* Validate Error Enum */
+
+export enum announcementValidateErrorEnums {
+    title = "Заголовок не должен быть пустым",
+    price = "Укажите цену",
+    category = "Выберите категорию"
+}

@@ -4,7 +4,7 @@ import * as userModel from "../../user/models/user.model";
 import * as cacheModel from "../models/cache.model";
 
 export const getAnnouncementCacheList = createAction(cacheModel.cacheActionEnums.getAnnouncementCacheList)
-export const getAnnouncementCacheListSuccess = createAction(cacheModel.cacheActionEnums.getAnnouncementCacheListSuccess, props<{ announcementList: announcementModel.IAnnouncement[] }>())
+export const getAnnouncementCacheListSuccess = createAction(cacheModel.cacheActionEnums.getAnnouncementCacheListSuccess)
 export const getAnnouncementCacheListError = createAction(cacheModel.cacheActionEnums.getAnnouncementCacheListError)
 export const getAnnouncementCacheListAbolition = createAction(cacheModel.cacheActionEnums.getAnnouncementCacheListAbolition)
 
@@ -13,8 +13,10 @@ export const getUserCacheListSuccess = createAction(cacheModel.cacheActionEnums.
 export const getUserCacheListError = createAction(cacheModel.cacheActionEnums.getUserCacheListError)
 
 export const putAnnouncementCache = createAction(cacheModel.cacheActionEnums.putAnnouncementCache, props<{ announcement: announcementModel.IAnnouncement }>())
-export const putAnnouncementCacheSuccess = createAction(cacheModel.cacheActionEnums.putAnnouncementCache, props<{ announcement: announcementModel.IAnnouncement }>())
-export const putAnnouncementCacheError = createAction(cacheModel.cacheActionEnums.putAnnouncementCache, props<{ announcement: announcementModel.IAnnouncement }>())
+
+export const putAnnouncementByIdCache = createAction(cacheModel.cacheActionEnums.putAnnouncementByIdCache, props<{ id: string }>())
+export const putAnnouncementByIdCacheSuccess = createAction(cacheModel.cacheActionEnums.putAnnouncementByIdCacheSuccess, props<{ announcement: announcementModel.IAnnouncement }>())
+export const putAnnouncementByIdCacheError = createAction(cacheModel.cacheActionEnums.putAnnouncementByIdCacheError)
 
 export const putUserByIdCache = createAction(cacheModel.cacheActionEnums.putUserByIdCache, props<{ id: string }>())
 export const putUserByIdCacheSuccess = createAction(cacheModel.cacheActionEnums.putUserByIdCacheSuccess, props<{ user: userModel.IUser }>())

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as toastModels from './models/toasts.model';
+import { updateNotify } from './reducers/toasts.actions';
 import { selectToastList } from './reducers/toasts.selectors';
 
 @Component({

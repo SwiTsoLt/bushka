@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import * as authorizationModel from "./models/authorization.model";
 import * as registrationModel from "./registration/models/registration.model";
 import * as loginModel from "./login/models/login.model";
+import { IUser } from "src/app/store/user/models/user.model";
 
 @Injectable({
     providedIn: "root"
@@ -43,6 +44,19 @@ export class AuthorizationService {
 
         const url = authorizationModel.authorizationHttpUrlEnums.getUserByJWT
         return this.http.get<authorizationModel.IAuthorizationHttpResponseGetUser>(url, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+    }
+
+    public toggleIdea(id: string): Observable<authorizationModel.IPutUserIdeaResponse> {
+        const data = localStorage.getItem("booshka")
+        const dataParsed = data ? JSON.parse(data) : null
+        const token = dataParsed ? dataParsed?.token : null
+        
+        const url = authorizationModel.authorizationHttpUrlEnums.toggleIdea
+        return this.http.put<authorizationModel.IPutUserIdeaResponse>(url, { id }, {
             headers: {
                 authorization: `Bearer ${token}`
             }

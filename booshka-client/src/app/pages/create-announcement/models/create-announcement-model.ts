@@ -1,12 +1,4 @@
-
-export interface IAnnouncement {
-    title: string,
-    description: string,
-    category: number,
-    price: number,
-    imageLinkList: string[],
-    ownerId: string
-}
+import { IAnnouncement } from "../../main/models/main.model"
 
 export interface ICategory {
     id: number,
@@ -47,7 +39,7 @@ export enum createAnnouncementServiceUrlEnums {
 }
 
 export interface createAnnouncementServiceCreateResponse {
-    announcement?: ICreateAnnouncementServiceForm,
+    announcement?: IAnnouncement,
     message: string
 }
 

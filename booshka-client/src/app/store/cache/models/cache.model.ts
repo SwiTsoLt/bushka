@@ -19,8 +19,10 @@ export enum cacheActionEnums {
     getUserCacheListError = "[Cache Component] Set User Cache List Error",
 
     putAnnouncementCache = "[Cache Component] Put Announcement Cache",
-    putAnnouncementCacheSuccess = "[Cache Component] Put Announcement Cache",
-    putAnnouncementCacheError = "[Cache Component] Put Announcement Cache",
+
+    putAnnouncementByIdCache = "[Cache Component] Put Announcement By Id Cache",
+    putAnnouncementByIdCacheSuccess = "[Cache Component] Put Announcement By Id Cache Success",
+    putAnnouncementByIdCacheError = "[Cache Component] Put Announcement By Id Cache Error",
 
     putUserByIdCache = "[Cache Component] Put User By Id Cache",
     putUserByIdCacheSuccess = "[Cache Component] Put User By Id Cache Success",

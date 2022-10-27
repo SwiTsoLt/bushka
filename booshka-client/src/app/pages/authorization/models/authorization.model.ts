@@ -4,7 +4,9 @@ export const authorizationHttpUrlEnums = {
     registration: "/api/auth/registration",
     login: "/api/auth/login",
     getUserById: (id: string) => `/api/user/${id}`,
-    getUserByJWT: "/api/user"
+    getUserByJWT: "/api/user",
+    toggleIdea: "/api/user/toggleIdea",
+    removeIdea: (id: string) => `/api/user/removeIdea?id=${id}`
 }
 
 export enum authorizationGuardEnums {
@@ -33,5 +35,15 @@ export type AuthorizationResponseRegistration =
 
 export interface IAuthorizationHttpResponseGetUser {
     user?: userModel.IUser,
+    message?: string
+}
+
+export interface IPutUserIdeaResponse {
+    user: userModel.IUser,
+    message?: string
+}
+
+export interface IRemoveUserIdeaResponse {
+    user: userModel.IUser,
     message?: string
 }

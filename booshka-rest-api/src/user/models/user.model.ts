@@ -31,7 +31,7 @@ export interface IUserServiceResponseUser {
     region: string,
     phone: string,
     announcementIdList: string[],
-    favorites: string[],
+    ideas: string[],
     registrationDate: Date
 }
 

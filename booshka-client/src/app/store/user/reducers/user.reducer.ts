@@ -14,7 +14,7 @@ export const initialState: {
         firstName: "",
         lastName: "",
         announcementIdList: [],
-        favorites: [],
+        ideas: [],
         phone: "",
         city: "",
         region: ""
@@ -49,10 +49,14 @@ export const userReducer = createReducer(
             lastName: "",
             phone: "",
             announcementIdList: [],
-            favorites: [],
+            ideas: [],
             city: "",
             region: ""
         },
         ready: true
     })),
+
+    on(userActions.toggleIdea, (state, {id}) => ({ ...state, ready: false })),
+    on(userActions.toggleIdeaSuccess, (state, { user }) => ({ ...state, user, ready: true })),
+    on(userActions.toggleIdeaError, (state) => ({ ...state, ready: true })),
 )

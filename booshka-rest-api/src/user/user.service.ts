@@ -4,6 +4,9 @@ import { Model } from "mongoose";
 import * as userModel from "./models/user.model";
 import * as authModel from "../auth/models/auth.model";
 import { User, UserDocument } from "./schemas/user.schema";
+import { Request } from "express";
+import { Announcement, AnnouncementDocument } from "src/announcements/schemas/announcement.schema";
+import * as announcementModel from "../announcements/models/announcement.model";
 
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -12,7 +15,8 @@ const config = require('config');
 export class UserService {
 
     constructor(
-        @InjectModel(User.name) private userModel: Model<UserDocument>
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectModel(Announcement.name) private announcementModel: Model<AnnouncementDocument>
     ) { }
 
     public async getUserById(id: string): Promise<userModel.IUserServiceResponse> {
@@ -22,8 +26,8 @@ export class UserService {
                     return ({ message: authModel.errorEnums.userNotFound(id), status: HttpStatus.NOT_FOUND })
                 }
                 const userCopy = user
-                delete userCopy.password
-                return ({user: userCopy, status: HttpStatus.OK})
+                userCopy.password = undefined
+                return ({ user: userCopy, status: HttpStatus.OK })
             })
             .catch(e => ({ message: e, status: HttpStatus.INTERNAL_SERVER_ERROR }))
     }
@@ -35,8 +39,8 @@ export class UserService {
             return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
         }
 
-        delete userCopy.password
-        return ({user: userCopy, status: HttpStatus.OK})
+        userCopy.password = undefined
+        return ({ user: userCopy, status: HttpStatus.OK })
     }
 
     public async getUserAnnouncementIdList(id: string) {
@@ -54,12 +58,51 @@ export class UserService {
             })
     }
 
-    public async getUserFavorites(req: any) {
+    public async toggleIdea(req: any) {
         const user = req?.user
+        const { id } = req?.body
+
+        console.log(user);
+        console.log(id);
+
+        if (!id?.trim()) {
+            return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+        }
+
         if (!user) {
             return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
         }
 
-        return ({ favorites: user.favorites, status: HttpStatus.OK })
+        const newIdeaList = user.ideas.includes(id)
+            ? { ideas: user.ideas.filter((userIdeaId: string) => userIdeaId !== id) }
+            : { ideas: [id, ...user.ideas] }
+
+        return await this.announcementModel.findById(id)
+            .then(async candidate => {
+                if (!candidate) {
+                    return ({ message: announcementModel.announcementErrorEnum.notFount(id), status: HttpStatus.NOT_FOUND })
+                }
+
+                return await this.userModel.findByIdAndUpdate(
+                    user._id,
+                    newIdeaList,
+                    { new: true }
+                )
+                    .then(newUser => {
+                        if (!newUser) {
+                            return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+                        }
+
+                        return ({ user: newUser, status: HttpStatus.OK })
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+                    })
+            })
+            .catch(e => {
+                console.log(e);
+                return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
+            })
     }
 }

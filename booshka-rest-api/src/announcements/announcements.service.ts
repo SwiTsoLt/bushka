@@ -124,7 +124,16 @@ export class AnnouncementsService {
             return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
         }
 
-        const imageList = req?.files?.length ? (req?.files?.imageList?.length ? req?.files?.imageList : [req?.files?.imageList]) : []
+        const imageList = req?.files?.imageList
+            ? (
+                req?.files?.imageList?.name
+                    ? [req?.files?.imageList]
+                    : (
+                        req?.files?.imageList?.length
+                            ? req?.files?.imageList
+                            : []
+                    )
+            ) : []
 
         if (imageList?.length) {
             return await imageList.reduce(async (acc, file) => {
@@ -149,16 +158,23 @@ export class AnnouncementsService {
                     body: fs.createReadStream(newFilePath)
                 }
 
-                const responseFileId = await this.driveService.files.create({
+                return await this.driveService.files.create({
                     requestBody: fileMetaData,
                     media,
                     fields: "id"
                 })
-
-                const newFileLink = await this.generatePublicUrl(responseFileId.data.id)
-
-                fs.unlinkSync(newFilePath)
-                return [...(await acc), newFileLink]
+                    .then(async responseFileId => await this.generatePublicUrl(responseFileId.data.id)
+                        .then(newFileLink => [...acc, newFileLink])
+                        .catch(e => {
+                            console.log(e);
+                            return acc
+                        })
+                    )
+                    .catch(e => {
+                        console.log(e);
+                        return acc
+                    })
+                    .finally(() => fs.unlinkSync(newFilePath))
             }, [])
                 .then(async imageLinkList => {
                     const category = await this.getCategoryById(createAnnouncementDto.categoryId.toString())
@@ -191,21 +207,27 @@ export class AnnouncementsService {
                     // })
 
                     return await newAnnouncement.save()
-                        .then((announcement) => {
-                            this.userModel.findByIdAndUpdate(user._id, {
+                        .then(async (announcement) => {
+                            return await this.userModel.findByIdAndUpdate(user._id, {
                                 ...user,
                                 announcementIdList: [
                                     ...user.announcementIdList,
                                     announcement._id
                                 ]
-                            }, (err, result) => {
-                                if (err) {
-                                    console.log(err);
-                                    return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
-                                }
-
-                                return ({ announcement, user: result, status: HttpStatus.CREATED })
-                            })
+                            }, { new: true })
+                                .then(newUser => ({
+                                    user: newUser,
+                                    announcement,
+                                    message: announcementModel.announcementSuccessEnum.created,
+                                    status: HttpStatus.CREATED
+                                }))
+                                .catch(e => {
+                                    console.log(e)
+                                    return ({
+                                        message: announcementModel.announcementErrorEnum.somethingWentWrong,
+                                        status: HttpStatus.INTERNAL_SERVER_ERROR
+                                    })
+                                })
                         })
                         .catch((e: string) => {
                             console.log(e);
@@ -253,7 +275,7 @@ export class AnnouncementsService {
                         ...user.announcementIdList,
                         announcement._id
                     ]
-                })
+                }, { new: true })
                     .then(newUser => {
                         console.log("res: ", ({
                             user: newUser,
@@ -289,16 +311,20 @@ export class AnnouncementsService {
     async remove(id: string, req: any): Promise<announcementModel.IAnnouncementDeleteServiceResponse> {
         const user = req?.user
 
-        console.log('use', user);
-
         if (!user) {
             return ({ message: announcementModel.announcementErrorEnum.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
         }
 
         return await this.AnnouncementModel.findByIdAndRemove(id)
             .then(async (announcement) => {
-
-                console.log('del an:', announcement);
+                if (announcement?.imageLinkList?.length) {
+                    await announcement.imageLinkList.forEach(async link => {
+                        const fileId = link.split("?id=")[1].split("&export")[0]
+                        await this.driveService.files.delete({
+                            'fileId': fileId
+                        });
+                    })
+                }
 
                 if (announcement?._id) {
                     return await this.userModel.findByIdAndUpdate(user._id, {

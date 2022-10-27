@@ -77,4 +77,35 @@ export class UserEffects {
             })
         )
     })
+
+    toggleIdea$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(userModel.userActionEnums.toggleIdea),
+            mergeMap(({ id }) => this.authorizationService.toggleIdea(id).pipe(
+                map(response => {
+                    if (response?.user) {
+                        return ({ type: userModel.userActionEnums.toggleIdeaSuccess, user: response?.user })
+                    }
+
+                    if (response?.message) {
+                        this.store$.dispatch(toastActions.notify({ toasts: [{ text: response.message, type: toastModel.toastTypeEnums.error }] }))
+                        return ({ type: userModel.userActionEnums.toggleIdeaSuccess, user: response?.user })
+                    }
+
+                    this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                    return ({ type: userModel.userActionEnums.toggleIdeaError })
+                }),
+                catchError(e => {
+                    console.log(e);
+                    this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                    return of({ type: userModel.userActionEnums.toggleIdeaError })
+                })              
+            )),
+            catchError(e => {
+                console.log(e);
+                this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
+                return of({ type: userModel.userActionEnums.toggleIdeaError })
+            })
+        )
+    })
 }

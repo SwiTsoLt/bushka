@@ -59,6 +59,8 @@ export class AnnouncementsController {
       ...createAnnouncementDto
     }, req)
 
+    console.log(announcementResponse);
+
     if (announcementResponse?.announcement) {
       return res.status(announcementResponse.status).json({
         announcement: announcementResponse.announcement,

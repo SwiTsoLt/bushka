@@ -23,10 +23,16 @@ export enum announcementActionsEnum {
 }
 
 export const announcementUrls = {
-    getPage: (page: number) => `/api/announcement?page=${page}`
+    getPage: (page: number) => `/api/announcement?page=${page}`,
+    getAnnouncementById: (id: string) => `/api/announcement/${id}`,
 }
 
 export interface announcementGetPageResponse {
     announcementList: IAnnouncement[],
+    message?: string
+}
+
+export interface announcementGetAnnouncementByIdResponse {
+    announcement: IAnnouncement,
     message?: string
 }

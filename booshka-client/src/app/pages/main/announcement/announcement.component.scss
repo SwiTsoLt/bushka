@@ -2,154 +2,220 @@
 
 
 .announcement {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    grid-gap: $padding-inline-l;
     width: 100%;
+    max-width: $announcement-max-width;
     height: $announcement-height;
     max-height: $announcement-height;
     background-color: $bg-clr-white;
-    padding: $padding-inline-l;
-    overflow: hidden;
-
-    p {
-        width: fit-content;
-        height: fit-content;
-        margin: 0;
-    }
 
     .announcement-info {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: 3rem auto 1fr auto auto;
         grid-gap: $padding-inline-l;
         width: 100%;
-        height: 100%;
+        height: $announcement-height;
+        max-height: $announcement-height;
 
         .info-top {
-            display: flex;
-            justify-content: space-between;
             width: 100%;
-            height: fit-content;
+            height: 100%;
+            padding: $padding-inline-l $padding-inline-l 0 $padding-inline-l;
 
-            .owner-container {
+            a {
                 display: flex;
-                width: fit-content;
-                height: fit-content;
-                max-height: 2rem;
+                align-items: center;
+                grid-gap: $padding-inline-s;
+                width: 100%;
+                height: 100%;
 
-                a {
+                .owner-avatar {
+                    width: auto;
+                    height: 100%;
+                    aspect-ratio: 1/1;
+                    border-radius: 50%;
+                    background-color: $article-bg-clr-hover-purple;
+                }
+
+                .owner-name {
                     display: flex;
                     align-items: center;
                     grid-gap: $padding-inline-s;
-                    width: fit-content;
-                    height: fit-content;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
 
-                    .owner-avatar {
-                        width: 2rem;
-                        height: 2rem;
-                        aspect-ratio: 1/1;
-                        border-radius: 50%;
-                        background-color: #eee;
-                    }
+        .hr {
+            width: 100%;
+            height: 2px;
+            background-color: $body-bg-clr;
+        }
 
-                    .owner-name {
-                        display: flex;
-                        grid-gap: $padding-inline-s;
-                        width: fit-content;
-                        height: fit-content;
+        .announcement-image-list {
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+            overflow: hidden;
 
-                        .owner-first-name,
-                        .owner-last-name {
-                            width: fit-content;
-                            height: fit-content;
-                        }
+            .announcement-image-list-inner {
+                display: flex;
+                flex: none;
+                grid-gap: $padding-inline-s;
+                width: 100%;
+                height: 100%;
+                overflow-x: scroll;
+                flex-flow: row nowrap;
+                scroll-snap-type: x mandatory;
+                padding: 0 0 $padding-inline-l 0;
+
+                &::-webkit-scrollbar {
+                    height: 2px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: $body-bg-clr;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: $border-clr;
+                }
+
+                a {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    max-width: 100%;
+                    max-height: 100%;
+                    flex: none;
+                    scroll-snap-align: center;
+
+                    img {
+                        display: block;
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
                     }
                 }
             }
         }
 
-        .announcement-title {
+        .info-bottom {
             display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
+            flex-direction: column;
+            grid-row-gap: $padding-inline-s;
             width: 100%;
-            height: 100%;
+            height: fit-content;
+            padding: 0 $padding-inline-l;
 
-            p {
-                font-size: $text-size-m;
+            .announcement-price {
+                width: 100%;
+                height: fit-content;
+            }
+
+            .announcement-title {
+                display: flex;
+                align-items: flex-start;
+                width: 100%;
+                max-width: calc(100% - 3rem - $padding-inline-s);
+                height: fit-content;
+                max-height: 1.2rem;
+                min-height: 1.2rem;
+                font-size: 1.2rem;
+                overflow: hidden;
+            }
+
+            .announcement-description {
+                display: flex;
+                align-items: flex-start;
+                width: 100%;
+                height: fit-content;
+                max-height: 1.6rem;
+                min-height: 0.8rem;
+                overflow: hidden;
+            }
+
+            .create-date {
+                width: 100%;
+                height: fit-content;
             }
         }
 
-        .announcement-description {
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 100%;
-            height: 100%;
-
-            p {
-                font-size: $text-size-s;
-            }
-        }
-    }
-
-    .announcement-image-list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow-x: auto;
-        border-radius: $border-radius;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        .announcement-image-list-inner {
-            display: flex;
-            justify-content: center;
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr auto;
             align-items: center;
-            grid-gap: $padding-inline-l;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: fit-content;
-            height: 100%;
-            border-radius: $border-radius;
+            grid-gap: $padding-inline-s;
+            width: 100%;
+            height: fit-content;
+            padding: 0 $padding-inline-l $padding-inline-l $padding-inline-l;
 
-            .announcement-image {
+            .details-button {
+                width: 100%;
+                height: fit-content;
+
+                app-my-button {
+                    width: 100%;
+                    height: auto;
+                    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                }
+            }
+
+            .idea-button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: auto;
-                height: 100%;
-                border-radius: $border-radius;
+                width: fit-content;
+                height: fit-content;
 
-                img {
+                button {
                     width: auto;
-                    height: 100%;
-                    border-radius: $border-radius;
+                    height: 20px;
+                    aspect-ratio: 1/1;
+                    background-image: url('../../../images/article/ideas.png');
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
+                    border: none;
+                    outline: 2px solid transparent;
+                    outline-offset: -10px;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    cursor: pointer;
+                    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                    transition: all .2s ease;
+
+                    &.click {
+                        background-image: url('../../../images/article/active/ideas.png');
+                        animation: .6s ease idea;
+                    }
+
+                    &.active {
+                        background-image: url('../../../images/article/active/ideas.png');
+                    }
+
+                    @keyframes idea {
+                        0%{
+                            outline-color: transparent;
+                            outline-offset: -10px;
+                        }
+
+                        50% {
+                            outline-color: #fcce0050;
+                        }
+
+                        100% {
+                            outline-color: transparent;
+                            outline-offset: 12px;
+                        }
+                    }
+                }
+
+                &:active>button {
+                    transform: translateY(calc(-1 * $padding-inline-s / 2));
                 }
             }
-        }
-    }
-
-    .info-bottom {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        height: fit-content;
-
-        .announcement-price {
-            width: fit-content;
-            height: fit-content;
-        }
-
-        .announcement-category {
-            width: fit-content;
-            height: fit-content;
         }
     }
 }

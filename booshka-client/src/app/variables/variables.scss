@@ -40,7 +40,7 @@ $nav-link-border-clr-hover-green: #3ce482;
 $nav-link-border-clr-hover-yellow: #fcce00;
 $nav-link-border-clr-hover-blue: #6adbff;
 
-$box-shadow-clr: #bab0ccb0;
+$box-shadow-clr: #bab0cc60;
 $border-radius: 4px;
 
 /* logo */
@@ -84,4 +84,6 @@ $article-bg-clr-hover-blue: #6adcff13;
 
 /* Announcement */
 
-$announcement-height: 300px;
+$announcement-height: 340px;
+$announcement-min-width: 170px;
+$announcement-max-width: 340px;

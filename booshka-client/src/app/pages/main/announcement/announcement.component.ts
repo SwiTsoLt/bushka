@@ -8,6 +8,8 @@ import * as cacheSelectors from '../../../store/cache/reducers/cache.selectors';
 import * as userSelectors from '../../../store/user/reducers/user.selectors';
 import * as userActions from '../../../store/user/reducers/user.actions';
 import * as cacheActions from 'src/app/store/cache/reducers/cache.actions';
+import { notify } from 'src/app/UI/toasts/reducers/toasts.actions';
+import { toastTypeEnums } from 'src/app/UI/toasts/models/toasts.model';
 
 @Component({
   selector: 'app-announcement',
@@ -41,6 +43,7 @@ export class AnnouncementComponent implements OnInit {
   public cacheUserList$: Observable<userModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
   public cacheUserListReady$: Observable<boolean> = this.store$.pipe(select(cacheSelectors.selectCacheUserListReady))
   public owner$: Observable<userModel.IUser> = this.getOwner().pipe(takeLast(1))
+  public announcementInIdea$: Observable<boolean> = this.announcementInIdea()
 
   public getOwner(): Observable<userModel.IUser> {
     return new Observable(observer => {
@@ -51,14 +54,21 @@ export class AnnouncementComponent implements OnInit {
               observer.next(user)
               observer.complete()
             } else {
-              this.cacheUserList$.subscribe(cacheList => {
-                const candidateIdList: string[] = cacheList.reduce((acc: string[], cur: userModel.IUser) => {
-                  return [...acc, cur._id]
-                }, [])
-                if (candidateIdList.includes(this.announcement.ownerId)) {
-                  const candidate = cacheList.filter((userCache) => userCache._id === this.announcement.ownerId)
-                  observer.next(candidate[0])
-                  observer.complete()
+              console.log(this.announcement.ownerId);
+              this.cacheUserListReady$.subscribe(cacheUserListReady => {
+                if (cacheUserListReady) {
+                  this.cacheUserList$.pipe(take(1)).subscribe(cacheList => {
+                    const candidateIdList: string[] = cacheList.reduce((acc: string[], cur: userModel.IUser) => {
+                      return [...acc, cur._id]
+                    }, [])
+                    if (candidateIdList.includes(this.announcement.ownerId)) {
+                      const candidate = cacheList.filter((userCache) => userCache._id === this.announcement.ownerId)
+                      observer.next(candidate[0])
+                      observer.complete()
+                    } else {
+                      this.store$.dispatch(cacheActions.putUserByIdCache({ id: this.announcement.ownerId }))
+                    }
+                  })
                 }
               })
             }
@@ -68,7 +78,31 @@ export class AnnouncementComponent implements OnInit {
     })
   }
 
+  public announcementInIdea(): Observable<boolean> {
+    return new Observable(observer => {
+      this.userReady$.subscribe(userReady => {
+        if (userReady) {
+          this.user$.pipe(take(1)).subscribe(user => {
+            observer.next(user.ideas.includes(this.announcement._id))
+          })
+        }
+      })
+    })
+  }
+
+  public putIdea(id: string, event: any) {
+    event.target.classList.add('click')
+    console.log(event.target.classList);
+    setTimeout(() => event.target.classList.remove('click'), 400)
+    this.store$.dispatch(userActions.toggleIdea({ id }))
+  }
+
+  public details() {
+    this.store$.dispatch(notify({ toasts: [{ text: "Упс... Ещё в разработке.", type: toastTypeEnums.notify }] }))
+  }
+
   ngOnInit(): void {
+    this.owner$.subscribe(console.log)
   }
 
 }

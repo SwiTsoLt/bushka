@@ -30,7 +30,7 @@ export class User {
     phone: string
 
     @Prop()
-    favorites: string[]
+    ideas: string[]
 
     @Prop()
     announcementIdList: string[]

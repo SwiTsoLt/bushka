@@ -21,3 +21,7 @@ export const setUserByJWTSuccess = createAction(userModel.userActionEnums.setUse
 export const setUserByJWTError = createAction(userModel.userActionEnums.setUserByJWTError)
 
 export const clear = createAction(userModel.userActionEnums.clear)
+
+export const toggleIdea = createAction(userModel.userActionEnums.toggleIdea, props<{ id: string }>())
+export const toggleIdeaSuccess = createAction(userModel.userActionEnums.toggleIdeaSuccess, props<{ user: userModel.IUser }>())
+export const toggleIdeaError = createAction(userModel.userActionEnums.toggleIdeaError)

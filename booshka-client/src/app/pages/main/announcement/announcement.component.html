@@ -1,54 +1,53 @@
 <div *ngIf="announcement._id" class="announcement box">
     <div class="announcement-info">
         <div class="info-top">
-            <div class="owner-container">
-                <a routerLink="/profile-component/{{announcement.ownerId}}">
-                    <div class="owner-avatar"></div>
-                    <div class="owner-name">
-                        <div class="owner-first-name">
-                            <h4><strong>{{ (owner$ | async)?.firstName }}</strong></h4>
-                        </div>
-                        <div class="owner-last-name">
-                            <h4><strong>{{ (owner$ | async)?.lastName }}</strong></h4>
-                        </div>
+            <a routerLink="/profile-component/{{announcement.ownerId}}">
+                <div class="owner-avatar"></div>
+                <div class="owner-name">
+                    <div class="owner-first-name">
+                        <h4><strong>{{ (owner$ | async)?.firstName }}</strong></h4>
                     </div>
+                    <div class="owner-last-name">
+                        <h4><strong>{{ (owner$ | async)?.lastName }}</strong></h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="hr"></div>
+        <div class="announcement-image-list">
+            <div class="announcement-image-list-inner">
+                <a *ngFor="let link of announcement.imageLinkList" href="{{link}}" class="announcement-image"
+                    target="_blank">
+                    <img src="{{link}}" alt="">
                 </a>
+            </div>
+        </div>
+        <div class="info-bottom">
+            <div class="announcement-price">
+                <h2>
+                    <strong>
+                        {{ announcement.price }}&nbsp;руб.
+                    </strong>
+                </h2>
+            </div>
+            <div class="announcement-title">
+                <h4>
+                    <strong>
+                        {{announcement.title}}
+                    </strong>
+                </h4>
             </div>
             <div class="create-date">
                 <p>{{announcement.createDate | date:'dd MMMM YYYY, HH:mm' }}</p>
             </div>
         </div>
-        <div class="announcement-title">
-            <h2>
-                {{announcement.title}}
-            </h2>
-        </div>
-        <div class="announcement-description">
-            <p>
-                {{announcement.description}}
-            </p>
-        </div>
-    </div>
-    <div class="announcement-image-list">
-        <div class="announcement-image-list-inner gallery">
-            <a href="{{link}}" *ngFor="let link of announcement.imageLinkList" class="announcement-image"
-                target="_blank">
-                <img src="{{link}}" alt="">
-            </a>
-        </div>
-    </div>
-    <div class="info-bottom">
-        <div class="announcement-price">
-            <p>
-                Цена: <span class="announcement-price-inner">
-                    {{ announcement.price }}
-                </span> руб.
-            </p>
-        </div>
-        <div class="announcement-category">
-            <p>
-                Категория: <span>{{announcement.category.title}}</span>
-            </p>
+        <div class="buttons">
+            <div class="details-button">
+                <app-my-button text="Подробнее" type="details" [isDisabled]="false" [callback]="details.bind(this)"></app-my-button>
+            </div>
+            <div class="idea-button" (click)="putIdea(announcement._id, $event)">
+                <button [ngClass]="{ 'active': announcementInIdea$ | async }"></button>
+            </div>
         </div>
     </div>
 </div>

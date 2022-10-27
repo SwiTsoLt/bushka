@@ -6,7 +6,7 @@ export interface IUser {
     phone: string,
     city: string,
     announcementIdList: string[],
-    favorites: string[],
+    ideas: string[],
     region: string
 }
 
@@ -33,4 +33,8 @@ export enum userActionEnums {
     setUserByIdError = "[User Component] Set User By Id Error",
     
     clear = "[User Component] Clearr",
+    
+    toggleIdea = "[Cache Component] Toggle Idea",
+    toggleIdeaSuccess = "[Cache Component] Toggle Idea Success",
+    toggleIdeaError = "[Cache Component] Toggle Idea Error",
 }

@@ -16,4 +16,9 @@ export class MainService {
         const url = announcementModel.announcementUrls.getPage(page)
         return this.http.get<announcementModel.announcementGetPageResponse>(url)
     }
+
+    public getAnnouncementById(id: string): Observable<announcementModel.announcementGetAnnouncementByIdResponse> {
+        const url = announcementModel.announcementUrls.getAnnouncementById(id)        
+        return this.http.get<announcementModel.announcementGetAnnouncementByIdResponse>(url)
+    }
 }

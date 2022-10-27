@@ -10,7 +10,13 @@ export const initialState: toastsModel.IToast[] = []
 
 export const toastsReducer = createReducer(
     initialState,
-    on(toastActions.notify, (state, { toasts }) => ([...state, ...toasts])),
+    on(toastActions.notify, (state, { toasts }) => {
+        if (state.length < 5) {
+            return ([...state, ...toasts])
+        }
+
+        return ([...state])
+    }),
     on(toastActions.updateNotify, (state, { ready }) => ([{
         text: state[0].text,
         type: state[0].type,

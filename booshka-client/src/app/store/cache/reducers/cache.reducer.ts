@@ -16,7 +16,7 @@ export const initialState: cacheModel.ICache = {
 export const cacheReducer = createReducer(
     initialState,
     on(cacheActions.getAnnouncementCacheList, (state) => ({ ...state, announcementListReady: false })),
-    on(cacheActions.getAnnouncementCacheListSuccess, (state, {announcementList}) => ({...state, announcementList, announcementListReady: true})),
+    on(cacheActions.getAnnouncementCacheListSuccess, (state) => ({...state, announcementListReady: true})),
     on(cacheActions.getAnnouncementCacheListError, (state) => ({ ...state, announcementListReady: true })),
     on(cacheActions.getAnnouncementCacheListAbolition, (state) => ({ ...state, announcementListReady: true })),
 
@@ -24,9 +24,11 @@ export const cacheReducer = createReducer(
     on(cacheActions.getUserCacheListSuccess, (state) =>({...state, userListReady: true})),
     on(cacheActions.getUserCacheListError, (state) => ({ ...state, userListReady: true })),
 
-    on(cacheActions.putAnnouncementCache, (state, { announcement }) => ({ ...state, announcementList: [...(state?.announcementList || []), announcement] })),
-    on(cacheActions.putAnnouncementCacheSuccess, (state, { announcement }) => ({ ...state, announcementList: [...(state?.announcementList || []), announcement] })),
-    on(cacheActions.putAnnouncementCacheError, (state, { announcement }) => ({ ...state, announcementList: [...(state?.announcementList || []), announcement] })),
+    on(cacheActions.putAnnouncementCache, (state, { announcement }) => ({ ...state, announcementList: [ announcement, ...state.announcementList ] })),
+    
+    on(cacheActions.putAnnouncementByIdCache, (state, { id }) => ({ ...state, announcementListReady: false })),
+    on(cacheActions.putAnnouncementByIdCacheSuccess, (state, { announcement }) => ({ ...state, announcementList: [...(state?.announcementList || []), announcement], announcementListReady: true })),
+    on(cacheActions.putAnnouncementByIdCacheError, (state) => ({ ...state, announcementListReady: true })),
     
     on(cacheActions.putUserByIdCache, (state, {id}) => ({ ...state, userListReady: false })),
     on(cacheActions.putUserByIdCacheSuccess, (state, { user }) => ({ ...state, userList: [...(state?.userList || []), user], userListReady: true })),
