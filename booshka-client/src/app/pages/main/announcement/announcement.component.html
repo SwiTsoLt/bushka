@@ -45,7 +45,7 @@
             <div class="details-button">
                 <app-my-button text="Подробнее" type="details" [isDisabled]="false" [callback]="details.bind(this)"></app-my-button>
             </div>
-            <div class="idea-button" (click)="putIdea(announcement._id, $event)">
+            <div class="idea-button" (mousedown)="putIdea(announcement._id, $event)">
                 <button [ngClass]="{ 'active': announcementInIdea$ | async }"></button>
             </div>
         </div>

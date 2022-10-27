@@ -58,17 +58,21 @@ export class UserEffects {
         return this.actions$.pipe(
             ofType(userModel.userActionEnums.logout),
             map(() => {
-                const data = localStorage.getItem(booshkaNode) || ""
-                const parsedData = JSON.parse(data) || {}
-                if (parsedData) {
-                    this.store$.dispatch(userActions.clear())
-                    const newData = JSON.stringify({
-                        ...parsedData,
-                        token: ""
-                    })
-                    localStorage.setItem(booshkaNode, newData)
-                    return ({ type: userModel.userActionEnums.logoutSuccess })
+                if (confirm("Вы уверены, что хотите выйти?")) {
+                    const data = localStorage.getItem(booshkaNode) || ""
+                    const parsedData = JSON.parse(data) || {}
+                    if (parsedData) {
+                        this.store$.dispatch(userActions.clear())
+                        const newData = JSON.stringify({
+                            ...parsedData,
+                            token: ""
+                        })
+                        localStorage.setItem(booshkaNode, newData)
+                        return ({ type: userModel.userActionEnums.logoutSuccess })
+                    }
+                    return ({ type: userModel.userActionEnums.logoutError })
                 }
+
                 return ({ type: userModel.userActionEnums.logoutError })
             }),
             catchError(e => {
@@ -99,7 +103,7 @@ export class UserEffects {
                     console.log(e);
                     this.store$.dispatch(toastActions.notify({ toasts: [{ text: loginModel.loginFormErrorEnums.somethingWentWrong, type: toastModel.toastTypeEnums.error }] }))
                     return of({ type: userModel.userActionEnums.toggleIdeaError })
-                })              
+                })
             )),
             catchError(e => {
                 console.log(e);

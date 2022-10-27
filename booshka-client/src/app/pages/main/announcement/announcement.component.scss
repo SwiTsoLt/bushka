@@ -184,36 +184,15 @@
                     background-color: transparent;
                     cursor: pointer;
                     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-                    transition: all .2s ease;
+                    transition: all .2s linear;
 
                     &.click {
-                        background-image: url('../../../images/article/active/ideas.png');
-                        animation: .6s ease idea;
+                        transform: rotateY(180deg);
                     }
 
                     &.active {
                         background-image: url('../../../images/article/active/ideas.png');
                     }
-
-                    @keyframes idea {
-                        0%{
-                            outline-color: transparent;
-                            outline-offset: -10px;
-                        }
-
-                        50% {
-                            outline-color: #fcce0050;
-                        }
-
-                        100% {
-                            outline-color: transparent;
-                            outline-offset: 12px;
-                        }
-                    }
-                }
-
-                &:active>button {
-                    transform: translateY(calc(-1 * $padding-inline-s / 2));
                 }
             }
         }

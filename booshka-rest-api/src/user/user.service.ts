@@ -62,9 +62,6 @@ export class UserService {
         const user = req?.user
         const { id } = req?.body
 
-        console.log(user);
-        console.log(id);
-
         if (!id?.trim()) {
             return ({ message: authModel.errorEnums.somethingWentWrong, status: HttpStatus.INTERNAL_SERVER_ERROR })
         }
