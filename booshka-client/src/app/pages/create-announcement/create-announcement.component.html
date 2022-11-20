@@ -1,14 +1,12 @@
 <div class="create-announcement">
-    <div class="title box">
-        <h1 class="center">Подать объявление</h1>
-    </div>
-    <div class="content box">
+    <div class="content">
         <div class="create-announcement-form">
             <div class="amount"><span>{{(imageList | async)?.length || 0}} / 10</span></div>
             <div class="announcement-images">
                 <div class="image-list">
                     <div *ngIf="((imageList | async)?.length || 0) < 10" class="add-image-input">
-                        <input #imageInput (input)="addImage(imageInput)" id="imageInput" accept="image/png, image/jpg" type="file">
+                        <input #imageInput (input)="addImage(imageInput)" id="imageInput" accept="image/png, image/jpg"
+                            type="file">
                         <label for="imageInput">
                             <div class="image-input-icon">
                                 <mat-icon>add_photo_alternate</mat-icon>
@@ -43,11 +41,35 @@
                 </div>
             </div>
             <div class="announcement-category">
-                <app-select-options [callback]="setValue.bind(this)" [categoryList$]="categoryList$"></app-select-options>
+                <div class="announcement-category-inner">
+                    <button class="toggle" (click)="toggleCategoryOpen()">
+                        <p>
+                            {{ (currentCutegoryTitle$ | async) || 'Выберете категорию'}}
+                        </p>
+                    </button>
+                    <div class="category-list" *ngIf="categoryListOpen$ | async">
+                        <div *ngFor="let category of categoryList$ | async" class="category">
+                            <div class="category-group">
+                                <button disabled>
+                                    {{category.title}}
+                                </button>
+                            </div>
+                            <div class="childList">
+                                <div class="categoryChild" *ngFor="let categoryChild of category.children">
+                                    <button (click)="setValue('category', categoryChild.id.toString(), categoryChild.title)">
+                                        <p>
+                                            {{categoryChild.title}}
+                                        </p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="send">
-                <app-my-button type="create-announcement" text="Подать объявление" [isDisabled]="!(createIsReady | async) || false"
-                    [callback]="create.bind(this)"></app-my-button>
+                <app-my-button type="create-announcement" text="Подать объявление"
+                    [isDisabled]="!(createIsReady | async) || false" [callback]="create.bind(this)"></app-my-button>
             </div>
         </div>
     </div>

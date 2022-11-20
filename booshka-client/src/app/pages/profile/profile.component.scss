@@ -3,115 +3,171 @@
 .profile {
     display: flex;
     flex-direction: column;
-    grid-gap: $padding-inline-s;
+    grid-row-gap: $padding-inline-l;
     width: 100%;
     height: fit-content;
+    padding: $padding-inline-s;
 
-    .content {
-        display: flex;
-        flex-direction: column;
+    .profile-inner {
+        position: relative;
         width: 100%;
         height: fit-content;
-        background-color: $bg-clr-white;
-        padding: $padding-inline-l;
 
-        .content_inner {
-            .info {
-                display: flex;
-                grid-gap: $padding-inline-l;
+        .user {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-gap: $padding-inline-l;
+            width: 100%;
+            height: fit-content;
+    
+            .avatar-container {
+                position: relative;
                 width: 100%;
-                height: 100%;
+                height: auto;
+                min-width: 200px;
+                border-radius: 50%;
+                overflow: hidden;
+                aspect-ratio: 1/1;
     
-                .avatar-container {
+                .default-avatar {
                     width: 100%;
-                    max-width: 200px;
-                    min-width: 100px;
-                    height: fit-content;
-    
-                    .avatar {
+                    height: 100%;
+                    background-image: url("../../images/avatars/avatar-man.png");
+                }
+
+                img {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    background-image: url("../../images/avatars/avatar-error.png");
+                    transform: translate(-50%, -50%);
+                    width: 102%;
+                    height: 102%;
+                }
+
+                .edit-avatar {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+
+                    input {
+                        display: none;
+                    }
+
+                    label {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         width: 100%;
-                        height: auto;
-                        aspect-ratio: 1/1;
-                        border-radius: $border-radius;
-                        background-color: #dedede;
+                        height: 100%;
+                        opacity: 0;
+                        background-color: $bg-clr-black-wall;
+                        color: #ffffff;
+                        transition: opacity 0.2s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            opacity: 1;
+                        }
                     }
                 }
+            }
     
-                .info-inner {
+            .info {
+                display: flex;
+                flex-direction: column;
+                grid-gap: 10px;
+                width: 100%;
+                height: fit-content;
+    
+                .name {
                     display: flex;
-                    flex-direction: column;
                     grid-gap: $padding-inline-s;
+                    width: 100%;
+                    height: fit-content;
+                }
+    
+                .phone {
+                    > a {
+                        color: $text-clr-dark;
+                         > input:disabled {
+                            cursor: pointer;
+                         }  
+                    }
+                }
+
+                input {
                     width: fit-content;
-                    height: 100%;
-    
-                    .name {
-                        p {
-                            font-size: $text-size-xl;
-                        }
+                    min-width: 0;
+                    padding: 0;
+                    margin: 0;
+                    border: none;
+                    outline: none;
+                    color: $text-clr-dark;
+                    box-shadow: none;
+                    transition: none;
+
+                    &:not(:disabled) {
+                        border-bottom: 1px solid $border-clr;
                     }
-    
-                    .contacts {
-                        display: flex;
-                        align-items: flex-end;
-                        width: fit-content;
-                        height: 100%;
-                    }
-    
-    
-    
-                    >div {
-                        display: flex;
-                        grid-gap: $padding-inline-s;
-                        width: 100%;
-                        height: fit-content;
-    
-                        >div {
-                            display: flex;
-                            align-items: center;
-                            width: fit-content;
-                            height: fit-content;
-                            min-height: calc($padding-inline-l * 2);
-    
-                            p,
-                            h2 {
-                                width: 100%;
-                                height: 100%;
-                            }
-    
-                            a {
-                                display: flex;
-                                align-items: center;
-                                grid-gap: $padding-inline-s;
-                                width: 100%;
-                                height: 100%;
-                            }
-                        }
+
+                    &:not(:disabled):focus {
+                        border-bottom: 1px solid $border-clr-hover;
                     }
                 }
             }
         }
 
+        .buttons {
+            display: flex;
+            grid-gap: $padding-inline-s;
+            position: absolute;
+            top: 0;
+            right: 0;
 
-    }
+            button {
+                width: 20px;
+                height: 20px;
+                border: none;
+                background-color: transparent;
+                opacity: 0;
+                transition: all 0.2s ease;
 
-    .announcement {
-        display: flex;
-        flex-direction: column;
-        grid-row-gap: $padding-inline-s;
-        width: 100%;
-        height: fit-content;
+                &:not(:disabled) {
+                    cursor: pointer;
+                }
 
-        .announcement-list {
-            width: 100%;
-            height: fit-content;
+                &.active {
+                    opacity: 1;
+                }
+
+                &.edit{
+                    opacity: 1;
+                    background-image: url("../../images/buttons/svg/edit.svg");
+                    
+                    &.active {
+                        background-image: url("../../images/buttons/svg/cross.svg");   
+                    }
+                }
+
+                &.apply {
+                    background-image: url("../../images/buttons/svg/apply.svg");
+                }
+            }
         }
     }
-}
 
-@media screen and (max-width: 440px) {
-    .info {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    hr {
+        width: 100%;
+        height: 2px;
+        border: none;
+        box-shadow: none;
+        background-color: $border-clr;
+        border-radius: $border-radius;
     }
 }

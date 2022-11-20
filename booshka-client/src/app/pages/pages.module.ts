@@ -34,6 +34,10 @@ import { userNode } from "../store/user/reducers/user.reducer";
 import * as fromUserReferences from "../store/user/reducers";
 import { ArticleComponent } from "../UI/article/article.component";
 import { UserAnnouncementComponent } from "./user-announcement/user-announcement.component";
+import { ProfileStore } from "./profile/profile.store";
+import { ToastEffects } from "../UI/toasts/toast.effects";
+import { toastsNode } from "../UI/toasts/reducers/toasts.reducer";
+import * as fromToastsReferences from "../UI/toasts/reducers";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -48,7 +52,7 @@ registerLocaleData(localeRu, 'ru');
         ArticleComponent,
         AnnouncementComponent,
         UserNotFoundComponent,
-        UserAnnouncementComponent
+        UserAnnouncementComponent,
     ],
     imports: [
         BrowserModule,
@@ -69,6 +73,7 @@ registerLocaleData(localeRu, 'ru');
         PagesComponent,
         FormBuilder,
         CreateAnnouncementStore,
+        ProfileStore,
         {
             provide: LOCALE_ID, useValue: "ru"
         }
@@ -77,7 +82,7 @@ registerLocaleData(localeRu, 'ru');
         LoaderComponent,
         ArticleComponent,
         SelectOptionsComponent,
-        UserAnnouncementComponent
+        UserAnnouncementComponent,
     ]
 })
 

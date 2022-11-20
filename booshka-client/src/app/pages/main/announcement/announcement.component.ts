@@ -38,45 +38,9 @@ export class AnnouncementComponent implements OnInit {
     createDate: new Date()
   }
 
-  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
   public userReady$: Observable<boolean> = this.store$.pipe(select(userSelectors.selectUserReady))
-  public cacheUserList$: Observable<userModel.IUser[]> = this.store$.pipe(select(cacheSelectors.selectCacheUserList))
-  public cacheUserListReady$: Observable<boolean> = this.store$.pipe(select(cacheSelectors.selectCacheUserListReady))
-  public owner$: Observable<userModel.IUser> = this.getOwner().pipe(takeLast(1))
+  public user$: Observable<userModel.IUser> = this.store$.pipe(select(userSelectors.selectUser))
   public announcementInIdea$: Observable<boolean> = this.announcementInIdea()
-
-  public getOwner(): Observable<userModel.IUser> {
-    return new Observable(observer => {
-      this.userReady$.subscribe(userReady => {
-        if (userReady) {
-          this.user$.pipe(take(1)).subscribe(user => {
-            if (user._id === this.announcement.ownerId) {
-              observer.next(user)
-              observer.complete()
-            } else {
-              console.log(this.announcement.ownerId);
-              this.cacheUserListReady$.subscribe(cacheUserListReady => {
-                if (cacheUserListReady) {
-                  this.cacheUserList$.pipe(take(1)).subscribe(cacheList => {
-                    const candidateIdList: string[] = cacheList.reduce((acc: string[], cur: userModel.IUser) => {
-                      return [...acc, cur._id]
-                    }, [])
-                    if (candidateIdList.includes(this.announcement.ownerId)) {
-                      const candidate = cacheList.filter((userCache) => userCache._id === this.announcement.ownerId)
-                      observer.next(candidate[0])
-                      observer.complete()
-                    } else {
-                      this.store$.dispatch(cacheActions.putUserByIdCache({ id: this.announcement.ownerId }))
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      })
-    })
-  }
 
   public announcementInIdea(): Observable<boolean> {
     return new Observable(observer => {
@@ -102,7 +66,6 @@ export class AnnouncementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.owner$.subscribe(console.log)
   }
 
 }

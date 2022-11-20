@@ -1,58 +1,67 @@
-<div class="profile">
-    <div class="title box">
-        <h1 class="center">
-            Профиль
-        </h1>
-    </div>
-    <div *ngIf="(currentUser$ | async)?._id; else loader" class="content box">
-        <div *ngIf="(currentUser$ | async)?._id; else notFound" class="content_inner">
-            <div class="info">
-                <div class="avatar-container">
-                    <div class="avatar"></div>
+<div class="profile" *ngIf="userReady$ | async; else loader">
+    <div class="profile-inner">
+        <div class="user">
+            <div class="avatar-container">
+                <div *ngIf="!(avatarUrl$ | async) && !(currentUserAvatarUrl$ | async)" class="image default-avatar">
                 </div>
-                <div class="info-inner">
-                    <div class="name">
-                        <div class="first-name">
-                            <h2>{{(currentUser$ | async)?.firstName}}</h2>
-                        </div>
-                        <div class="last-name">
-                            <h2>{{(currentUser$ | async)?.lastName}}</h2>
-                        </div>
+                <img *ngIf="(currentUserAvatarUrl$ | async) && !(avatarUrl$ | async)"
+                    [src]="currentUserAvatarUrl$ | async" [ngClass]="{ 'error': isAvatarError$ | async }" class="image">
+                <div class="edit-avatar" *ngIf="(isOwner$ | async) && (isEdit$ | async)">
+                    <img #newAvatar class="newAvatar" *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async">
+                    <input #avatarInput id="avatarInput" (change)="setAvatar(avatarInput.files)" type="file"
+                        accept="image/png, image/jpg">
+                    <label for="avatarInput">
+                        <mat-icon>add_photo_alternate</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <div class="info">
+                <div class="name">
+                    <div class="firstname">
+                        <h1 *ngIf="!(isEdit$ | async); else firstname_input">
+                            {{ (currentUser$ | async)?.firstName }}
+                        </h1>
                     </div>
-                    <div class="location">
-                        <div class="city">
-                            <p>г. {{(currentUser$ | async)?.city}},</p>
-                        </div>
-                        <div class="region">
-                            <p>{{(currentUser$ | async)?.region}} район</p>
-                        </div>
+                    <div class="lastname">
+                        <h1 *ngIf="!(isEdit$ | async); else lastname_input">
+                            {{ (currentUser$ | async)?.lastName }}
+                        </h1>
                     </div>
-                    <div class="contacts">
-                        <div class="phone">
-                            <p><a href="tel:{{(currentUser$ | async)?.phone}}">
-                                    <mat-icon>phone</mat-icon> {{(currentUser$ | async)?.phone}}
-                                </a></p>
-                        </div>
-                        <!-- <div class="gmail">
-                        <p>Почта: {{(currentUser$ | async)?.gmail}}</p>
-                    </div> -->
-                    </div>
+                </div>
+                <div class="location">
+                    {{ (currentUser$ | async)?.city }}, {{ (currentUser$ | async)?.region }}
+                </div>
+                <div class="phone" *ngIf="!(isEdit$ | async); else phoneInput">
+                    <a class="phone-input-link" href="tel:{{ (currentUser$ | async)?.phone }}">
+                        {{ (currentUser$ | async)?.phone }}
+                    </a>
                 </div>
             </div>
         </div>
-
-        <ng-template #notFound>
-            <app-user-not-found></app-user-not-found>
-        </ng-template>
-    </div>
-
-    <div class="announcement">
-        <div class="announcement-list">
-            <app-user-announcement></app-user-announcement>
+        <div class="buttons" *ngIf="isOwner$ | async">
+            <button class="apply image" (click)="send()" [ngClass]="{'active': isEdit$ | async}"
+                [disabled]="!(isEdit$ | async) || (sendButtonIsDisabled$ | async)"></button>
+            <button class="edit image" (click)="toggleEdit()" [ngClass]="{'active': isEdit$ | async}"></button>
         </div>
     </div>
-    
-    <ng-template #loader>
-        <app-loader></app-loader>
-    </ng-template>
+    <hr />
+    <div class="announcement-list">
+        <app-announcement *ngFor="let announcement of currentAnnouncementList$ | async" [announcement]="announcement">
+        </app-announcement>
+    </div>
 </div>
+<ng-template #firstname_input>
+    <input #firstName type="text" [value]="(currentUser$ | async)?.firstName"
+        (change)="setValue('firstName', firstName.value)">
+</ng-template>
+<ng-template #lastname_input>
+    <input #lastName type="text" [value]="(currentUser$ | async)?.lastName"
+        (change)="setValue('lastName', lastName.value)">
+</ng-template>
+<ng-template #phoneInput>
+    <input #phone type="tel" [value]="(currentUser$ | async)?.phone" [disabled]="!(isEdit$ | async)"
+        (change)="setValue('phone', phone.value)">
+</ng-template>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

@@ -4,15 +4,17 @@
     width: 100%;
     min-height: $nav-height;
     background-color: $bg-clr-white;
-    box-shadow: 2px 2px 4px 0 $box-shadow-clr;
+    border-bottom: 2px solid $border-clr;
 
-    .container {
+    .nav-inner {
         display: grid;
         grid-template-columns: auto 1fr auto;
         grid-column-gap: $padding-inline-l;
         width: 100%;
+        max-width: $wrapper-max-width;
         height: 100%;
         padding: 0 $padding-inline-l;
+        margin: 0 auto;
     }
 
     ul {
@@ -27,40 +29,6 @@
             background-color: transparent;
             border-bottom: 2px solid transparent;
             transition: all 0.2s ease;
-
-            &.profile-img-container {
-                a {
-                    width: 4rem;
-                    min-width: 4rem;
-                    max-width: 4rem;
-                    height: 100%;
-                    aspect-ratio: 1/1;
-                    padding: $padding-inline-s;
-
-                    .profile-img {
-                        width: inherit;
-                        height: 100%;
-                        aspect-ratio: 1/1;
-                        padding: 0.5rem;
-
-                        background-image: url('../../images/navbar/avatar-default.png');
-                        background-repeat: no-repeat;
-                        background-size: contain;
-                        background-position: center;
-
-                        img {
-                            width: auto;
-                            height: 100%;
-                            aspect-ratio: 1/1;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background-color: $nav-link-border-bg-clr-hover-yellow;
-                    border-color: $nav-link-border-clr-hover-yellow;
-                }
-            }
 
             &.post-announcement:hover {
                 background-color: $nav-link-border-bg-clr-hover-default;

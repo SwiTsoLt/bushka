@@ -36,9 +36,9 @@ import { UserAnnouncementComponent } from './pages/user-announcement/user-announ
     LogoMobileComponent,
     MyInputComponent,
     PagesComponent,
-    ToastsComponent,
     NavbarMobileComponent,
     ArticleMobileComponent,
+    ToastsComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +58,8 @@ import { UserAnnouncementComponent } from './pages/user-announcement/user-announ
     LoaderComponent,
     SelectOptionsComponent,
     ArticleComponent,
-    UserAnnouncementComponent
+    UserAnnouncementComponent,
+    ToastsComponent
   ]
 })
 export class AppModule {}

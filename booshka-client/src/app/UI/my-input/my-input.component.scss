@@ -54,11 +54,11 @@
                     background-image: url('../../images/navbar/search.png');
                     
                     &:hover {
-                        transform: rotateZ(-20deg);
+                        transform: rotateZ($button-rotate-hover);
                     }
 
                     &:active {
-                        transform: rotateZ(-40deg);
+                        transform: rotateZ($button-rotate-active);
                     }
                 }
             }

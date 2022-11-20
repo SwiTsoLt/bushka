@@ -70,15 +70,16 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.box {
-  border-radius: 4px;
-  box-shadow: 2px 2px 4px 0 $box-shadow-clr;
+input,
+textarea {
+  box-sizing: border-box;
 }
 
 .title {
   width: 100%;
   height: fit-content;
   background-color: $bg-clr-white;
+  border-bottom: 2px solid $border-clr;
   padding: $padding-inline-l;
 }
 
@@ -96,29 +97,50 @@ span {
 }
 
 h1 {
-  font-size: $text-size-xl  !important;
-  line-height: $text-size-xl  !important;
+  font-size: $text-size-xl !important;
+  line-height: $text-size-xl !important;
 }
 
 h2 {
-  font-size: $text-size-l  !important;
-  line-height: $text-size-l  !important;
+  font-size: $text-size-l !important;
+  line-height: $text-size-l !important;
 }
 
 h3 {
-  font-size: $text-size-m  !important;
-  line-height: $text-size-m  !important;
+  font-size: $text-size-m !important;
+  line-height: $text-size-m !important;
 }
 
 p {
-  font-size: $text-size-s  !important;
+  font-size: $text-size-s !important;
   font-weight: 400 !important;
-  line-height: $text-size-s  !important;
+  line-height: $text-size-s !important;
 }
 
 .mat-progress-spinner circle,
 .mat-spinner circle {
   stroke: $logo-clr-4;
+}
+
+.announcement-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($announcement-min-width, 1fr));
+  grid-column-gap: $padding-inline-s;
+  grid-row-gap: $padding-inline-l;
+  width: fit-content;
+  max-width: 100%;
+  height: fit-content;
+
+  app-announcement {
+    width: 100%;
+    height: fit-content;
+  }
+}
+
+.image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 /* Scrollbar */

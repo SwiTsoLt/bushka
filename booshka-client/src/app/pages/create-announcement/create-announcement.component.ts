@@ -4,8 +4,8 @@ import { CreateAnnouncementStore } from './create-announcement.store';
 import { Observable, of, take } from 'rxjs';
 import { CreateAnnouncementService } from './create-announcement.service';
 import { select, Store } from '@ngrx/store';
-import { selectToastList } from 'src/app/UI/toasts/reducers/toasts.selectors';
-import * as toastModel from 'src/app/UI/toasts/models/toasts.model';
+import { selectToastList } from '../../UI/toasts/reducers/toasts.selectors';
+import * as toastModel from '../../UI/toasts/models/toasts.model';
 
 @Component({
   selector: 'app-create-announcement',
@@ -25,6 +25,15 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
   public categoryList$: Observable<createAnnouncementModel.ICategory[]> = this.getCategoryList()
   public imageList: Observable<File[]> = of([])
   public imageDisplayList: Observable<{ title: string, data: ArrayBuffer | null | string }[]> = of([])
+  public categoryListOpen$: Observable<boolean> = of(false)
+  public currentCutegoryTitle$: Observable<string | null> = of(null)
+
+  public toggleCategoryOpen() {
+    this.categoryListOpen$.pipe(take(1)).subscribe(categoryListOpen => {
+      console.log(!categoryListOpen);
+      this.categoryListOpen$ = of(!categoryListOpen)
+    })
+  }
 
   getCategoryList(): Observable<createAnnouncementModel.ICategory[]> {
     return new Observable((subscriber) => {
@@ -46,24 +55,21 @@ export class CreateAnnouncementComponent implements OnInit, AfterViewInit {
     document.dispatchEvent(new Event('textareaInitialization'));
   }
 
-  public setValue(fieldName: string, value: string, element?: any) {
-    if (fieldName === 'category') {
-      element.querySelectorAll('select')[0].addEventListener('change', (e: any) => {
-        const selectId = (+e.target.value - 1).toString() || '0'
-        this.createAnnouncementStore.setValue({ fieldName, value: selectId })
-      })
-    } else {
-      this.createAnnouncementStore.setValue({ fieldName, value })
+  public setValue(fieldName: string, value: string, title?: string) {
+    if (fieldName === "category") {
+      this.currentCutegoryTitle$ = of(title || null)
+      this.toggleCategoryOpen()
     }
+    this.createAnnouncementStore.setValue({ fieldName, value })
   }
 
   public addImage(el: HTMLInputElement | null) {
     this.imageList.pipe(take(1)).subscribe(currentImageList => {
-     
+
       if (el?.files && el.files[0] && currentImageList.length < 10) {
-        
+
         this.imageList = of([...currentImageList, el.files[0]])
-        
+
         this.imageDisplayList.pipe(take(1)).subscribe(currentImageDisplayList => {
           const reader = new FileReader()
           reader.addEventListener("load", () => {

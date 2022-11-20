@@ -4,47 +4,51 @@
     width: 100%;
     height: 100%;
 
-    .link-list {
+    .content {
         width: 100%;
-        height: 100%;
-        background-color: $bg-clr-white;
-        border-radius: $border-radius;
+        height: fit-content;
 
-        li {
+        .link-list {
             width: 100%;
-            height: calc($padding-inline-l * 3);
-
-            a {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            height: 100%;
+            background-color: $bg-clr-white;
+            border-radius: $border-radius;    
+    
+            li {
                 width: 100%;
-                height: 100%;
-                cursor: pointer;
-                user-select: none;
-                background-color: $bg-clr-white;
-                border-radius: $border-radius;
-                transition: all 0.2s ease;
-
-                &:hover {
-                    filter: brightness(0.96);
-                }
-
-                &.auth {
-                    color: $nav-link-border-clr-hover-green;
-
+                height: calc($padding-inline-l * 3);
+    
+                a {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                    user-select: none;
+                    background-color: $bg-clr-white;
+                    transition: background-color 0.2s ease;
+    
                     &:hover {
-                        filter: none;
-                        background-color: $nav-link-border-bg-clr-hover-green;
+                        background-color: $article-bg-clr-hover-blue;
                     }
-                }
-
-                &.logout {
-                    color: $text-clr-error;
-
-                    &:hover {
-                        filter: none;
-                        background-color: $text-clr-hover-error;
+    
+                    &.auth {
+                        color: $nav-link-border-clr-hover-green;
+    
+                        &:hover {
+                            filter: none;
+                            background-color: $nav-link-border-bg-clr-hover-green;
+                        }
+                    }
+    
+                    &.logout {
+                        color: $text-clr-error;
+    
+                        &:hover {
+                            filter: none;
+                            background-color: $text-clr-hover-error;
+                        }
                     }
                 }
             }

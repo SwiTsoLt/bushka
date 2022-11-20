@@ -1,13 +1,34 @@
+import { FormControl } from "@angular/forms"
+
 export interface IUser {
     _id: string,
     gmail: string,
     firstName: string,
     lastName: string,
+    avatarLink: string,
     phone: string,
     city: string,
     announcementIdList: string[],
     ideas: string[],
     region: string
+}
+
+export interface IEditUser {
+    gmail: string,
+    firstName: string,
+    lastName: string,
+    phone: string,
+    city: string,
+    region: string
+}
+
+export interface IEditUserControl {
+    gmail: FormControl<string>,
+    firstName: FormControl<string>,
+    lastName: FormControl<string>,
+    phone: FormControl<string>,
+    city: FormControl<string>,
+    region: FormControl<string>
 }
 
 export enum userActionEnums {

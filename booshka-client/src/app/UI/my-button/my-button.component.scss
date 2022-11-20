@@ -1,14 +1,23 @@
 @import '../../variables/variables.scss';
 
-.login, .registration, .details {
-    width: fit-content;
+.my-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     height: fit-content;
+}
+
+button {
+    width: 100%;
+    height: fit-content;
+    min-width: fit-content;
     background-color: transparent;
-    border: 2px solid $nav-links-clr-green-link;
+    border: 2px solid $nav-link-border-clr-hover-default;
     border-radius: $border-radius;
-    color: $main-clr-1-lighten;
+    color: $nav-link-border-clr-hover-default;
     cursor: pointer;
-    padding: $padding-inline-s calc($padding-box * 2);
+    padding: $padding-inline-s 0;
     transition: all 0.2s ease;
 
     &:disabled {
@@ -16,6 +25,23 @@
         color: $text-clr-disabled;
         cursor: default;
     }
+
+    &:hover:not(:disabled) {
+        background-color: $nav-link-border-bg-clr-hover-default;
+    }
+
+    &:active {
+        opacity: 0.8;
+        width: calc(100% - 4px);
+        height: calc(100% - 4px);
+    }
+}
+
+.login,
+.registration,
+.details {
+    border: 2px solid $nav-links-clr-green-link;
+    color: $main-clr-1-lighten;
 
     &:hover:not(:disabled) {
         background-color: $nav-link-border-bg-clr-hover-green;
@@ -23,23 +49,19 @@
 }
 
 .create-announcement {
-    width: fit-content;
-    height: fit-content;
-    background-color: transparent;
     border: 2px solid $nav-links-clr-green-link;
-    border-radius: $border-radius;
     color: $main-clr-1-lighten;
-    cursor: pointer;
-    padding: $padding-inline-s calc($padding-box * 2);
-    transition: all 0.2s ease;
-
-    &:disabled {
-        border-color: $nav-link-border-bg-clr-hover-default;
-        color: $text-clr-disabled;
-        cursor: default;
-    }
 
     &:hover:not(:disabled) {
         background-color: $nav-link-border-bg-clr-hover-green;
+    }
+}
+
+.edit {
+    border: 2px solid $nav-link-border-clr-hover-default;
+    color: $nav-link-border-clr-hover-default;
+
+    &:hover:not(:disabled) {
+        background-color: $nav-link-border-bg-clr-hover-default;
     }
 }

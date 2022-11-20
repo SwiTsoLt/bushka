@@ -1,4 +1,5 @@
-$body-bg-clr: #f0f4f8;
+// $body-bg-clr: #f0f4f8;
+$body-bg-clr: #ffffff;
 $bg-clr-white: #ffffff;
 $bg-clr-black-wall: #00000050;
 
@@ -11,6 +12,8 @@ $main-clr-1-lighten: #67ca96;
     $main-clr-3: ;
     $main-clr-3-darken: ;
     $main-clr-3-lighten: ; */
+
+$wrapper-max-width: 1400px;
 
 
 $footer-bg-clr: #303030;
@@ -29,7 +32,6 @@ $text-size-xl: 1.6rem;
 
 $nav-height: 4rem;
 
-
 $nav-links-clr-green-link: #3ce482;
 $nav-link-border-bg-clr-hover-default: #9588ad20;
 $nav-link-border-bg-clr-hover-green: #58ff9d10;
@@ -41,7 +43,7 @@ $nav-link-border-clr-hover-yellow: #fcce00;
 $nav-link-border-clr-hover-blue: #6adbff;
 
 $box-shadow-clr: #bab0cc60;
-$border-radius: 4px;
+$border-radius: 6px;
 
 /* logo */
 
@@ -55,7 +57,7 @@ $logo-bg-clr-2: #ffe46b50;
 $logo-bg-clr-3: #58ff9d50;
 $logo-bg-clr-4: #c183cc50;
 
-$border-clr: #dfdfdf;
+$border-clr: #efefef;
 $border-clr-hover: #cccccc;
 
 /* --- */
@@ -84,6 +86,10 @@ $article-bg-clr-hover-blue: #6adcff13;
 
 /* Announcement */
 
-$announcement-height: 340px;
-$announcement-min-width: 170px;
-$announcement-max-width: 340px;
+$announcement-min-width: 160px;
+$announcement-max-width: 260px;
+
+/* Button */
+
+$button-rotate-hover: -20deg;
+$button-rotate-active: -40deg;

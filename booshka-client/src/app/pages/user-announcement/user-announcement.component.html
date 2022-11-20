@@ -1,8 +1,4 @@
 <div class="user-announcement">
-    <div class="title box">
-        <h1 class="center">Мои объявления</h1>
-    </div>
-
     <ul class="user-announcement-list">
         <app-announcement *ngFor="let announcement of userAnnouncementList$ | async" [announcement]="announcement"></app-announcement>
     </ul>

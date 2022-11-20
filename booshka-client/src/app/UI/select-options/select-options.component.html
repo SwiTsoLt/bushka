@@ -1,18 +1,22 @@
-<div *ngIf="(resultCategoryList$ | async) !== null; else someThingWentWrong"  #selectWrapper class="select-options input-field col s12">
-    <select *ngIf="!!(resultCategoryList$ | async); else loader">
+<div *ngIf="!!(resultCategoryList$ | async) || !!(resultCityList$ | async) || !!(resultRegionList$ | async); else loader"  #selectWrapper class="select-options input-field col s12">
+    <select *ngIf="!!(resultCategoryList$ | async) && type === 'category'">
         <option value="" disabled selected>Выберете категорию</option>
         <optgroup *ngFor="let category of resultCategoryList$ | async" [label]="category.title">
             <option *ngFor="let children of category.children" [value]="children.id+1">{{children.title}}</option>
         </optgroup>
     </select>
 
-    <ng-template  #loader>
-        <app-loader></app-loader>
-    </ng-template>
+    <select *ngIf="!!(resultCityList$ | async) && type === 'city'">
+        <option value="" disabled selected>Выберете горд</option>
+        <option *ngFor="let city of resultCityList$ | async" [value]="city.index+1">{{city.title}}</option>
+    </select>
+
+    <select *ngIf="!!(resultRegionList$ | async) && type === 'region'">
+        <option value="" disabled selected>Выберете район</option>
+        <option *ngFor="let region of resultCityList$ | async" [value]="region.index+1">{{region.title}}</option>
+    </select>
 </div>
 
-<ng-template #someThingWentWrong>
-    <br>
-    <p>Что-то пошло не так при загрузке списка категорий</p>
-    <br>
+<ng-template #loader>
+    <app-loader></app-loader>
 </ng-template>

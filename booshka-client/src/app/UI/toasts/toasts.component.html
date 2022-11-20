@@ -1,5 +1,5 @@
 <div class="toast-list">
-    <div *ngFor="let toast of toastList | async" class="toast box" [ngClass]="{'ready': toast?.ready === true, 'noReady': toast?.ready ===  false}"
+    <div *ngFor="let toast of toastList | async" class="toast" [ngClass]="{'ready': toast?.ready === true, 'noReady': toast?.ready ===  false}"
         [class]="toast.type">
         <div class="toast-icon-container">
             <div class="toast-icon" [class]="toast.type"></div>

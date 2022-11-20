@@ -4,7 +4,7 @@
     width: 100%;
     min-height: 4rem;
     background-color: $bg-clr-white;
-    box-shadow: 2px 2px 4px 0 $box-shadow-clr;
+    border-bottom: 2px solid $border-clr;
 
     .container {
         display: grid;
