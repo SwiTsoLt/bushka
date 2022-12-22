@@ -12,7 +12,7 @@
     "start:server:build": "npm run build --prefix booshka-rest-api",
     "start:install": "npm install & npm i @nestjs/cli -g & npm i @angular/cli -g & npm install --prefix booshka-client & npm install --prefix booshka-rest-api",
     "heroku-prebuild": "npm run start:install",
-    "build": "npm run start:install & npm run start:client:build & npm run start:server:build"
+    "build": "npm link @angular/cli & npm run start:install & npm run start:client:build & npm run start:server:build"
   },
   "engines": {
     "node": "v16.19.0"
