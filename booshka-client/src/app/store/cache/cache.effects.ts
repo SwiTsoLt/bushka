@@ -38,7 +38,7 @@ export class CacheEffects {
                         mergeMap(announcementCacheList => this.route.queryParams.pipe(
                             mergeMap(params => {
                                 const page = (params['page'] && typeof params['page'] === 'number') ? params['page'] : 1
-                                if (announcementCacheList.length <= page * 5 || !announcementCacheList.length) {
+                                if (!announcementCacheList.length) {
                                     return this.mainService.getPage(page)
                                         .pipe(
                                             map(response => {

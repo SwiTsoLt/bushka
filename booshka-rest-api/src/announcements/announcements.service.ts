@@ -25,16 +25,16 @@ export class AnnouncementsService {
         @InjectModel(AnnouncementCategory.name) private AnnouncementCategoryModel: Model<AnnouncementCategoryDocument>,
         @InjectModel(User.name) private userModel: Model<UserDocument>,
     ) {
+        this.auth.setCredentials({ refresh_token: this.refresh_token })
     }
 
-    private KEY_FILE_PATH = path.join(__dirname, "models", "serviceAccountCred.json")
-    private parents_id = config.get("parents_id")
-    private scopes = config.get("scopes")
+    private parents_id = config.get("parents_announcement_id")
+    private client_id = config.get("client_id")
+    private client_secret = config.get("client_secret")
+    private redirect_uri = config.get("redirect_uri")
+    private refresh_token = config.get("refresh_token")
 
-    private auth = new google.auth.GoogleAuth({
-        keyFile: this.KEY_FILE_PATH,
-        scopes: this.scopes
-    })
+    private auth = new google.auth.OAuth2(this.client_id, this.client_secret, this.redirect_uri)
     private driveService = google.drive({ version: "v3", auth: this.auth })
 
     async getAll(): Promise<announcementModel.IAnnouncementGetAllServiceResponse> {

@@ -41,6 +41,13 @@
                             background-color: $nav-link-border-bg-clr-hover-green;
                         }
                     }
+
+                    &.adminpanel {
+                        color: $text-clr-purple;
+                        &:hover {
+                            background-color: $text-clr-hover-purple;
+                        }
+                    }
     
                     &.logout {
                         color: $text-clr-error;

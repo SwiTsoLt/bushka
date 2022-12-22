@@ -18,6 +18,9 @@ export class User {
     lastName: string
 
     @Prop()
+    avatarLink: string
+
+    @Prop()
     roles: string[]
 
     @Prop({ required: true })

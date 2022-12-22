@@ -38,6 +38,7 @@ import { ProfileStore } from "./profile/profile.store";
 import { ToastEffects } from "../UI/toasts/toast.effects";
 import { toastsNode } from "../UI/toasts/reducers/toasts.reducer";
 import * as fromToastsReferences from "../UI/toasts/reducers";
+import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -53,6 +54,7 @@ registerLocaleData(localeRu, 'ru');
         AnnouncementComponent,
         UserNotFoundComponent,
         UserAnnouncementComponent,
+        AdminpanelComponent,
     ],
     imports: [
         BrowserModule,

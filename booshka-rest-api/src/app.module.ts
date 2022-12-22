@@ -24,7 +24,9 @@ const config = require('config');
     UserModule,
     AuthModule,
     AnnouncementsModule,
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+    ])
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -37,5 +39,6 @@ export class AppModule {
     consumer.apply(CrateAnnouncementValidateMiddleware).forRoutes({ path: "api/announcement", method: RequestMethod.POST });
     consumer.apply(AuthMiddleware).forRoutes({ path: "api/user", method: RequestMethod.GET });
     consumer.apply(AuthMiddleware).forRoutes({ path: "api/user/toggleIdea", method: RequestMethod.PUT });
+    consumer.apply(AuthMiddleware).forRoutes({ path: "api/user/edit", method: RequestMethod.POST });
   }
 }

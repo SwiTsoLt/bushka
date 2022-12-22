@@ -47,6 +47,11 @@
                 </a>
             </li>
             <li *ngIf="(user$ | async)?.gmail">
+                <a routerLink="adminpanel-component" class="adminpanel">
+                    <p>Панель администратора</p>
+                </a>
+            </li>
+            <li *ngIf="(user$ | async)?.gmail">
                 <a class="logout" (click)="logout()">
                     <p>Выйти</p>
                 </a>

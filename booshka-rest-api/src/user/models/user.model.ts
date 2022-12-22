@@ -12,6 +12,30 @@ export interface IUserFoundErrorResponse {
     message: string
 }
 
+// City
+
+export interface City {
+    title: string,
+    index: number,
+    regions: IRegion[]
+}
+
+export interface IRegion {
+    title: string,
+    index: number
+}
+
+export interface ICityResponse {
+    cityList: City[],
+    message: string
+}
+
+export interface ICityServiceResponse {
+    cityList?: City[],
+    message?: string,
+    status: number
+}
+
 // SERVICE
 
 export interface IUserServiceResponse {
@@ -40,4 +64,10 @@ export interface IUserAnnouncementIdListServiceResponse {
     announcementIdList?: string[],
     message?: string,
     status: number
+}
+
+// RESPONSE
+
+export enum UserServiseResponseEnumsSuccess {
+    edit = "Пользователь успешно изменен"
 }

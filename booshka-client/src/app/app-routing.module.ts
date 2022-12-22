@@ -13,6 +13,7 @@ import { CreateAnnouncementComponent } from './pages/create-announcement/create-
 import { OtherComponent } from './pages/other/other.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserAnnouncementComponent } from './pages/user-announcement/user-announcement.component';
+import { AdminpanelComponent } from './pages/adminpanel/adminpanel.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "/main-component", pathMatch: "full" },
@@ -57,6 +58,7 @@ export const routes: Routes = [
   { path: "chats-component", component: ChatsComponent },
   { path: "other-component", component: OtherComponent },
   { path: "settings-component", component: SettingsComponent },
+  { path: "adminpanel-component", component: AdminpanelComponent },
   { path: "**", component: PageNotFoundComponent },
 ];
 

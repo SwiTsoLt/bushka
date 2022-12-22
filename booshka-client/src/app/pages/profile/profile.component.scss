@@ -15,7 +15,8 @@
 
         .user {
             display: grid;
-            grid-template-columns: auto 1fr;
+            grid-template-columns: repeat(auto-fill, minmax($announcement-max-width, 1fr));
+            justify-items: center;
             grid-gap: $padding-inline-l;
             width: 100%;
             height: fit-content;
@@ -25,6 +26,7 @@
                 width: 100%;
                 height: auto;
                 min-width: 200px;
+                max-width: $announcement-max-width;
                 border-radius: 50%;
                 overflow: hidden;
                 aspect-ratio: 1/1;

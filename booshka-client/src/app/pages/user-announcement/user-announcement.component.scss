@@ -6,12 +6,4 @@
     grid-row-gap: $padding-inline-s;
     width: 100%;
     height: fit-content;
-
-    .user-announcement-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(calc($announcement-min-width), 1fr));
-        grid-gap: $padding-inline-s;
-        width: 100%;
-        height: fit-content;
-    }
 }

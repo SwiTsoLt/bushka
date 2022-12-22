@@ -2,6 +2,11 @@
     "PORT": "3000",
     "MongoUri": "mongodb+srv://Stanislav:82363newlife@cluster0.pberr0g.mongodb.net/app?retryWrites=true&w=majority",
     "jwtSecret": "newlife",
-    "parents_id": "1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh",
+    "parents_announcement_id": "1aRQ-wOdJPMoGU5p-q-WFu5sU3xzZRzuh",
+    "parents_user_avatar_id": "1aeneVETqfGK9-zbKVTioV9RQKKsQbAX0",
+    "client_id": "1022084235823-d5q78bmk9tuhoh1s4eeqifq68tgecnn7.apps.googleusercontent.com",
+    "client_secret": "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",
+    "redirect_uri": "https://developers.google.com/oauthplayground",
+    "refresh_token": "1//04aQh0n4DQvCvCgYIARAAGAQSNwF-L9Ir0rynP9ZTm8xVCV_0hTvV0v-0DSFNx6K9eRJcChb1FOV0fsVrAD_kh7ul_oYuPFm6DxM",
     "scopes": ["https://www.googleapis.com/auth/drive"]
 }

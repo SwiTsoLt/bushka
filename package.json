@@ -15,7 +15,7 @@
     "heroku-postbuild": "npm run start:client:build & npm run start:server:build"
   },
   "engines": {
-    "node": "^16.15.1"
+    "node": "v18.12.1"
   },
   "keywords": [],
   "author": "",

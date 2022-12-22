@@ -263,17 +263,23 @@ export class ProfileStore extends ComponentStore<profileModel.IProfileStore> {
 
     private getCurrentUserAnnouncementListObserver(user: userModel.IUser): Observable<mainModel.IAnnouncement[]> {
         return new Observable(observer => {
+            let loadAnnouncement = 0
+            let tryLoad = 0
             this.cacheUserAnnouncementListReady$.subscribe(cacheUserAnnouncementListReady => {
                 if (cacheUserAnnouncementListReady) {
                     this.cacheUserAnnouncementList$.pipe(take(1)).subscribe(cacheUserAnnouncementList => {
                         const cacheAnnouncementIdList = cacheUserAnnouncementList.reduce((acc: string[], cur: mainModel.IAnnouncement) => [...acc, cur._id], [])
                         const cacheAnnouncementListFiltered = user.announcementIdList.filter(announcementId => {
+                            
                             if (cacheAnnouncementIdList.includes(announcementId)) {
                                 return true
                             }
-                            this.store$.dispatch(cacheActions.putAnnouncementByIdCache({ id: announcementId }))
+                            (tryLoad < loadAnnouncement || !loadAnnouncement) && this.store$.dispatch(cacheActions.putAnnouncementByIdCache({ id: announcementId }))
+                            tryLoad += 1
                             return false
                         })
+
+                        loadAnnouncement = user.announcementIdList.length - cacheAnnouncementListFiltered.length
 
                         if (cacheAnnouncementListFiltered.length === user.announcementIdList.length) {
                             const candidate = cacheUserAnnouncementList.filter(cacheUserAnnouncement => cacheAnnouncementListFiltered.includes(cacheUserAnnouncement._id))

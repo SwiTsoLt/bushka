@@ -37,6 +37,16 @@ export class ProfileComponent implements OnInit {
   public fileList: FileList | null = null
 
   ngOnInit(): void {
+    this.userReady$.subscribe(userReady => {
+      if (userReady) {
+        this.user$.subscribe(user => {
+          console.log(user);
+          this.profileStore.setCurrentUserSuccess({ user })
+          this.currentAnnouncementList$ = this.profileStore.currentUserAnnouncementList$
+        })
+      }
+    })
+
     this.route.paramMap.subscribe(params => {
       const id = params.get("id") || ""
       this.profileStore.getCurrentUser(id)

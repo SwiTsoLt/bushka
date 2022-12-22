@@ -1,4 +1,4 @@
-<div class="profile" *ngIf="userReady$ | async; else loader">
+<div class="profile">
     <div class="profile-inner">
         <div class="user">
             <div class="avatar-container">
@@ -61,7 +61,4 @@
 <ng-template #phoneInput>
     <input #phone type="tel" [value]="(currentUser$ | async)?.phone" [disabled]="!(isEdit$ | async)"
         (change)="setValue('phone', phone.value)">
-</ng-template>
-<ng-template #loader>
-    <app-loader></app-loader>
 </ng-template>
