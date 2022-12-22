@@ -3,14 +3,14 @@
     "env": {},
     "builds": [
         {
-            "src": "booshka-rest-api/src/main.ts",
+            "src": "booshka-rest-api/dist/main.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/(.*)*",
-            "dest": "booshka-rest-api/src/main.ts",
+            "dest": "booshka-rest-api/dist/main.js",
             "methods": ["GET", "POST", "PUT", "DELETE"]
         }
     ]
