@@ -22,7 +22,7 @@
   "dependencies": {
     "@nestjs/cli": "9.1.5",
     "@angular/cli": "15.0.4",
-    "@angular-devkit/build-angular:browser": "15.0.4",
+    "@angular-devkit/build-angular": "15.0.4",
     "source-map-support": "^0.5.21"
   }
 }
