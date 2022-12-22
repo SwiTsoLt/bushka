@@ -15,7 +15,7 @@
     "build": "npm run start:install & npm run start:client:build & npm run start:server:build"
   },
   "engines": {
-    "node": "v18.12.1"
+    "node": "v16.19.0"
   },
   "keywords": [],
   "author": "",
