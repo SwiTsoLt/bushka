@@ -33,7 +33,7 @@
     "express-fileupload": "^1.4.0",
     "googleapis": "^107.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.5",
+    "mongoose": "^6.11.3",
     "node": "16.15.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
